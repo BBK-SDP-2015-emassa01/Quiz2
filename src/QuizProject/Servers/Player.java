@@ -6,8 +6,6 @@
 
 package QuizProject.Servers;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Esha
@@ -19,11 +17,13 @@ public class Player implements PlayerInterf {
     
     @Override
     public void setPlayerName(String name){
+        checkObjectIsNotNull(name);
         this.playerName = name;
     }
     
     @Override
     public void setPlayerScore(int score){
+        checkObjectIsNotNull(score);
         this.playerScore = score;
     }
     
@@ -35,6 +35,13 @@ public class Player implements PlayerInterf {
     @Override
     public int getPlayerScore(){
         return this.playerScore;
+    }
+    
+    @Override
+    public void checkObjectIsNotNull(Object obj) {
+        if (obj == null) {
+            throw new NullPointerException("THE ARGUMENT WAS NULL. ");
+        }
     }
 
 

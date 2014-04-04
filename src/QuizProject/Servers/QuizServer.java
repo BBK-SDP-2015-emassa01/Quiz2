@@ -93,7 +93,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public String getWinnerForQuiz(int quizID) throws RemoteException {
-        System.out.println("got to servers");
         System.out.println(highestScorePlayerIDMap);
         String result = null;
 
@@ -148,9 +147,13 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     @Override
     public int getHighestScoreForQuiz(int QuizID) throws RemoteException {
         int highestScoreForQuiz = 0;
-        for (Quiz a : quizzes) {
-            if (a.getQuizID() == QuizID) {
-                highestScoreForQuiz = a.getHighestScore();
+        if (quizzes.isEmpty()) {
+            throw new NullPointerException("NO QUIZZES. ");
+        } else {
+            for (Quiz a : quizzes) {
+                if (a.getQuizID() == QuizID) {
+                    highestScoreForQuiz = a.getHighestScore();
+                }
             }
         }
         return highestScoreForQuiz;
@@ -158,11 +161,15 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public void setHighestScoreForQuiz(int QuizID, int score) throws RemoteException {
-        for (Quiz a : quizzes) {
-            if (a.getQuizID() == QuizID) {
-                if (a.getHighestScore() < score) {
-                    a.setHighestScore(score);
-                    
+        if (quizzes.isEmpty()) {
+            throw new NullPointerException("NO QUIZZES. ");
+        } else {
+            for (Quiz a : quizzes) {
+                if (a.getQuizID() == QuizID) {
+                    if (a.getHighestScore() < score) {
+                        a.setHighestScore(score);
+
+                    }
                 }
             }
         }
@@ -182,11 +189,16 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public Object[] getCurrentQuizList() throws RemoteException {
-        Object[] quizArray = quizzes.toArray();
+        Object[] quizArray;
+        if (quizzes.isEmpty()) {
+            throw new NullPointerException("NO QUIZZES. ");
+        } else {
+            quizArray = quizzes.toArray();
 
-        for (Object a : quizArray) {
-            Quiz b = (Quiz) a;
-            System.out.println("QUIZ: " + b.getQuizName());
+            for (Object a : quizArray) {
+                Quiz b = (Quiz) a;
+                System.out.println("QUIZ: " + b.getQuizName());
+            }
         }
         return quizArray;
     }
@@ -218,29 +230,30 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public synchronized void serverAddsSetOfQuestions(int ID, ArrayList<String> newListOfQuestions) throws RemoteException {
-//        if (quizMap.containsKey(ID)) {
-//            System.out.println("id:" + ID);
-//
-//            quizMap.put(ID, newListOfQuestions);
-//        } else {
-//            Quiz aQuiz = new Quiz();
-//            quizzes.add(aQuiz);
-        quizMap.put(ID, newListOfQuestions);
-        System.out.println(quizMap.get(ID).toString());
+        if (quizMap.containsKey(ID)) {
+            quizMap.put(ID, newListOfQuestions);
+            System.out.println(quizMap.get(ID).toString());
 
-        System.out.println("ADDED QUESTION TO QUIZ:" + ID);
+            System.out.println("ADDED QUESTION TO QUIZ:" + ID);
+        } else {
+            throw new IllegalArgumentException("NO SUCH QUIZ ID. ");
+        }
     }
 
     @Override
     public void serverAddsAnswers(String question, String[] answers) throws RemoteException {
-//        if (quizMap.containsKey(ID)) {
-//            String[] temp = QuestionAnswers.get(ID);
-//            temp = answers;
-//
-//        } else {
+        checkObjectIsNotNull(answers);
+        checkObjectIsNotNull(question);
         questionAnswers.put(question, answers);
         System.out.println("Quiz: " + question + " has been added/amended in the Question and Answers Map. ");
         System.out.println("QA" + questionAnswers.toString());
+    }
 
+    
+    @Override
+    public void checkObjectIsNotNull(Object obj)throws RemoteException {
+        if (obj == null) {
+            throw new NullPointerException("THE ARGUMENT WAS NULL. ");
+        }
     }
 }

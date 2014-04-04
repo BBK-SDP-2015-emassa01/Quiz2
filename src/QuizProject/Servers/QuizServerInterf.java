@@ -25,6 +25,13 @@ public interface QuizServerInterf extends Remote {
      * @throws RemoteException
      */
     int addQuiz(String s) throws RemoteException;
+    
+    /**
+     * Checks the input is not null and prints a NullPointer message to screen if it is.
+     * @param obj
+     * @throws java.rmi.RemoteException
+     */
+    void checkObjectIsNotNull(Object obj)throws RemoteException;
 
     /**
      * Checks that the quizMap holds this Quiz ID and throws a message to the Setup Client if that 

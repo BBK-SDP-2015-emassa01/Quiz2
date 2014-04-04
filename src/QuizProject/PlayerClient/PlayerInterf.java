@@ -38,4 +38,10 @@ public interface PlayerInterf extends Serializable {
      */
     void setPlayerScore(int score);
     
+        /**
+     * Checks the input is not null and prints a NullPointer message to screen if it is.
+     * @param obj
+     */
+    void checkObjectIsNotNull(Object obj);
+    
 }

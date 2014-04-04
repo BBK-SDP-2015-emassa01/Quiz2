@@ -7,6 +7,7 @@
 package QuizProject.Servers;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -25,6 +26,13 @@ public interface QuizInterf extends Serializable {
      * @return String[] holding Question at position[0], multiple choice answers at position[1-4] and correct answer at position[5]. 
      */
     String[] getQuesAns();
+    
+    /**
+     * Checks the input is not null and prints a NullPointer message to screen if it is.
+     * @param obj
+     * @throws java.rmi.RemoteException
+     */
+    void checkObjectIsNotNull(Object obj)throws RemoteException;
 
     /**
      * getter

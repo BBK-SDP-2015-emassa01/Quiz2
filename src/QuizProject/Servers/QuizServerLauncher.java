@@ -57,7 +57,12 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
 
     @Override
     public void close() throws RemoteException {
+        if (serverQuiz==null){
+            throw new NullPointerException("THERE IS NO QUIZ SERVER");
+            } else {
         serverQuiz.serialize();
+        }
+        
         Registry registry = LocateRegistry.getRegistry(1099);
         try {
             registry.unbind(serviceName);

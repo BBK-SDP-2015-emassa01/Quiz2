@@ -32,7 +32,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
     private GetInput input = new GetInput();
     private String playerString;
-    
+
     private Player player;
 
     public QuizPlayerClient() throws NotBoundException, MalformedURLException, RemoteException {
@@ -65,17 +65,16 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public synchronized void keepLooping() throws RemoteException {
         if (running) {
             int selectedQuizID = menu();
-            
+
             System.out.println("PRESS 1 TO PLAY THIS QUIZ ");
             System.out.println("PRESS 2 TO CLOSE THIS QUIZ AND REVEAL WINNER ");
-            
+
             int response = input.getIntInput();
-            
-            if (response == 1){
-            playSelectedQuiz(selectedQuizID);
-            }
-            else if (response ==2){
-                
+
+            if (response == 1) {
+                playSelectedQuiz(selectedQuizID);
+            } else if (response == 2) {
+
                 System.out.println(serverQuiz.getWinnerForQuiz(selectedQuizID));
                 serverQuiz.serialize();
                 System.out.println("FINISHED SERIALIZATION.");
@@ -91,7 +90,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         running = false;
         //serialize?
         System.exit(0);
-        
+
     }
 
     public static void main(String args[]) {
@@ -108,7 +107,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
         printOutQuizList();
         System.out.println("\n\nENTER QUIZ ID TO ACCESS: ('END' TO EXIT)");
-        
+
         Scanner in = new Scanner(System.in);
         String input = in.nextLine();
         if (input.equalsIgnoreCase("end")) {
@@ -125,7 +124,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         //return quiz ID that the player wants to play
         System.out.println("ENTER ID OF QUIZ TO ACCESS.");
         Scanner input = new Scanner(System.in);
-        int result = input.nextInt();
+        int result = Integer.parseInt(input.nextLine().trim());
         return result;
     }
 
@@ -133,13 +132,13 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public void printOutQuizList() throws RemoteException {
         try {
             Object[] quizArray = serverQuiz.getCurrentQuizList();
-            if (serverQuiz.getCurrentQuizList() == null){
+            if (serverQuiz.getCurrentQuizList() == null) {
                 System.out.println("NO SAVED QUIZZES.");
             }
             System.out.println("\n\nQUIZZES:");
             for (Object a : quizArray) {
                 Quiz b = (Quiz) a;
-                System.out.println("ID: "+b.getQuizID()+"\t|| NAME: "+ b.getQuizName());
+                System.out.println("ID: " + b.getQuizID() + "\t|| NAME: " + b.getQuizName());
             }
             //System.out.println("THE COMPLETE LIST:");
         } catch (NullPointerException e) {
@@ -158,7 +157,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         Map<Integer, ArrayList<String>> quizMap = serverQuiz.getQuizMap();
         ArrayList<String> questions = quizMap.get(selectedQuizID);
         int tempScore = 0;
-        int highestScoreForQuiz = 0;
+        int highestScoreForQuiz=0;
 
         for (int i = 0; i < questions.size(); i++) {
 
@@ -171,28 +170,36 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             System.out.println("Option 2: " + QAs[2]);
             System.out.println("Option 3: " + QAs[3]);
             System.out.println("Option 4: " + QAs[4]);
-            String answer = input.getStringInput();
-            if (answer.equals(QAs[5])) {
-                tempScore++;
-                System.out.println("CORRECT! 1 POINT AWARDED!\n");
-            } else {
-                System.out.println("WRONG!\n");
+            String answer = input.getStringInput().trim();
+            
+            try{
+            int option = Integer.parseInt(answer);
+            if((option ==1)|(option ==2)|(option ==3)|(option ==4)){
+                if (answer.equals(QAs[5])) {
+                    tempScore++;
+                    System.out.println("CORRECT! 1 POINT AWARDED!\n");
+                } else {
+                    System.out.println("WRONG!\n");
+                }
             }
-            if (serverQuiz.getHighestScoreForQuiz(selectedQuizID)< tempScore){
+            } catch(NumberFormatException e){
+                    e.printStackTrace();
+                    }
+        }
+        if (serverQuiz.getHighestScoreForQuiz(selectedQuizID) < tempScore) {
                 serverQuiz.setHighestScoreForQuiz(selectedQuizID, tempScore);
-            }
         }
-        System.out.println("QUIZ COMPLETE. YOUR SCORE: "+ tempScore);
-        if (tempScore>highestScoreForQuiz){
-        Set<Quiz> theQuizSet = serverQuiz.getQuizzes();
-        for (Quiz a : theQuizSet) {
-            if (a.getQuizID() == selectedQuizID) {
-                a.setHighestScore(tempScore);
+        System.out.println("QUIZ COMPLETE. YOUR SCORE: " + tempScore);
+        if (tempScore > highestScoreForQuiz) {
+            Set<Quiz> theQuizSet = serverQuiz.getQuizzes();
+            for (Quiz a : theQuizSet) {
+                if (a.getQuizID() == selectedQuizID) {
+                    a.setHighestScore(tempScore);
+                }
             }
-        }
-        System.out.println("\n\nYOU HAVE THE HIGHEST SCORE SO FAR!");
-        player.setPlayerScore(tempScore);
-        serverQuiz.setHighestScorePlayerIDMap(selectedQuizID, player);
+            System.out.println("\n\nYOU HAVE THE HIGHEST SCORE SO FAR!");
+            player.setPlayerScore(tempScore);
+            serverQuiz.setHighestScorePlayerIDMap(selectedQuizID, player);
         }
     }
 }

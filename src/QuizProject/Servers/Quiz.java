@@ -35,7 +35,15 @@ public class Quiz implements QuizInterf {
     }
 
     @Override
+    public void checkObjectIsNotNull(Object obj) {
+        if (obj == null) {
+            throw new NullPointerException("THE ARGUMENT WAS NULL. ");
+        }
+    }
+    
+    @Override
     public void setQuizID(int idOfQuiz) {
+        checkObjectIsNotNull(idOfQuiz);
         this.quizID = idOfQuiz;
     }
 
@@ -46,6 +54,7 @@ public class Quiz implements QuizInterf {
     
     @Override
     public void setHighestScore(int score) {
+        checkObjectIsNotNull(score);
         this.highestScore = score;
     }
 
@@ -61,6 +70,7 @@ public class Quiz implements QuizInterf {
 
     @Override
     public void setQuesAns(String[] QA) {
+        checkObjectIsNotNull(QA);
         this.quesAnsStringArray = QA;
     }
 }

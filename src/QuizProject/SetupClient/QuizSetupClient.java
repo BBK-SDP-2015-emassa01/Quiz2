@@ -31,7 +31,6 @@ public class QuizSetupClient implements QuizSetupClientInterf{
 
     public QuizSetupClient() throws NotBoundException, MalformedURLException, RemoteException {
         serverQuiz = new QuizServer();
-//        clientQuiz = new QuizServer();
         Remote service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
 //        if (System.getSecurityManager() == null) {
 //        System.setSecurityManager(new RMISecurityManager());
@@ -48,7 +47,7 @@ public class QuizSetupClient implements QuizSetupClientInterf{
 
             keepLooping();
 
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
             e.printStackTrace();
         }
     }
@@ -71,17 +70,38 @@ public class QuizSetupClient implements QuizSetupClientInterf{
         System.out.println("-> Press 5 TO SAVE AND EXIT.");
 
         Scanner in = new Scanner(System.in);
-        String input = in.nextLine();
+        String input = in.nextLine().trim();
 
         int switchValue = Integer.parseInt(input);
         return switchValue;
+    }
+    
+    public boolean checkForInput(String input){
+        if (input.equals("")){
+            return false;
+        } else return true;
+    }
+    
+    public boolean checkInputValid(int input)throws RemoteException{
+        if ((input==1)|(input==2)|(input==3)|(input==4)|(input==5)){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     @Override
     public void keepLooping() throws RemoteException {
         if (running) {
-            dealWithSwitchRequest(menu());
+            int menuChoice = menu();
+            if (checkInputValid(menuChoice)){
+                if (checkForInput(menuChoice+"")){
+            dealWithSwitchRequest(menuChoice);
             keepLooping();
+                }
+            } else {
+                throw new IllegalArgumentException("NOT VALID CHOICE.");
+            }
         } else {
 //            serverQuiz.writeQuizServer();
             System.exit(0);
@@ -113,14 +133,6 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 serverQuiz.getQuestionsAndAnswers().put(question, answers);
 
             }
-//            if (!question.equals("end")) {
-//                answers = clientAddsAnswers(question);
-//                serverQuiz.serverAddsAnswers(id, answers);
-//                serverQuiz.serverAddsSetOfQuestions(id, newListOfQuestions);
-
-//                serverQuiz.getQuestionsAndAnswers().put(id, answers);
-//                serverQuiz.getQuizMap().put(id, newListOfQuestions);
-//            }
         }
 
         Object[] list = newListOfQuestions.toArray();
