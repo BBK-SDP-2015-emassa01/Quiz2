@@ -15,7 +15,6 @@ import java.io.Serializable;
 public class Player implements PlayerInterf {
     
     String playerName;
-    
     int playerScore;
     
     @Override

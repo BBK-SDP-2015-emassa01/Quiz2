@@ -102,7 +102,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             System.out.println(winner);
 
             if (winner == null) {
-                System.out.println("NO HIGHEST SCORER YET.");
+                result = "NO HIGHEST SCORER YET.";
             } else {
                 result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName() + "\nHIGHEST SCORE:" + winner.getPlayerScore();
             }

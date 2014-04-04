@@ -14,20 +14,52 @@ import java.io.Serializable;
  */
 public interface QuizInterf extends Serializable {
 
+    /**
+     * getter
+     * @return highest score for quiz so far.
+     */
     int getHighestScore();
 
+    /**
+     * getter
+     * @return String[] holding Question at position[0], multiple choice answers at position[1-4] and correct answer at position[5]. 
+     */
     String[] getQuesAns();
 
+    /**
+     * getter
+     * @return QuizID
+     */
     int getQuizID();
 
+    /** getter 
+     *
+     * @return QuizName
+     */
     String getQuizName();
 
+    /**
+     * Sets the highest score for this Quiz
+     * @param score
+     */
     void setHighestScore(int score);
 
+    /**
+     * Sets the Questions and Answers array for the Quiz
+     * @param QA
+     */
     void setQuesAns(String[] QA);
 
+    /**
+     * Sets the QuizID
+     * @param idOfQuiz
+     */
     void setQuizID(int idOfQuiz);
 
+    /**
+     * Sets the name of the QuizName
+     * @param nameOfQuiz
+     */
     void setQuizName(String nameOfQuiz);
     
 }

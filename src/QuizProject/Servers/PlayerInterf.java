@@ -9,17 +9,33 @@ package QuizProject.Servers;
 import java.io.Serializable;
 
 /**
- *
+ * Player Object holds players name, score.
  * @author Esha
  */
 public interface PlayerInterf extends Serializable {
 
+    /**
+     * getter 
+     * @return player name
+     */
     String getPlayerName();
 
+    /**
+     * getter
+     * @return player score
+     */
     int getPlayerScore();
 
+    /**
+     * setter
+     * @param name
+     */
     void setPlayerName(String name);
 
+    /**
+     * setter
+     * @param score
+     */
     void setPlayerScore(int score);
     
 }
