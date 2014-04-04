@@ -14,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -31,52 +29,29 @@ import java.util.Set;
  */
 public class QuizServer extends UnicastRemoteObject implements QuizServerInterf {
 
-    private static final String FILE_NAME = "quizData";
-
     private final Set<Quiz> quizzes = new HashSet<>(); //set of all current quizzes
 
     private final Map<Integer, ArrayList<String>> quizMap = new HashMap<>();//map Quiz ID to List of Questions
 
-    private final Map<String, String[]> questionAnswers = new HashMap<>(); //holds an array, where pos[0] is the Question and pos[1-4] are the answers.
+    private final Map<String, String[]> questionAnswers = new HashMap<>(); //holds an array, where pos[0] is the Question and pos[1-4] are the answers, pos[5] is the correct answer.
 
-    private final Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID to Player (holds player name, quiz ID and score for Quizzes)
-//    private Serialize serializer;
-//    
-//    private QuizService quizData;
-//    
+    private final Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
+
     private final String fileName = "quizData.txt";
 
     public QuizServer() throws RemoteException {
-//        QuizService serverQuiz;
         if (new File(fileName).exists()) {
-
             try (ObjectInputStream ois = new ObjectInputStream(
                     new BufferedInputStream(
                             new FileInputStream(fileName)));) {
                         QuizServer serverQuiz = null;
                         serverQuiz = (QuizServer) ois.readObject();
-
                     } catch (IOException | ClassNotFoundException ex) {
                         System.err.println("On write error " + ex);
-
                     }
         }
     }
 
-//    public QuizServer(QuizService quizServer, Serialize serialize) throws RemoteException {
-//        this.serializer = serialize;
-//        this.serializer.setFileName(FILE_NAME);
-//        if (serialize.quizDataExists()){
-//            Object qData = serialize.deserialize();
-//            quizData = (QuizServer) qData;
-//        } else {
-//            quizData = quizServer;
-//        }
-//    }
-    /**
-     *
-     * @throws RemoteException
-     */
     @Override
     public void serialize() throws RemoteException {
         try {
@@ -94,10 +69,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         }
     }
 
-    /**
-     *
-     * @throws RemoteException
-     */
     @Override
     public QuizServer deserialize() throws RemoteException {
         QuizServer quizServer = new QuizServer();
@@ -120,15 +91,11 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         return quizServer;
     }
 
-    /**
-     *
-     * @param quizID
-     * @throws RemoteException
-     */
     @Override
-    public void getWinnerForQuiz(int quizID) throws RemoteException {
+    public String getWinnerForQuiz(int quizID) throws RemoteException {
         System.out.println("got to servers");
         System.out.println(highestScorePlayerIDMap);
+        String result = null;
 
         if (highestScorePlayerIDMap.containsKey(quizID)) {
             Player winner = highestScorePlayerIDMap.get(quizID);
@@ -137,13 +104,13 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             if (winner == null) {
                 System.out.println("NO HIGHEST SCORER YET.");
             } else {
-
-                System.out.println("THE WINNER FOR QUIZ " + quizID + " IS" + winner.getPlayerName());
-                System.out.println("HIGHEST SCORE:" + winner.getPlayerScore());
+                result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName() + "\nHIGHEST SCORE:" + winner.getPlayerScore();
             }
         } else {
-            System.out.println("NO ID.");
+            result = "NO ID.";
         }
+        System.out.println(result);
+        return result;
     }
 
     @Override
@@ -195,6 +162,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             if (a.getQuizID() == QuizID) {
                 if (a.getHighestScore() < score) {
                     a.setHighestScore(score);
+                    
                 }
             }
         }
@@ -273,41 +241,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         questionAnswers.put(question, answers);
         System.out.println("Quiz: " + question + " has been added/amended in the Question and Answers Map. ");
         System.out.println("QA" + questionAnswers.toString());
-
-    }
-
-    @Override
-    public void serverAddstoQuizMap(String question, String[] answers) throws RemoteException {
-
-        questionAnswers.put(question, answers);
-        System.out.println("Quiz: " + question + " has been added/amended in the Question and Answers Map. ");
-        System.out.println("QA" + questionAnswers.toString());
-    }
-
-    @Override
-    public void addAnswersToQuestions(int ID) throws RemoteException {
-        try {
-            if (quizMap.containsKey(ID)) {
-                System.out.println("Adding answers to Quiz: " + ID);
-            } else {
-                System.out.println("That Quiz doesnt exist. You must create a Quiz first");
-            }
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void printQuestions(int id) throws RemoteException {
-        Object[] quesForId = quizMap.get(id).toArray();
-        System.out.println("The list of Questions added so far are:\n");
-        for (Object a : quesForId) {
-            System.out.println(a.toString());
-        }
-    }
-
-    @Override
-    public void writeQuizServer() throws RemoteException {
 
     }
 }

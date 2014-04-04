@@ -9,17 +9,13 @@ import QuizProject.Servers.GetInput;
 import QuizProject.Servers.Quiz;
 import QuizProject.Servers.QuizServer;
 import QuizProject.Servers.QuizServerInterf;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  *
@@ -71,7 +67,7 @@ public class QuizSetupClient implements QuizSetupClientInterf{
         System.out.println("-> PRESS 1 TO ADD QUIZ.");
         System.out.println("-> Press 2 FOR QUIZ LIST.");
         System.out.println("-> Press 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
-        System.out.println("-> Press 4 TO CLOSE A QUIZ AND REVEAL WINNER!");
+        System.out.println("-> Press 4 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
         System.out.println("-> Press 5 TO SAVE AND EXIT.");
 
         Scanner in = new Scanner(System.in);
@@ -101,7 +97,7 @@ public class QuizSetupClient implements QuizSetupClientInterf{
 
         boolean collectingQ = true;
         while (collectingQ) {
-            System.out.println("ENTER A QUESTION: ");
+            System.out.println("ENTER A QUESTION: (END TO QUIT)");
             GetInput input = new GetInput();
             question = input.getStringInput();
 

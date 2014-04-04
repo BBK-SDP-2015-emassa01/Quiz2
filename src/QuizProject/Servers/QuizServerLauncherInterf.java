@@ -14,6 +14,10 @@ import java.rmi.RemoteException;
  */
 public interface QuizServerLauncherInterf {
 
+    /**
+     * Serializes the QuizServer Object, and unbinds registry.
+     * @throws RemoteException
+     */
     void close() throws RemoteException;
     
 }
