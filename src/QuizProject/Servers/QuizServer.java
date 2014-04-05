@@ -220,11 +220,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public Object[] getCurrentQuizList() throws RemoteException {
-        if (quizzes== null) {
-            throw new NullPointerException("NO QUIZZES. ");
-        }
+        
         Object[] quizArray;
-        if (quizzes.isEmpty()) {
+        if ((quizzes.isEmpty())|(quizzes== null)) {
             throw new NullPointerException("NO QUIZZES. ");
         } else {
             quizArray = quizzes.toArray();
