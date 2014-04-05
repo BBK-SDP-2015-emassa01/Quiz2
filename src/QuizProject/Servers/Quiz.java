@@ -5,14 +5,6 @@
  */
 package QuizProject.Servers;
 
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  *
  * @author Esha

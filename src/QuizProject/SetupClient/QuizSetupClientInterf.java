@@ -48,23 +48,7 @@ public interface QuizSetupClientInterf {
      * @throws RemoteException
      */
     void keepLooping() throws RemoteException;
-    
-    /**
-     * Checks that the input it a '1' '2' '3' or '4' int.
-     * @param input
-     * @return
-     * @throws RemoteException
-     */
-    boolean checkInputValid(int input)throws RemoteException;
-    
-    /**
-     * Checks that the input is not blank
-     * @param input
-     * @return
-     * @throws RemoteException
-     */
-    boolean checkForInput(String input) throws RemoteException;
-
+   
     /**
      * Launches the Setup client from a non-static method.
      * @throws RemoteException

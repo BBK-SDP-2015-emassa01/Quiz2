@@ -60,7 +60,13 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
         if (serverQuiz==null){
             throw new NullPointerException("THERE IS NO QUIZ SERVER");
             } else {
-        serverQuiz.serialize();
+        serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(), 
+                        serverQuiz.getQuestionsAndAnswers(), 
+                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getFileName()
+        );
         }
         
         Registry registry = LocateRegistry.getRegistry(1099);
@@ -69,7 +75,7 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
             UnicastRemoteObject.unexportObject(client.service, true);
             UnicastRemoteObject.unexportObject(player.service, true);
         } catch (NotBoundException ex) {
-            throw new RemoteException("Could not un-register, quitting anyway...", ex);
+            throw new RemoteException("DID NOT UNBIND");
         }
     }
 

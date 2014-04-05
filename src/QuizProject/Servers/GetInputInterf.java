@@ -24,4 +24,19 @@ public interface GetInputInterf {
      */
     String getStringInput();
     
+    /**
+     * Checks that the input it a '1' '2' '3' or '4' int.
+     * @param input
+     * @return
+     */
+    boolean checkInputValid(int input);
+    
+    /**
+     * Checks that the input is not blank
+     * @param input
+     * @return
+     */
+    boolean checkForInput(String input);
+
+    
 }

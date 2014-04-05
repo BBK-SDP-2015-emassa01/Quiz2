@@ -15,7 +15,6 @@ import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  *
@@ -69,41 +68,24 @@ public class QuizSetupClient implements QuizSetupClientInterf{
         System.out.println("-> Press 4 TO SAVE.");
         System.out.println("-> Press 5 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
 
-        Scanner in = new Scanner(System.in);
-        String input = in.nextLine().trim();
-
-        int switchValue = Integer.parseInt(input);
+        GetInput input = new GetInput();
+        int switchValue = input.getIntInput();
         return switchValue;
-    }
-    
-    public boolean checkForInput(String input){
-        if (input.equals("")){
-            return false;
-        } else return true;
-    }
-    
-    public boolean checkInputValid(int input)throws RemoteException{
-        if ((input==1)|(input==2)|(input==3)|(input==4)|(input==5)){
-            return true;
-        } else{
-            return false;
-        }
     }
 
     @Override
     public void keepLooping() throws RemoteException {
         if (running) {
             int menuChoice = menu();
-            if (checkInputValid(menuChoice)){
-                if (checkForInput(menuChoice+"")){
             dealWithSwitchRequest(menuChoice);
             keepLooping();
-                }
-            } else {
-                throw new IllegalArgumentException("NOT VALID CHOICE.");
-            }
         } else {
-//            serverQuiz.writeQuizServer();
+            serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(), 
+                        serverQuiz.getQuestionsAndAnswers(), 
+                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getFileName());
             System.exit(0);
         }
     }
@@ -126,7 +108,13 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 serverQuiz.serverAddsSetOfQuestions(id, newListOfQuestions);
                 collectingQ = false;
                 System.out.println("SETUP COMPLETE.");
-                serverQuiz.serialize();
+                serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(), 
+                        serverQuiz.getQuestionsAndAnswers(), 
+                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getFileName()
+                );
             } else {
                 newListOfQuestions.add(question);
                 answers = clientAddsAnswers(question);
@@ -207,7 +195,13 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 break;
             case 4: //exit given the Quiz ID
                 System.out.println("SAVED!");
-                serverQuiz.serialize();
+                serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(), 
+                        serverQuiz.getQuestionsAndAnswers(), 
+                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getFileName()
+                );
                 break;
             case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
                 System.out.println("ENTER QUIZ ID TO REVEAL WINNER, SAVE AND CLOSE:");
@@ -225,7 +219,13 @@ public class QuizSetupClient implements QuizSetupClientInterf{
 
     @Override
     public void closeDown() throws RemoteException {
-        serverQuiz.serialize();
+        serverQuiz.serialize(
+                    serverQuiz.getQuizzes(),
+                    serverQuiz.getQuizMap(), 
+                    serverQuiz.getQuestionsAndAnswers(), 
+                    serverQuiz.getHighestScorePlayerIDMap(), 
+                    serverQuiz.getFileName()
+        );
         System.exit(0);
     }
 }

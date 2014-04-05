@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -32,10 +30,10 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public Remote service;
     boolean running = true;
 
-    private GetInput input = new GetInput();
-    private String playerString;
+    private final GetInput input = new GetInput();
+    private final String playerString;
 
-    private Player player;
+    private final Player player;
 
     public QuizPlayerClient() throws NotBoundException, MalformedURLException, RemoteException {
         serverQuiz = new QuizServer();
@@ -59,7 +57,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             keepLooping();
 
         } catch (RemoteException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
@@ -78,7 +76,13 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             } else if (response == 2) {
 
                 System.out.println(serverQuiz.getWinnerForQuiz(selectedQuizID));
-                serverQuiz.serialize();
+                serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(), 
+                        serverQuiz.getQuestionsAndAnswers(), 
+                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getFileName() 
+                );
                 System.out.println("FINISHED SERIALIZATION.");
             }
             keepLooping();
@@ -91,7 +95,13 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public void terminateQuiz() {
         running = false;
         try {
-            serverQuiz.serialize();
+            serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(), 
+                        serverQuiz.getQuestionsAndAnswers(), 
+                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getFileName()
+            );
         } catch (RemoteException ex) {
             System.out.println("COULD NOT SERIALIZE BEFORE CLOSING.");
             ex.printStackTrace();
@@ -137,11 +147,12 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
     @Override
     public void printOutQuizList() throws RemoteException {
+        Object[] quizArray = null;
         try {
-            Object[] quizArray = serverQuiz.getCurrentQuizList();
-            if (serverQuiz.getCurrentQuizList() == null) {
-                System.out.println("NO SAVED QUIZZES.");
-            }
+            quizArray = serverQuiz.getCurrentQuizList();
+//            if (serverQuiz.getCurrentQuizList() == null) {
+//                System.out.println("NO SAVED QUIZZES.");
+//            }
             System.out.println("\n\nQUIZZES:");
             for (Object a : quizArray) {
                 Quiz b = (Quiz) a;
@@ -150,7 +161,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             //System.out.println("THE COMPLETE LIST:");
         } catch (NullPointerException e) {
             e.printStackTrace();
-            System.out.println("NO QUIZZES");
+            System.out.println("NO SAVED QUIZZES");
         }
     }
 

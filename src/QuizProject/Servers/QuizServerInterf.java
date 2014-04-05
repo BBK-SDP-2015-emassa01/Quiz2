@@ -47,7 +47,7 @@ public interface QuizServerInterf extends Remote {
      * @return deserialized QuizServer object
      * @throws RemoteException
      */
-    QuizServer deserialize() throws RemoteException;
+//    QuizServer deserialize() throws RemoteException;
 
     /**
      * Prints to screen the current quiz set.
@@ -70,6 +70,13 @@ public interface QuizServerInterf extends Remote {
      * @throws RemoteException
      */
     Map<Integer, Player> getHighestScorePlayerIDMap() throws RemoteException;
+    
+    /**
+     * getter
+     * @return quizData.txt
+     * @throws RemoteException
+     */
+    String getFileName() throws RemoteException;
 
     /**
      * Returns questions for quiz with ID = 'id'.
@@ -117,9 +124,18 @@ public interface QuizServerInterf extends Remote {
 
     /**
      * Serializes the QuizServer Object
+     * @param quizzes for QuizServer
+     * @param quizMap for QuizServer
+     * @param questionAnswers for QuizServer
+     * @param highestScorePlayerIDMap for QuizServer
+     * @param fileName for QuizServer
      * @throws RemoteException
      */
-    void serialize() throws RemoteException;
+    void serialize(Set<Quiz> quizzes,
+            Map<Integer, ArrayList<String>> quizMap,
+            Map<String, String[]> questionAnswers,
+            Map<Integer, Player> highestScorePlayerIDMap,
+            String fileName) throws RemoteException;
 
     /**
      * Puts questions and answers into the questionAnswers Map.
