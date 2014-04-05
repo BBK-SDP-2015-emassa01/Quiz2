@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -41,6 +42,21 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     public QuizServer() throws RemoteException {
         ObjectInputStream ois = null;
+        Scanner sc = null;
+        if (new File(fileName).exists()) {
+        try{
+            sc = new Scanner(
+            new BufferedInputStream(
+            new FileInputStream(fileName)));
+        } catch (FileNotFoundException e){
+            System.out.println("reading..." + e);
+        }
+        while (sc.hasNext()){
+            System.out.println(sc.next());
+        }
+        sc.close();
+        }
+        
         if (new File(fileName).exists()) {
             System.out.println("Found the quizData.txt file.");
             try {
@@ -61,7 +77,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                     ex.printStackTrace();
                 }
             }
-        }
+        } else System.out.println("File not found. Creating quizData.txt");
     }
 
     @Override
@@ -105,6 +121,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public String getWinnerForQuiz(int quizID) throws RemoteException {
+        if (highestScorePlayerIDMap==null){
+            throw new NullPointerException("NO SAVED HIGH SCORERS YET FOR THAT ID. ");
+        }
         System.out.println(highestScorePlayerIDMap);
         String result = null;
 
@@ -118,7 +137,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                 result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName() + "\nHIGHEST SCORE:" + winner.getPlayerScore();
             }
         } else {
-            result = "NO ID.";
+            result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
         }
         System.out.println(result);
         return result;
@@ -201,6 +220,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public Object[] getCurrentQuizList() throws RemoteException {
+        if (quizzes== null) {
+            throw new NullPointerException("NO QUIZZES. ");
+        }
         Object[] quizArray;
         if (quizzes.isEmpty()) {
             throw new NullPointerException("NO QUIZZES. ");
@@ -209,7 +231,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
             for (Object a : quizArray) {
                 Quiz b = (Quiz) a;
-                System.out.println("QUIZ: " + b.getQuizName());
+                System.out.println("QUIZ: " + b.getQuizName() + "  ID: " + b.getQuizID());
             }
         }
         return quizArray;

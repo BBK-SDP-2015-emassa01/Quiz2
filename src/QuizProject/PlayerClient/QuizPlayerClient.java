@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -88,7 +90,12 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     @Override
     public void terminateQuiz() {
         running = false;
-        //serialize?
+        try {
+            serverQuiz.serialize();
+        } catch (RemoteException ex) {
+            System.out.println("COULD NOT SERIALIZE BEFORE CLOSING.");
+            ex.printStackTrace();
+        }
         System.exit(0);
 
     }

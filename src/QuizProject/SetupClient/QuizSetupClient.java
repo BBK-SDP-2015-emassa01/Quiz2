@@ -66,8 +66,8 @@ public class QuizSetupClient implements QuizSetupClientInterf{
         System.out.println("-> PRESS 1 TO ADD QUIZ.");
         System.out.println("-> Press 2 FOR QUIZ LIST.");
         System.out.println("-> Press 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
-        System.out.println("-> Press 4 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
-        System.out.println("-> Press 5 TO SAVE AND EXIT.");
+        System.out.println("-> Press 4 TO SAVE.");
+        System.out.println("-> Press 5 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
 
         Scanner in = new Scanner(System.in);
         String input = in.nextLine().trim();
@@ -126,6 +126,7 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 serverQuiz.serverAddsSetOfQuestions(id, newListOfQuestions);
                 collectingQ = false;
                 System.out.println("SETUP COMPLETE.");
+                serverQuiz.serialize();
             } else {
                 newListOfQuestions.add(question);
                 answers = clientAddsAnswers(question);
@@ -193,7 +194,7 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 System.out.println("CURRENT QUIZ LIST: ");
                 for (Object a : quizList) {
                     Quiz b = (Quiz) a;
-                    System.out.println("QUIZ: " + b.getQuizName());
+                    System.out.println("QUIZ: " + b.getQuizName() + " ID: " + b.getQuizID());
                 }
                 break;
             case 3:
@@ -204,22 +205,17 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                     System.out.println("Question: " + a.toString());
                 }
                 break;
-            case 4://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
+            case 4: //exit given the Quiz ID
+                System.out.println("SAVED!");
+                serverQuiz.serialize();
+                break;
+            case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
                 System.out.println("ENTER QUIZ ID TO REVEAL WINNER, SAVE AND CLOSE:");
                 GetInput in = new GetInput();
                 int quizID = in.getIntInput();
-                
+                System.out.println(serverQuiz.getWinnerForQuiz(quizID));
                 //NEED TO CLOSE THIS QUIZ GET IT FROM THE QUIZZES.
                 closeDown();
-                break;
-            case 5: //exit given the Quiz ID
-                running = false;
-                //NEED TO SERIALIZE DATA HERE.
-                System.out.println("SAVED. THANKS FOR PLAYING THE QUIZ GAME!");
-                //serverQuiz.writeQuizServer();
-                serverQuiz.serialize();
-                closeDown();
-                System.exit(0);
                 break;
             default:
                 System.out.println("SOMETHING WENT WRONG. PLEASE TRY AGAIN.");
@@ -230,5 +226,6 @@ public class QuizSetupClient implements QuizSetupClientInterf{
     @Override
     public void closeDown() throws RemoteException {
         serverQuiz.serialize();
+        System.exit(0);
     }
 }
