@@ -142,7 +142,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             }
             //System.out.println("THE COMPLETE LIST:");
         } catch (NullPointerException e) {
-            System.out.println("ID DOES NOT EXIST");
+            e.printStackTrace();
+            System.out.println("NO QUIZZES");
         }
     }
 

@@ -40,15 +40,27 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     private final String fileName = "quizData.txt";
 
     public QuizServer() throws RemoteException {
+        ObjectInputStream ois = null;
         if (new File(fileName).exists()) {
-            try (ObjectInputStream ois = new ObjectInputStream(
-                    new BufferedInputStream(
-                            new FileInputStream(fileName)));) {
-                        QuizServer serverQuiz = null;
-                        serverQuiz = (QuizServer) ois.readObject();
-                    } catch (IOException | ClassNotFoundException ex) {
-                        System.err.println("On write error " + ex);
-                    }
+            System.out.println("Found the quizData.txt file.");
+            try {
+                ois = new ObjectInputStream(
+                        new BufferedInputStream(
+                                new FileInputStream(fileName)));
+                {
+                    QuizServer serverQuiz = (QuizServer) ois.readObject();
+                    System.out.println("CREATING THE QUIZ SERVER.");
+                }
+            } catch (IOException | ClassNotFoundException ex) {
+                System.err.println("On write error " + ex);
+            } finally {
+                try {
+                    ois.close();
+                } catch (IOException ex) {
+                    System.out.println("I/O exception.");
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
@@ -249,9 +261,8 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         System.out.println("QA" + questionAnswers.toString());
     }
 
-    
     @Override
-    public void checkObjectIsNotNull(Object obj)throws RemoteException {
+    public void checkObjectIsNotNull(Object obj) throws RemoteException {
         if (obj == null) {
             throw new NullPointerException("THE ARGUMENT WAS NULL. ");
         }
