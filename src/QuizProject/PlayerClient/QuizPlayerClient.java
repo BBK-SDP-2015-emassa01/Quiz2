@@ -30,22 +30,33 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public Remote service;
     boolean running = true;
 
-    private final GetInput input = new GetInput();
-    private final String playerString;
+    private GetInput getInput = new GetInput();
+    private String playerString;
 
-    private final Player player;
+    private final Player player = new Player();
 
-    public QuizPlayerClient() throws NotBoundException, MalformedURLException, RemoteException {
+    public QuizPlayerClient() throws NotBoundException, MalformedURLException, RemoteException, IllegalArgumentException {
         serverQuiz = new QuizServer();
         service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
+        boolean validInput = true;
+
 //        if (System.getSecurityManager() == null) {
 //        System.setSecurityManager(new RMISecurityManager());
 //        }
         System.out.println("\t\t\t\tWELCOME! PLAY A QUIZ HERE!");
         System.out.println("ENTER YOUR PLAYER NAME: ");
-        playerString = input.getStringInput();
-        player = new Player();
-        player.setPlayerName(playerString);
+        Scanner input = new Scanner(System.in);
+        playerString = input.nextLine().trim();
+
+        while (playerString.equals("")) {
+            validInput = false;
+            System.out.println("INVALID INPUT DETECTED. TRY AGAIN.");
+            input = new Scanner(System.in);
+            playerString = input.nextLine().trim();
+        }
+        if (validInput) {
+            player.setPlayerName(playerString);
+        }
     }
 
     @Override
@@ -69,7 +80,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             System.out.println("PRESS 1 TO PLAY THIS QUIZ ");
             System.out.println("PRESS 2 TO CLOSE THIS QUIZ AND REVEAL WINNER ");
 
-            int response = input.getIntInput();
+            int response = getInput.getIntInput();
 
             if (response == 1) {
                 playSelectedQuiz(selectedQuizID);
@@ -78,10 +89,10 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                 System.out.println(serverQuiz.getWinnerForQuiz(selectedQuizID));
                 serverQuiz.serialize(
                         serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(), 
-                        serverQuiz.getQuestionsAndAnswers(), 
-                        serverQuiz.getHighestScorePlayerIDMap(), 
-                        serverQuiz.getFileName() 
+                        serverQuiz.getQuizMap(),
+                        serverQuiz.getQuestionsAndAnswers(),
+                        serverQuiz.getHighestScorePlayerIDMap(),
+                        serverQuiz.getFileName()
                 );
                 System.out.println("FINISHED SERIALIZATION.");
             }
@@ -96,11 +107,11 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         running = false;
         try {
             serverQuiz.serialize(
-                        serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(), 
-                        serverQuiz.getQuestionsAndAnswers(), 
-                        serverQuiz.getHighestScorePlayerIDMap(), 
-                        serverQuiz.getFileName()
+                    serverQuiz.getQuizzes(),
+                    serverQuiz.getQuizMap(),
+                    serverQuiz.getQuestionsAndAnswers(),
+                    serverQuiz.getHighestScorePlayerIDMap(),
+                    serverQuiz.getFileName()
             );
         } catch (RemoteException ex) {
             System.out.println("COULD NOT SERIALIZE BEFORE CLOSING.");
@@ -114,7 +125,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         try {
             QuizPlayerClient playerClient = new QuizPlayerClient();
             playerClient.launch();
-        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+        } catch (IllegalArgumentException | NotBoundException | MalformedURLException | RemoteException ex) {
 
         }
     }
@@ -125,12 +136,13 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         printOutQuizList();
         System.out.println("\n\nENTER QUIZ ID TO ACCESS: ('END' TO EXIT)");
 
-        Scanner in = new Scanner(System.in);
-        String input = in.nextLine();
+        String input = getInput.getStringInput().trim();
+
         if (input.equalsIgnoreCase("end")) {
             running = false;
             terminateQuiz();
         }
+
         int quizID = Integer.parseInt(input);
 
         return quizID;
@@ -140,8 +152,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public int selectQuizToPlay() {
         //return quiz ID that the player wants to play
         System.out.println("ENTER ID OF QUIZ TO ACCESS.");
-        Scanner input = new Scanner(System.in);
-        int result = Integer.parseInt(input.nextLine().trim());
+        int result = getInput.getIntInput();
         return result;
     }
 
@@ -176,12 +187,10 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         Map<Integer, ArrayList<String>> quizMap = serverQuiz.getQuizMap();
         ArrayList<String> questions = quizMap.get(selectedQuizID);
         int tempScore = 0;
-        int highestScoreForQuiz=0;
 
         for (int i = 0; i < questions.size(); i++) {
 
             Map<String, String[]> thisSet = serverQuiz.getQuestionsAndAnswers();
-            highestScoreForQuiz = serverQuiz.getHighestScoreForQuiz(i);
 
             String[] QAs = thisSet.get(questions.get(i));
             System.out.println("Question: " + QAs[0] + "\n");
@@ -189,34 +198,40 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             System.out.println("Option 2: " + QAs[2]);
             System.out.println("Option 3: " + QAs[3]);
             System.out.println("Option 4: " + QAs[4]);
-            String answer = input.getStringInput().trim();
-            
-            try{
-            int option = Integer.parseInt(answer);
-            if((option ==1)|(option ==2)|(option ==3)|(option ==4)){
-                if (answer.equals(QAs[5])) {
-                    tempScore++;
-                    System.out.println("CORRECT! 1 POINT AWARDED!\n");
-                } else {
-                    System.out.println("WRONG!\n");
-                }
-            }
-            } catch(NumberFormatException e){
-                    e.printStackTrace();
+            String answer = getInput.getStringInput().trim();
+
+            try {
+                int option = Integer.parseInt(answer);
+                if ((option == 1) | (option == 2) | (option == 3) | (option == 4)) {
+                    if (answer.equals(QAs[5])) {
+                        tempScore++;
+                        System.out.println("CORRECT! 1 POINT AWARDED!\n");
+                    } else {
+                        System.out.println("WRONG!\n");
                     }
-        }
-        if (serverQuiz.getHighestScoreForQuiz(selectedQuizID) < tempScore) {
-                serverQuiz.setHighestScoreForQuiz(selectedQuizID, tempScore);
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("QUIZ COMPLETE. YOUR SCORE: " + tempScore);
-        if (tempScore > highestScoreForQuiz) {
+
+        if (tempScore > serverQuiz.getHighestScoreForQuiz(selectedQuizID)) {
+            System.out.println("\n\nYOU HAVE THE HIGHEST SCORE SO FAR!");
+        }
+
+        if (serverQuiz.getHighestScoreForQuiz(selectedQuizID) < tempScore) {
+            serverQuiz.setHighestScoreForQuiz(selectedQuizID, tempScore);
+        }
+        System.out.println("whats the answer:" + serverQuiz.getHighestScoreForQuiz(selectedQuizID));
+        if (tempScore > serverQuiz.getHighestScoreForQuiz(selectedQuizID)) {
             Set<Quiz> theQuizSet = serverQuiz.getQuizzes();
             for (Quiz a : theQuizSet) {
                 if (a.getQuizID() == selectedQuizID) {
                     a.setHighestScore(tempScore);
                 }
             }
-            System.out.println("\n\nYOU HAVE THE HIGHEST SCORE SO FAR!");
+
             player.setPlayerScore(tempScore);
             serverQuiz.setHighestScorePlayerIDMap(selectedQuizID, player);
         }

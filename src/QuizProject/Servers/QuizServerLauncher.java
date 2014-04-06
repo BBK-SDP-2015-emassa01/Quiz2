@@ -29,7 +29,7 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
     String serviceName = "quiz";
 
     public QuizServerLauncher() throws RemoteException {
-        // ERROR serverQuiz.deserialize();
+        // do nothing
     }
 
     public static void main(String[] args) throws RemoteException {
@@ -43,9 +43,9 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
 //        }
         try {
             LocateRegistry.createRegistry(1099);
-            QuizServerInterf server = new QuizServer();
+            QuizServerInterf serverQuiz = new QuizServer();
             String registryHost = "//localhost/";
-            Naming.rebind(registryHost + serviceName, server);
+            Naming.rebind(registryHost + serviceName, serverQuiz);
         } catch (UnmarshalException ex) {
             ex.printStackTrace();
         } catch (MalformedURLException | RemoteException ex) {

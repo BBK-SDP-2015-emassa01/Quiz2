@@ -18,29 +18,66 @@ public class GetInput implements GetInputInterf {
     public int getIntInput() {
         Scanner input = new Scanner(System.in);
         String input1 = input.nextLine().trim();
-        return Integer.parseInt(input1);
+        
+        if (input1.equals("")){
+            throw new IllegalArgumentException("TRY AGAIN.");
+        }
+        
+        int intInput = 0;
+        
+        try {
+            intInput = input.nextInt();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("INVALID INPUT DETECTED.");
+            e.getCause();
+        }
+        return intInput;
+    }
+        
+
+//        if (!checkForValidStringInput(input1)) {
+//            throw new IllegalArgumentException("INVALID INPUT DETECTED.");
+
+    @Override
+    public String getStringInput() throws IllegalArgumentException {
+        Scanner input = new Scanner(System.in);
+        String input1 = input.nextLine().trim();
+
+        if (!checkForValidStringInput(input1)) {
+            throw new IllegalArgumentException("TRY AGAIN.");
+        }
+
+        return input1;
     }
 
     @Override
-    public String getStringInput() {
-        Scanner input = new Scanner(System.in);
-        return input.nextLine().trim();
-    }
-    
-    public boolean checkForInput(String input){
-        if (input.equals("")){
+    public boolean checkForValidStringInput(String input) {
+        if (input.equals("")) {
             System.out.println("INVALID INPUT DETECTED.");
             return false;
-        } else return true;
-    }
-    
-    public boolean checkInputValid(int input){
-        if ((input==1)|(input==2)|(input==3)|(input==4)|(input==5)){
-            System.out.println("INVALID INPUT DETECTED.");
+        } else {
             return true;
-        } else{
-            return false;
         }
     }
+
+    @Override
+    public boolean checkIntInputValid(int input) {
+        Scanner kb = new Scanner(System.in);
+        try {
+            input = kb.nextInt();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("INVALID INPUT DETECTED.");
+            e.getCause();
+            return false;
+        }
+        return false;
+    }
+    
+//            
+//        
+//        if ((input==1)|(input==2)|(input==3)|(input==4)|(input==5)){
+//            System.out.println("INVALID INPUT DETECTED.");
+//            return true;
+        
 
 }
