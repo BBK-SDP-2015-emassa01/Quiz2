@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -36,26 +35,12 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     private Map<String, String[]> questionAnswers = new HashMap<>(); //holds an array, where pos[0] is the Question and pos[1-4] are the answers, pos[5] is the correct answer.
 
-    private Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
+    public Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
 
     private String fileName = "quizData.txt";
 
     public QuizServer() throws RemoteException {
 
-//        Scanner sc = null;
-//        if (new File(fileName).exists()) {
-//        try{
-//            sc = new Scanner(
-//            new BufferedInputStream(
-//            new FileInputStream(fileName)));
-//        } catch (FileNotFoundException e){
-//            System.out.println("READING..." + e);
-//        }
-//        while (sc.hasNext()){
-//            System.out.println(sc.next());
-//        }
-//        sc.close();
-//        }
         
         Set<Quiz> newQuizzes = null;
         Map<Integer, ArrayList<String>> newQuizMap = null;
@@ -137,33 +122,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         }
     }
 
-//    @Override
-//    public QuizServer deserialize() throws RemoteException {
-//        QuizServer quizServer = new QuizServer();
-//        try {
-//            ObjectInputStream ois = new ObjectInputStream(
-//                    new BufferedInputStream(
-//                            new FileInputStream(fileName)));
-//
-//            quizServer = (QuizServer) ois.readObject();
-//
-//            ois.close();
-//
-//        } catch (FileNotFoundException ex) {
-//            ex.printStackTrace();
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        } catch (ClassNotFoundException ex) {
-//            ex.printStackTrace();
-//        }
-//        return quizServer;
-//    }
-
     @Override
     public String getWinnerForQuiz(int quizID) throws RemoteException {
-        if (highestScorePlayerIDMap == null) {
-            throw new NullPointerException("NO SAVED HIGH SCORERS YET FOR THAT ID. ");
-        }
+
         System.out.println(highestScorePlayerIDMap);
         String result = null;
 
@@ -258,6 +219,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         newQuiz.setQuizName(s);
         quizzes.add(newQuiz);
         quizMap.put(ID, null);
+        highestScorePlayerIDMap.put(ID, null);
         System.out.println("ADDED QUIZ: " + s);
         return ID;
     }
