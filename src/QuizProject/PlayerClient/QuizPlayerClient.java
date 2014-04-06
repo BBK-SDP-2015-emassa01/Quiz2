@@ -29,7 +29,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public Remote service;
     boolean running = true;
 
-    private GetInput getInput = new GetInput();
+    private final GetInput getInput = new GetInput();
     private String playerString;
 
     private final Player player = new Player();
@@ -127,7 +127,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             );
         } catch (RemoteException ex) {
             System.out.println("COULD NOT SERIALIZE BEFORE CLOSING.");
-            ex.printStackTrace();
+            ex.getMessage();
         }
         System.exit(0);
 
@@ -137,8 +137,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         try {
             QuizPlayerClient playerClient = new QuizPlayerClient();
             playerClient.launch();
-        } catch (IllegalArgumentException | NotBoundException | MalformedURLException | RemoteException ex) {
-
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            ex.getMessage();
         }
     }
 
@@ -180,7 +180,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
     @Override
     public void printOutQuizList() throws RemoteException {
-        Object[] quizArray = null;
+        Object[] quizArray;
         try {
             quizArray = serverQuiz.getCurrentQuizList();
 
@@ -191,7 +191,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             }
 
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            e.getMessage();
             System.out.println("NO SAVED QUIZZES");
         }
     }
@@ -208,18 +208,15 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         ArrayList<String> questions = quizMap.get(selectedQuizID);
         int tempScore = 0;
 
-        for (int i = 0; i < questions.size(); i++) {
-
+        for (String question : questions) {
             Map<String, String[]> thisSet = serverQuiz.getQuestionsAndAnswers();
-
-            String[] QAs = thisSet.get(questions.get(i));
+            String[] QAs = thisSet.get(question);
             System.out.println("Question: " + QAs[0] + "\n");
             System.out.println("Option 1: " + QAs[1]);
             System.out.println("Option 2: " + QAs[2]);
             System.out.println("Option 3: " + QAs[3]);
             System.out.println("Option 4: " + QAs[4]);
             String answer = getInput.getStringInput().trim();
-
             int option = Integer.parseInt(answer);
             if ((option == 1) | (option == 2) | (option == 3) | (option == 4)) {
                 if (answer.equals(QAs[5])) {
@@ -231,7 +228,6 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             } else {
                 System.out.println("INVALID RESPONSE COUNTS AS AN INCORRECT ANSWER!");
             }
-
         }
         System.out.println("QUIZ COMPLETE. YOUR SCORE: " + tempScore);
 

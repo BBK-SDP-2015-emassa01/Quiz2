@@ -20,7 +20,7 @@ import java.util.ArrayList;
  *
  * @author Esha
  */
-public class QuizSetupClient implements QuizSetupClientInterf{
+public class QuizSetupClient implements QuizSetupClientInterf {
 
     QuizServerInterf serverQuiz;
     boolean running = true;
@@ -46,7 +46,7 @@ public class QuizSetupClient implements QuizSetupClientInterf{
             keepLooping();
 
         } catch (ClassCastException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
@@ -54,8 +54,8 @@ public class QuizSetupClient implements QuizSetupClientInterf{
         try {
             QuizSetupClientInterf quizClient = new QuizSetupClient();
             quizClient.launch();
-        } catch (Exception ex) {
-
+        } catch ( NotBoundException | MalformedURLException | RemoteException ex) {
+            ex.getMessage();
         }
     }
 
@@ -80,11 +80,11 @@ public class QuizSetupClient implements QuizSetupClientInterf{
             keepLooping();
         } else {
             serverQuiz.serialize(
-                        serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(), 
-                        serverQuiz.getQuestionsAndAnswers(), 
-                        serverQuiz.getHighestScorePlayerIDMap(), 
-                        serverQuiz.getFileName());
+                    serverQuiz.getQuizzes(),
+                    serverQuiz.getQuizMap(),
+                    serverQuiz.getQuestionsAndAnswers(),
+                    serverQuiz.getHighestScorePlayerIDMap(),
+                    serverQuiz.getFileName());
             System.exit(0);
         }
     }
@@ -92,8 +92,8 @@ public class QuizSetupClient implements QuizSetupClientInterf{
     @Override
     public ArrayList<String> clientAddsSetOfQuestions(int id) throws RemoteException {
         ArrayList<String> newListOfQuestions = new ArrayList<>();
-        String question = null;
-        String[] answers = null;
+        String question;
+        String[] answers;
         quizID = id;
 
         boolean collectingQ = true;
@@ -109,9 +109,9 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 System.out.println("SETUP COMPLETE.");
                 serverQuiz.serialize(
                         serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(), 
-                        serverQuiz.getQuestionsAndAnswers(), 
-                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getQuizMap(),
+                        serverQuiz.getQuestionsAndAnswers(),
+                        serverQuiz.getHighestScorePlayerIDMap(),
                         serverQuiz.getFileName()
                 );
             } else {
@@ -196,9 +196,9 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 System.out.println("SAVED!");
                 serverQuiz.serialize(
                         serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(), 
-                        serverQuiz.getQuestionsAndAnswers(), 
-                        serverQuiz.getHighestScorePlayerIDMap(), 
+                        serverQuiz.getQuizMap(),
+                        serverQuiz.getQuestionsAndAnswers(),
+                        serverQuiz.getHighestScorePlayerIDMap(),
                         serverQuiz.getFileName()
                 );
                 break;
@@ -209,7 +209,7 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 System.out.println(serverQuiz.getWinnerForQuiz(quizID));
                 closeDown();
                 break;
-            
+
             default:
                 System.out.println("SOMETHING WENT WRONG. PLEASE TRY AGAIN.");
                 break;
@@ -219,11 +219,11 @@ public class QuizSetupClient implements QuizSetupClientInterf{
     @Override
     public void closeDown() throws RemoteException {
         serverQuiz.serialize(
-                    serverQuiz.getQuizzes(),
-                    serverQuiz.getQuizMap(), 
-                    serverQuiz.getQuestionsAndAnswers(), 
-                    serverQuiz.getHighestScorePlayerIDMap(), 
-                    serverQuiz.getFileName()
+                serverQuiz.getQuizzes(),
+                serverQuiz.getQuizMap(),
+                serverQuiz.getQuestionsAndAnswers(),
+                serverQuiz.getHighestScorePlayerIDMap(),
+                serverQuiz.getFileName()
         );
         System.exit(0);
     }

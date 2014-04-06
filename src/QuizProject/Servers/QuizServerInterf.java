@@ -108,11 +108,11 @@ public interface QuizServerInterf extends Remote {
     Set<Quiz> getQuizzes() throws RemoteException;
 
     /**
-     * Gets a random Quiz ID
-     * @return int - a random number ID for Quiz
+     * Gets a number for Quiz ID using static variable in QuizID class
+     * @return int - a number ID for Quiz
      * @throws RemoteException
      */
-    int getRandomID() throws RemoteException;
+    int getID() throws RemoteException;
 
     /**
      * Prints to screen quiz id, highest scoring player name and player score.

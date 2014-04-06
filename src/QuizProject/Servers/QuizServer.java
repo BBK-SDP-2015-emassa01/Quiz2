@@ -41,14 +41,12 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     public QuizServer() throws RemoteException {
 
-        
         Set<Quiz> newQuizzes = null;
         Map<Integer, ArrayList<String>> newQuizMap = null;
         Map<String, String[]> newQuestionAnswers = null;
         Map<Integer, Player> newHighestScorePlayerIDMap = null;
         String newFileName = "quizData.txt";
 
-        
         ObjectInputStream ois = null;
 
         if (new File(fileName).exists()) {
@@ -59,36 +57,34 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                         new BufferedInputStream(
                                 new FileInputStream(fileName)));
                 {
-                    
+
                     newQuizzes = (Set<Quiz>) ois.readObject();
                     newQuizMap = (Map<Integer, ArrayList<String>>) ois.readObject();
                     newQuestionAnswers = (Map<String, String[]>) ois.readObject();
                     newHighestScorePlayerIDMap = (Map<Integer, Player>) ois.readObject();
                     newFileName = (String) ois.readObject();
                     System.out.println("CREATING THE QUIZ SERVER.");
-                
-                this.quizzes = newQuizzes;
-                this.quizMap = newQuizMap;
-                this.questionAnswers = newQuestionAnswers;
-                this.highestScorePlayerIDMap = newHighestScorePlayerIDMap;
-                this.fileName = newFileName;
-                
-                System.out.println("DESERIALIZED THE QUIZSERVER...");
-                System.out.println(this);
-            
+
+                    this.quizzes = newQuizzes;
+                    this.quizMap = newQuizMap;
+                    this.questionAnswers = newQuestionAnswers;
+                    this.highestScorePlayerIDMap = newHighestScorePlayerIDMap;
+                    this.fileName = newFileName;
+
+                    System.out.println("DESERIALIZED THE QUIZSERVER...");
+
                 }
-                
+
             } catch (IOException | ClassNotFoundException ex) {
                 System.err.println("ON WRITE ERROR " + ex);
             } finally {
                 try {
                     ois.close();
                 } catch (IOException ex) {
+                    ex.getMessage();
                     System.out.println("I/O EXCEPTION.");
-                    ex.printStackTrace();
                 }
             }
-            
 
         } else {
             System.out.println("FILE NOT FOUND. CREATING QUIZDATA.TXT FILE");
@@ -116,9 +112,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             oos.close();
 
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            ex.getMessage();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ex.getMessage();
         }
     }
 
@@ -168,15 +164,16 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     public Map<String, String[]> getQuestionsAndAnswers() throws RemoteException {
         return this.questionAnswers;
     }
-    
+
+    @Override
     public String getFileName() throws RemoteException {
         return this.fileName;
     }
 
     @Override
-    public int getRandomID() throws RemoteException {
-        Random random = new Random();
-        int generatedID = random.nextInt(Integer.MAX_VALUE);
+    public int getID() throws RemoteException {
+        QuizID num = new QuizID();
+        int generatedID = num.getQuizIDNumber();
         return generatedID;
     }
 
@@ -214,7 +211,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     @Override
     public int addQuiz(String s) throws RemoteException {
         Quiz newQuiz = new Quiz();
-        int ID = getRandomID();
+        int ID = getID();
         newQuiz.setQuizID(ID);
         newQuiz.setQuizName(s);
         quizzes.add(newQuiz);
