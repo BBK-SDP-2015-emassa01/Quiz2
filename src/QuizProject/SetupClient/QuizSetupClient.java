@@ -34,7 +34,6 @@ public class QuizSetupClient implements QuizSetupClientInterf{
 //        if (System.getSecurityManager() == null) {
 //        System.setSecurityManager(new RMISecurityManager());
 //        }
-//        serverQuiz.deserialize();
         System.out.println("\t\t\t\tWELCOME TO THE QUIZ SETUP TOOL!");
     }
 
@@ -208,9 +207,9 @@ public class QuizSetupClient implements QuizSetupClientInterf{
                 GetInput in = new GetInput();
                 int quizID = in.getIntInput();
                 System.out.println(serverQuiz.getWinnerForQuiz(quizID));
-                //NEED TO CLOSE THIS QUIZ GET IT FROM THE QUIZZES.
                 closeDown();
                 break;
+            
             default:
                 System.out.println("SOMETHING WENT WRONG. PLEASE TRY AGAIN.");
                 break;

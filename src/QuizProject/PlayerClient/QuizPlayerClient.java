@@ -18,7 +18,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  *
@@ -173,7 +172,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
     @Override
     public int selectQuizToPlay() {
-        //return quiz ID that the player wants to play
+
         System.out.println("ENTER ID OF QUIZ TO ACCESS.");
         int result = getInput.getIntInput();
         return result;
@@ -184,15 +183,13 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         Object[] quizArray = null;
         try {
             quizArray = serverQuiz.getCurrentQuizList();
-//            if (serverQuiz.getCurrentQuizList() == null) {
-//                System.out.println("NO SAVED QUIZZES.");
-//            }
+
             System.out.println("\n\nQUIZZES:");
             for (Object a : quizArray) {
                 Quiz b = (Quiz) a;
                 System.out.println("ID: " + b.getQuizID() + "\t|| NAME: " + b.getQuizName());
             }
-            //System.out.println("THE COMPLETE LIST:");
+
         } catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println("NO SAVED QUIZZES");
@@ -247,11 +244,6 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             serverQuiz.setHighestScorePlayerIDMap(selectedQuizID, player);
         }
 
-//        if (serverQuiz.getHighestScoreForQuiz(selectedQuizID) < tempScore) {
-//            serverQuiz.setHighestScoreForQuiz(selectedQuizID, tempScore);
-//            player.setPlayerScore(tempScore);
-//            serverQuiz.setHighestScorePlayerIDMap(selectedQuizID, player);
-//        }
         keepLooping();
     }
 }
