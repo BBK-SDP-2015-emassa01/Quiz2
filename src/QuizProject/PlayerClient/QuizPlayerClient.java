@@ -97,6 +97,9 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                 );
                 System.out.println("FINISHED SERIALIZATION.");
                 keepLooping();
+            } else if (input.equals("")) {
+                System.out.println("INVALID INPUT. TRY AGAIN.");
+                keepLooping();
             } else {
                 System.out.println("INVALID RESPONSE. TRY AGAIN.");
                 keepLooping();
@@ -206,11 +209,18 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
         Map<Integer, ArrayList<String>> quizMap = serverQuiz.getQuizMap();
         ArrayList<String> questions = quizMap.get(selectedQuizID);
+        
         int tempScore = 0;
 
-        for (String question : questions) {
+        for (int i = 0; i < questions.size(); i++) {
             Map<String, String[]> thisSet = serverQuiz.getQuestionsAndAnswers();
-            String[] QAs = thisSet.get(question);
+//            String[] temp = thisSet.get(questions.get(i));
+//            if (temp[2] == null) {
+//                System.out.println("NO QUESTIONS SET FOR THIS QUIZ YET.");
+//            }
+            
+            String[] QAs = thisSet.get(questions.get(i));
+           
             System.out.println("Question: " + QAs[0] + "\n");
             System.out.println("Option 1: " + QAs[1]);
             System.out.println("Option 2: " + QAs[2]);
