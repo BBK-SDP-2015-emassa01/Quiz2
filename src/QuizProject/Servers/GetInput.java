@@ -26,7 +26,7 @@ public class GetInput implements GetInputInterf {
         int intInput = 0;
         
         try {
-            intInput = input.nextInt();
+            intInput = Integer.parseInt(input1);
         } catch (java.util.InputMismatchException e) {
             System.out.println("INVALID INPUT DETECTED.");
             e.getCause();

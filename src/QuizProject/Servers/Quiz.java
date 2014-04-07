@@ -5,11 +5,13 @@
  */
 package QuizProject.Servers;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Esha
  */
-public class Quiz implements QuizInterf {
+public class Quiz implements QuizInterf, Serializable{
 
     private int quizID; //check permissions on all classes for fields and methods before submission
     private String quizName;

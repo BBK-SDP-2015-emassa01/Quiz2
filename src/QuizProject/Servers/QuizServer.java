@@ -34,9 +34,11 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     private Map<String, String[]> questionAnswers = new HashMap<>(); //holds an array, where pos[0] is the Question and pos[1-4] are the answers, pos[5] is the correct answer.
 
-    public Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
+    private Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
 
     private String fileName = "quizData.txt";
+    
+    private int quizIDValue;
 
     public QuizServer() throws RemoteException {
 
@@ -45,6 +47,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         Map<String, String[]> newQuestionAnswers = null;
         Map<Integer, Player> newHighestScorePlayerIDMap = null;
         String newFileName = "quizData.txt";
+        int newQuizIDValue;
 
         ObjectInputStream ois = null;
 
@@ -62,15 +65,21 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                     newQuestionAnswers = (Map<String, String[]>) ois.readObject();
                     newHighestScorePlayerIDMap = (Map<Integer, Player>) ois.readObject();
                     newFileName = (String) ois.readObject();
-                    System.out.println("CREATING THE QUIZ SERVER.");
+                    newQuizIDValue = (int) ois.readObject();
+
+                    System.out.println("CREATING THE QUIZ SERVER....");
 
                     this.quizzes = newQuizzes;
                     this.quizMap = newQuizMap;
                     this.questionAnswers = newQuestionAnswers;
                     this.highestScorePlayerIDMap = newHighestScorePlayerIDMap;
                     this.fileName = newFileName;
+                    this.quizIDValue = newQuizIDValue;
+                    
+                    QuizID setIncrementingValue = new QuizID();
+                    setIncrementingValue.setQuizIDNumber(newQuizIDValue);
 
-                    System.out.println("DESERIALIZED THE QUIZSERVER...");
+                    System.out.println("DESERIALIZED THE QUIZSERVER.");
 
                 }
 
@@ -95,7 +104,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             Map<Integer, ArrayList<String>> quizMap,
             Map<String, String[]> questionAnswers,
             Map<Integer, Player> highestScorePlayerIDMap,
-            String fileName) throws RemoteException {
+            String fileName, 
+            int quizIDValue
+    ) throws RemoteException {
 
         try {
             ObjectOutputStream oos = new ObjectOutputStream(
@@ -107,6 +118,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             oos.writeObject(questionAnswers);
             oos.writeObject(highestScorePlayerIDMap);
             oos.writeObject(fileName);
+            oos.writeObject(quizIDValue);
 
             oos.close();
 
@@ -116,6 +128,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             ex.getMessage();
         }
     }
+    
 
     @Override
     public String getWinnerForQuiz(int quizID) throws RemoteException {
@@ -130,7 +143,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             if (winner == null) {
                 result = "NO HIGHEST SCORER YET.";
             } else {
-                result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName() + "\nHIGHEST SCORE:" + winner.getPlayerScore();
+                result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName().toUpperCase() + "\nHIGHEST SCORE: " + winner.getPlayerScore();
             }
         } else {
             result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
@@ -168,11 +181,22 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     public String getFileName() throws RemoteException {
         return this.fileName;
     }
+    
+    @Override
+    public int getQuizIDValue() throws RemoteException {
+        return this.quizIDValue;
+    }
+    
+    @Override
+    public void setQuizIDValue(int id) throws RemoteException {
+         this.quizIDValue = id;
+    }
 
     @Override
     public int getID() throws RemoteException {
         QuizID num = new QuizID();
         int generatedID = num.getQuizIDNumber();
+        quizIDValue = generatedID;
         return generatedID;
     }
 
@@ -209,15 +233,15 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public int addQuiz(String s) throws RemoteException {
+        int id = getID();
         Quiz newQuiz = new Quiz();
-        int ID = getID();
-        newQuiz.setQuizID(ID);
+        newQuiz.setQuizID(id);
         newQuiz.setQuizName(s);
         quizzes.add(newQuiz);
-        quizMap.put(ID, null);
-        highestScorePlayerIDMap.put(ID, null);
+        quizMap.put(id, null);
+        highestScorePlayerIDMap.put(id, null);
         System.out.println("ADDED QUIZ: " + s);
-        return ID;
+        return id;
     }
 
     @Override

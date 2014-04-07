@@ -93,7 +93,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                         serverQuiz.getQuizMap(),
                         serverQuiz.getQuestionsAndAnswers(),
                         serverQuiz.getHighestScorePlayerIDMap(),
-                        serverQuiz.getFileName()
+                        serverQuiz.getFileName(),
+                        serverQuiz.getQuizIDValue()
                 );
                 System.out.println("FINISHED SERIALIZATION.");
                 keepLooping();
@@ -111,7 +112,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                     serverQuiz.getQuizMap(),
                     serverQuiz.getQuestionsAndAnswers(),
                     serverQuiz.getHighestScorePlayerIDMap(),
-                    serverQuiz.getFileName()
+                    serverQuiz.getFileName(),
+                    serverQuiz.getQuizIDValue()
             );
             System.exit(0);
         }
@@ -126,7 +128,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                     serverQuiz.getQuizMap(),
                     serverQuiz.getQuestionsAndAnswers(),
                     serverQuiz.getHighestScorePlayerIDMap(),
-                    serverQuiz.getFileName()
+                    serverQuiz.getFileName(),
+                    serverQuiz.getQuizIDValue()
             );
         } catch (RemoteException ex) {
             System.out.println("COULD NOT SERIALIZE BEFORE CLOSING.");

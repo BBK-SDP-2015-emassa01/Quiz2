@@ -129,13 +129,14 @@ public interface QuizServerInterf extends Remote {
      * @param questionAnswers for QuizServer
      * @param highestScorePlayerIDMap for QuizServer
      * @param fileName for QuizServer
+     * @param quizIDValue
      * @throws RemoteException
      */
     void serialize(Set<Quiz> quizzes,
             Map<Integer, ArrayList<String>> quizMap,
             Map<String, String[]> questionAnswers,
             Map<Integer, Player> highestScorePlayerIDMap,
-            String fileName) throws RemoteException;
+            String fileName, int quizIDValue) throws RemoteException;
 
     /**
      * Puts questions and answers into the questionAnswers Map.
@@ -170,5 +171,19 @@ public interface QuizServerInterf extends Remote {
      * @throws RemoteException
      */
     void setHighestScorePlayerIDMap(int id, Player player) throws RemoteException;
+    
+    /**
+     * gets the quiz id value that was last assigned.
+     * @return
+     * @throws RemoteException
+     */
+    public int getQuizIDValue() throws RemoteException;
+    
+    /**
+     * Sets the Quiz incrementing id value
+     * @param id
+     * @throws RemoteException
+     */
+    public void setQuizIDValue(int id) throws RemoteException;
 
 }

@@ -65,7 +65,8 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
                         serverQuiz.getQuizMap(), 
                         serverQuiz.getQuestionsAndAnswers(), 
                         serverQuiz.getHighestScorePlayerIDMap(), 
-                        serverQuiz.getFileName()
+                        serverQuiz.getFileName(), 
+                        serverQuiz.getQuizIDValue()
         );
         }
         

@@ -6,13 +6,15 @@
 
 package QuizProject.Servers;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Esha
  */
-public class QuizID implements QuizIDInterf {
+public class QuizID implements QuizIDInterf, Serializable {
     
-    private static int QuizIDNumber = 0;
+    private static int QuizIDNumber;
     
     public QuizID(){
         QuizIDNumber++;
@@ -27,5 +29,6 @@ public class QuizID implements QuizIDInterf {
     public void setQuizIDNumber(int number){
          this.QuizIDNumber = number;
     }
+    
     
 }

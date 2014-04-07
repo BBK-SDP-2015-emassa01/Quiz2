@@ -26,7 +26,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     boolean running = true;
 
     public Remote service;
-    private int quizID;
+    //private int quizID;
 
     public QuizSetupClient() throws NotBoundException, MalformedURLException, RemoteException {
         serverQuiz = new QuizServer();
@@ -62,10 +62,10 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     @Override
     public int menu() {
         System.out.println("-> PRESS 1 TO ADD QUIZ.");
-        System.out.println("-> Press 2 FOR QUIZ LIST.");
-        System.out.println("-> Press 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
-        System.out.println("-> Press 4 TO SAVE.");
-        System.out.println("-> Press 5 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
+        System.out.println("-> PRESS 2 FOR QUIZ LIST.");
+        System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
+        System.out.println("-> PRESS 4 TO SAVE.");
+        System.out.println("-> PRESS 5 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
 
         GetInput input = new GetInput();
         int switchValue = input.getIntInput();
@@ -75,8 +75,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     @Override
     public void keepLooping() throws RemoteException {
         if (running) {
-            int menuChoice = menu();
-            dealWithSwitchRequest(menuChoice);
+            dealWithSwitchRequest(menu());
             keepLooping();
         } else {
             serverQuiz.serialize(
@@ -84,7 +83,9 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     serverQuiz.getQuizMap(),
                     serverQuiz.getQuestionsAndAnswers(),
                     serverQuiz.getHighestScorePlayerIDMap(),
-                    serverQuiz.getFileName());
+                    serverQuiz.getFileName(),
+                    serverQuiz.getQuizIDValue()
+            );
             System.exit(0);
         }
     }
@@ -94,7 +95,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         ArrayList<String> newListOfQuestions = new ArrayList<>();
         String question;
         String[] answers;
-        quizID = id;
+        //int quizID;
 
         boolean collectingQ = true;
         while (collectingQ) {
@@ -112,7 +113,8 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                         serverQuiz.getQuizMap(),
                         serverQuiz.getQuestionsAndAnswers(),
                         serverQuiz.getHighestScorePlayerIDMap(),
-                        serverQuiz.getFileName()
+                        serverQuiz.getFileName(),
+                        serverQuiz.getQuizIDValue()
                 );
             } else {
                 newListOfQuestions.add(question);
@@ -199,7 +201,8 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                         serverQuiz.getQuizMap(),
                         serverQuiz.getQuestionsAndAnswers(),
                         serverQuiz.getHighestScorePlayerIDMap(),
-                        serverQuiz.getFileName()
+                        serverQuiz.getFileName(),
+                        serverQuiz.getQuizIDValue()
                 );
                 break;
             case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
@@ -223,7 +226,8 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                 serverQuiz.getQuizMap(),
                 serverQuiz.getQuestionsAndAnswers(),
                 serverQuiz.getHighestScorePlayerIDMap(),
-                serverQuiz.getFileName()
+                serverQuiz.getFileName(),
+                serverQuiz.getQuizIDValue()
         );
         System.exit(0);
     }

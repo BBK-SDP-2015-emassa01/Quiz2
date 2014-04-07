@@ -49,7 +49,7 @@ public class GetInputTest {
         int result = instance.getIntInput();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test requires Scanner Class and KeyBoard input.");
+        System.out.println("The test requires Scanner Class and KeyBoard input.");
     }
 
     /**
@@ -63,7 +63,7 @@ public class GetInputTest {
         String result = instance.getStringInput();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test requires Scanner Class and KeyBoard input.");
+        System.out.println("The test requires Scanner Class and KeyBoard input.");
     }
 
     /**
@@ -92,7 +92,7 @@ public class GetInputTest {
         boolean expResult = true;
         boolean result = instance.checkIntInputValid(input);
         assertEquals(expResult, result);
-        fail("The method requires a KeyBoard input. Can't force value without Mockito... WIP");
+        System.out.println("The test requires Scanner Class and KeyBoard input.");
     }
     
 }

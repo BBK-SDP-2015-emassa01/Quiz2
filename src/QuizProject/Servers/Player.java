@@ -6,11 +6,13 @@
 
 package QuizProject.Servers;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Esha
  */
-public class Player implements PlayerInterf {
+public class Player implements PlayerInterf, Serializable {
     
     String playerName;
     int playerScore;

@@ -7,14 +7,16 @@
 package QuizProject.Servers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -47,15 +49,15 @@ public class QuizServerTest {
     @Test
     public void testSerialize() throws Exception {
         System.out.println("serialize");
-        Set<Quiz> quizzes = null;
-        Map<Integer, ArrayList<String>> quizMap = null;
-        Map questionAnswers = null;
-        Map<Integer, Player> highestScorePlayerIDMap = null;
-        String fileName = "";
+        Set<Quiz> quizzes = new HashSet<>();
+        Map<Integer, ArrayList<String>> quizMap = new HashMap<>();
+        Map<String, String[]> questionAnswers = new HashMap<>();
+        Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();
+        String fileName = "testQuizData.txt";
+        int quizIDValue = 2;
         QuizServer instance = new QuizServer();
-        instance.serialize(quizzes, quizMap, questionAnswers, highestScorePlayerIDMap, fileName);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.serialize(quizzes, quizMap, questionAnswers, highestScorePlayerIDMap, fileName, quizIDValue);
+        //serializes fine.
     }
 
     /**
@@ -64,27 +66,30 @@ public class QuizServerTest {
     @Test
     public void testGetWinnerForQuiz() throws Exception {
         System.out.println("getWinnerForQuiz");
-        int quizID = 0;
+        int quizID = 3;
         QuizServer instance = new QuizServer();
-        String expResult = "";
+        Player winner = new Player();
+        winner.setPlayerName("winner");
+        instance.setHighestScorePlayerIDMap(quizID, winner);
+        String expResult = "THE WINNER FOR QUIZ 3 IS WINNER\nHIGHEST SCORE: 0";
         String result = instance.getWinnerForQuiz(quizID);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of getHighestScorePlayerIDMap method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetHighestScorePlayerIDMap() throws Exception {
         System.out.println("getHighestScorePlayerIDMap");
         QuizServer instance = new QuizServer();
+        Player winner = new Player();
+        instance.setHighestScorePlayerIDMap(2, winner);
         Map<Integer, Player> expResult = null;
         Map<Integer, Player> result = instance.getHighestScorePlayerIDMap();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
