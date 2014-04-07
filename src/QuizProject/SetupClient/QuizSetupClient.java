@@ -66,6 +66,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
         System.out.println("-> PRESS 4 TO SAVE.");
         System.out.println("-> PRESS 5 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
+        System.out.println("-> PRESS 6 TO CLOSE DOWN THE QUIZ.");
 
         GetInput input = new GetInput();
         int switchValue = input.getIntInput();
@@ -212,7 +213,10 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                 System.out.println(serverQuiz.getWinnerForQuiz(quizID));
                 closeDown();
                 break;
-
+            case 6: //CLOSE DOWN
+                System.out.println("CLOSING DOWN NOW....");
+                closeDown();
+                break;
             default:
                 System.out.println("SOMETHING WENT WRONG. PLEASE TRY AGAIN.");
                 break;
