@@ -45,11 +45,11 @@ public class QuizIDTest {
     public void testGetQuizIDNumber() {
         System.out.println("getQuizIDNumber");
         QuizID instance = new QuizID();
-        int expResult = 0;
+        int expResult = 5;
+        instance.setQuizIDNumber(5);
         int result = instance.getQuizIDNumber();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
     
 }

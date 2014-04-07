@@ -23,4 +23,9 @@ public class QuizID implements QuizIDInterf {
         return this.QuizIDNumber;
     }
     
+    //for testing only.
+    public void setQuizIDNumber(int number){
+         this.QuizIDNumber = number;
+    }
+    
 }

@@ -76,7 +76,7 @@ public class QuizPlayerClientTest {
     public void testTerminateQuiz() throws NotBoundException, MalformedURLException, RemoteException {
         System.out.println("terminateQuiz");
         QuizPlayerClient instance = new QuizPlayerClient();
-        System.out.println("Program will shut down if test passes.");
+        System.out.println("Requires Scanner Object...");
         instance.terminateQuiz();
         
     }
