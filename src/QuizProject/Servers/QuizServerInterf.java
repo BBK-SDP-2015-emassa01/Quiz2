@@ -5,6 +5,8 @@
  */
 package QuizProject.Servers;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -124,12 +126,13 @@ public interface QuizServerInterf extends Remote {
      * @param fileName for QuizServer
      * @param quizIDValue
      * @throws RemoteException
+     * @throws java.io.FileNotFoundException
      */
     void serialize(Set<Quiz> quizzes,
             Map<Integer, ArrayList<String>> quizMap,
             Map<String, String[]> questionAnswers,
             Map<Integer, Player> highestScorePlayerIDMap,
-            String fileName, int quizIDValue) throws RemoteException;
+            String fileName, int quizIDValue) throws RemoteException, FileNotFoundException, IOException;
 
     /**
      * Puts questions and answers into the questionAnswers Map.

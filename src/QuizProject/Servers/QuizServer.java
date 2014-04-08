@@ -89,7 +89,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                 try {
                     ois.close();
                 } catch (IOException ex) {
-                    ex.getMessage();
+                    ex.getCause();
                     System.out.println("I/O EXCEPTION.");
                 }
             }
@@ -106,7 +106,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             Map<Integer, Player> highestScorePlayerIDMap,
             String fileName,
             int quizIDValue
-    ) throws RemoteException {
+    ) throws RemoteException, FileNotFoundException, IOException {
 
         try {
             ObjectOutputStream oos = new ObjectOutputStream(
@@ -123,31 +123,29 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             oos.close();
 
         } catch (FileNotFoundException ex) {
-            ex.getMessage();
+            ex.getCause();
         } catch (IOException ex) {
-            ex.getMessage();
+            ex.getCause();
         }
     }
 
     @Override
     public String getWinnerForQuiz(int quizID) throws RemoteException {
-
-        System.out.println(highestScorePlayerIDMap);
         String result = null;
 
+        try{
         if (highestScorePlayerIDMap.containsKey(quizID)) {
             Player winner = highestScorePlayerIDMap.get(quizID);
-            System.out.println(winner);
-
-            if (winner == null) {
-                result = "NO HIGHEST SCORER YET.";
-            } else {
-                result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName().toUpperCase() + "\nHIGHEST SCORE: " + winner.getPlayerScore();
-            }
+            result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName().toUpperCase() + "\nHIGHEST SCORE: " + winner.getPlayerScore();
+            
         } else {
             result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
         }
-        System.out.println(result);
+        } catch (NullPointerException ex){
+            result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
+            System.out.println("NO SAVED HIGH SCORERS YET FOR THAT ID.");
+            ex.getCause();
+        }
         return result;
     }
 
@@ -202,9 +200,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     @Override
     public int getHighestScoreForQuiz(int quizID) throws RemoteException, NullPointerException {
         int highestScoreForQuiz = 0;
-        if (!quizzes.contains(quizID)) {
-            throw new NullPointerException("NO SUCH QUIZ ID. ");
-        }
         if (quizzes.isEmpty()) {
             throw new NullPointerException("NO QUIZZES. ");
         } else {
@@ -278,7 +273,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public String checkIfQuizIDExists(int ID) throws RemoteException {
+    public String checkIfQuizIDExists(int ID) throws RemoteException, NullPointerException {
         String result = null;
         try {
             if (quizMap.containsKey(ID)) {
@@ -287,7 +282,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                 result = "CREATING QUIZ: " + ID;
             }
         } catch (NullPointerException e) {
-            e.getMessage();
+            e.getCause();
         }
         return result;
     }
@@ -303,7 +298,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             }
         } catch (IllegalArgumentException e) {
             System.out.println("NO SUCH QUIZ ID. ");
-            e.getMessage();
+            e.getCause();
         }
     }
 
@@ -314,7 +309,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             System.out.println("QUIZ: " + question + " HAS BEEN ADDED/AMENDED IN THE QUESTION/ANSWERS MAP. ");
             System.out.println("QA" + questionAnswers.toString());
         } catch (NullPointerException| IllegalArgumentException e) {
-            e.getMessage();
+            e.getCause();
         }
     }
 }

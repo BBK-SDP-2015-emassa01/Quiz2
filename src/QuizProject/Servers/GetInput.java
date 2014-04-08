@@ -26,10 +26,10 @@ public class GetInput implements GetInputInterf {
        
         } catch (NumberFormatException | NullPointerException e) {
             System.out.println("TRY AGAIN.");
-            e.getMessage();
+            e.getCause();
         } catch (InputMismatchException e) {
             System.out.println("INVALID INPUT DETECTED.");
-            e.getMessage();
+            e.getCause();
         } 
         return intInput;
     }
@@ -46,7 +46,7 @@ public class GetInput implements GetInputInterf {
         }
         } catch ( NullPointerException e){
             System.out.println("TRY AGAIN.");
-            e.getMessage();
+            e.getCause();
         }
 
         return input1;

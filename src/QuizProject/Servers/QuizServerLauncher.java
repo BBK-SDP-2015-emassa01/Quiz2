@@ -7,6 +7,7 @@ package QuizProject.Servers;
 
 import QuizProject.PlayerClient.QuizPlayerClient;
 import QuizProject.SetupClient.QuizSetupClient;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -57,19 +58,24 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
 
     @Override
     public void close() throws RemoteException {
-        if (serverQuiz==null){
+        if (serverQuiz == null) {
             throw new NullPointerException("THERE IS NO QUIZ SERVER");
-            } else {
-        serverQuiz.serialize(
+        } else {
+            try {
+                serverQuiz.serialize(
                         serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(), 
-                        serverQuiz.getQuestionsAndAnswers(), 
-                        serverQuiz.getHighestScorePlayerIDMap(), 
-                        serverQuiz.getFileName(), 
+                        serverQuiz.getQuizMap(),
+                        serverQuiz.getQuestionsAndAnswers(),
+                        serverQuiz.getHighestScorePlayerIDMap(),
+                        serverQuiz.getFileName(),
                         serverQuiz.getQuizIDValue()
-        );
+                );
+            } catch (IOException ex) {
+                System.out.println("COULD NOT LOCATE FILE.");
+                ex.getCause();
+            }
         }
-        
+
         Registry registry = LocateRegistry.getRegistry(1099);
         try {
             registry.unbind(serviceName);

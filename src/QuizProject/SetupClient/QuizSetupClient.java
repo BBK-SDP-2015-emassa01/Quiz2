@@ -9,12 +9,15 @@ import QuizProject.Servers.GetInput;
 import QuizProject.Servers.Quiz;
 import QuizProject.Servers.QuizServer;
 import QuizProject.Servers.QuizServerInterf;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -54,7 +57,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         try {
             QuizSetupClientInterf quizClient = new QuizSetupClient();
             quizClient.launch();
-        } catch ( NotBoundException | MalformedURLException | RemoteException ex) {
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
             ex.getMessage();
         }
     }
@@ -62,18 +65,24 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     @Override
     public int menu() {
         int switchValue = 0;
-    
-        try{
-        System.out.println("-> PRESS 1 TO ADD QUIZ.");
-        System.out.println("-> PRESS 2 FOR QUIZ LIST.");
-        System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
-        System.out.println("-> PRESS 4 TO SAVE.");
-        System.out.println("-> PRESS 5 TO CLOSE A QUIZ - WINNER REVEALED TO SERVER AND PLAYER.");
-        System.out.println("-> PRESS 6 TO CLOSE DOWN THE QUIZ.");
 
-        GetInput input = new GetInput();
-        switchValue = input.getIntInput();
-        } catch (NullPointerException|IllegalArgumentException e){
+        try {
+            System.out.println("-> PRESS 1 TO ADD QUIZ.");
+            System.out.println("-> PRESS 2 FOR QUIZ LIST.");
+            System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
+            System.out.println("-> PRESS 4 TO SAVE.");
+            System.out.println("-> PRESS 5 TO REVEAL WINNER.");
+            System.out.println("-> PRESS 6 TO CLOSE DOWN.");
+
+            GetInput input = new GetInput();
+            switchValue = input.getIntInput();
+
+//            if ((switchValue != 1) | (switchValue != 2) | (switchValue != 3) | (switchValue != 4) | (switchValue != 5) | (switchValue != 6)) {
+//                System.out.println("SOMTHING WENT WRONG. DID YOU ENTER YOUR CHOICE CORRECTLY? LET'S TRY AGAIN");
+//                dealWithSwitchRequest(menu());
+//                keepLooping();
+//            }
+        } catch (NullPointerException | IllegalArgumentException e) {
             e.getMessage();
         }
         return switchValue;
@@ -85,16 +94,21 @@ public class QuizSetupClient implements QuizSetupClientInterf {
             dealWithSwitchRequest(menu());
             keepLooping();
         } else {
-        
-            serverQuiz.serialize(
-                    serverQuiz.getQuizzes(),
-                    serverQuiz.getQuizMap(),
-                    serverQuiz.getQuestionsAndAnswers(),
-                    serverQuiz.getHighestScorePlayerIDMap(),
-                    serverQuiz.getFileName(),
-                    serverQuiz.getQuizIDValue()
-            );
-            
+
+            try {
+                serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(),
+                        serverQuiz.getQuestionsAndAnswers(),
+                        serverQuiz.getHighestScorePlayerIDMap(),
+                        serverQuiz.getFileName(),
+                        serverQuiz.getQuizIDValue()
+                );
+            } catch (IOException ex) {
+                System.out.println("COULD NOT LOCATE FILE.");
+                ex.getCause();
+            }
+
             System.exit(0);
         }
     }
@@ -116,34 +130,39 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                 serverQuiz.serverAddsSetOfQuestions(id, newListOfQuestions);
                 collectingQ = false;
                 System.out.println("SETUP COMPLETE.");
-                serverQuiz.serialize(
-                        serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(),
-                        serverQuiz.getQuestionsAndAnswers(),
-                        serverQuiz.getHighestScorePlayerIDMap(),
-                        serverQuiz.getFileName(),
-                        serverQuiz.getQuizIDValue()
-                );
+                try {
+                    serverQuiz.serialize(
+                            serverQuiz.getQuizzes(),
+                            serverQuiz.getQuizMap(),
+                            serverQuiz.getQuestionsAndAnswers(),
+                            serverQuiz.getHighestScorePlayerIDMap(),
+                            serverQuiz.getFileName(),
+                            serverQuiz.getQuizIDValue()
+                    );
+                } catch (IOException ex) {
+                    System.out.println("COULD NOT LOCATE FILE.");
+                    ex.getCause();
+                }
             } else {
-                try{
-                newListOfQuestions.add(question);
-                answers = clientAddsAnswers(question);
-                serverQuiz.serverAddsAnswers(question, answers);
-                serverQuiz.getQuestionsAndAnswers().put(question, answers);
-                } catch (NullPointerException | IllegalArgumentException e){
-                    e.getMessage();
+                try {
+                    newListOfQuestions.add(question);
+                    answers = clientAddsAnswers(question);
+                    serverQuiz.serverAddsAnswers(question, answers);
+                    serverQuiz.getQuestionsAndAnswers().put(question, answers);
+                } catch (NullPointerException | IllegalArgumentException e) {
+                    e.getCause();
                 }
 
             }
         }
 
         Object[] list = newListOfQuestions.toArray();
-        try{
-        for (Object a : list) {
-            System.out.println("ADDED: " + a.toString());
-        }
-        } catch (NullPointerException e){
-            e.getMessage();
+        try {
+            for (Object a : list) {
+                System.out.println("ADDED: " + a.toString());
+            }
+        } catch (NullPointerException e) {
+            e.getCause();
         }
         return newListOfQuestions;
     }
@@ -184,7 +203,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     public void dealWithSwitchRequest(int choice) throws RemoteException {
         switch (choice) {
             case 1: //deal with add a new Quiz
-                System.out.println("ENTER QUIZ NAME:");
+                System.out.println("ENTER NEW QUIZ'S NAME:");
                 GetInput input = new GetInput();
                 String name = input.getStringInput();
                 int id = serverQuiz.addQuiz(name);
@@ -211,25 +230,31 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                 }
                 break;
             case 4: //exit given the Quiz ID
+                System.out.println("...");
                 System.out.println("SAVED!");
-                serverQuiz.serialize(
-                        serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(),
-                        serverQuiz.getQuestionsAndAnswers(),
-                        serverQuiz.getHighestScorePlayerIDMap(),
-                        serverQuiz.getFileName(),
-                        serverQuiz.getQuizIDValue()
-                );
+                try {
+                    serverQuiz.serialize(
+                            serverQuiz.getQuizzes(),
+                            serverQuiz.getQuizMap(),
+                            serverQuiz.getQuestionsAndAnswers(),
+                            serverQuiz.getHighestScorePlayerIDMap(),
+                            serverQuiz.getFileName(),
+                            serverQuiz.getQuizIDValue()
+                    );
+                } catch (IOException ex) {
+                    System.out.println("COULD NOT LOCATE FILE.");
+                    ex.getCause();
+                }
                 break;
             case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
-                System.out.println("ENTER QUIZ ID TO REVEAL WINNER, SAVE AND CLOSE:");
+                System.out.println("ENTER QUIZ ID TO REVEAL WINNER:");
                 GetInput in = new GetInput();
                 int quizID = in.getIntInput();
                 System.out.println(serverQuiz.getWinnerForQuiz(quizID));
-                closeDown();
                 break;
             case 6: //CLOSE DOWN
                 System.out.println("CLOSING DOWN NOW....");
+                System.out.println("(-: HAVE A GREAT DAY :-)");
                 closeDown();
                 break;
             default:
@@ -240,14 +265,19 @@ public class QuizSetupClient implements QuizSetupClientInterf {
 
     @Override
     public void closeDown() throws RemoteException {
-        serverQuiz.serialize(
-                serverQuiz.getQuizzes(),
-                serverQuiz.getQuizMap(),
-                serverQuiz.getQuestionsAndAnswers(),
-                serverQuiz.getHighestScorePlayerIDMap(),
-                serverQuiz.getFileName(),
-                serverQuiz.getQuizIDValue()
-        );
+        try {
+            serverQuiz.serialize(
+                    serverQuiz.getQuizzes(),
+                    serverQuiz.getQuizMap(),
+                    serverQuiz.getQuestionsAndAnswers(),
+                    serverQuiz.getHighestScorePlayerIDMap(),
+                    serverQuiz.getFileName(),
+                    serverQuiz.getQuizIDValue()
+            );
+        } catch (IOException ex) {
+            System.out.println("COULD NOT LOCATE FILE.");
+            ex.getCause();
+        }
         System.exit(0);
     }
 }
