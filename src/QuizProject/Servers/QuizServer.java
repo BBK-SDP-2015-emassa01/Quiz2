@@ -37,7 +37,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     private Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
 
     private String fileName = "quizData.txt";
-    
+
     private int quizIDValue;
 
     public QuizServer() throws RemoteException {
@@ -75,7 +75,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                     this.highestScorePlayerIDMap = newHighestScorePlayerIDMap;
                     this.fileName = newFileName;
                     this.quizIDValue = newQuizIDValue;
-                    
+
                     QuizID setIncrementingValue = new QuizID();
                     setIncrementingValue.setQuizIDNumber(newQuizIDValue);
 
@@ -104,7 +104,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             Map<Integer, ArrayList<String>> quizMap,
             Map<String, String[]> questionAnswers,
             Map<Integer, Player> highestScorePlayerIDMap,
-            String fileName, 
+            String fileName,
             int quizIDValue
     ) throws RemoteException {
 
@@ -128,7 +128,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             ex.getMessage();
         }
     }
-    
 
     @Override
     public String getWinnerForQuiz(int quizID) throws RemoteException {
@@ -181,15 +180,15 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     public String getFileName() throws RemoteException {
         return this.fileName;
     }
-    
+
     @Override
     public int getQuizIDValue() throws RemoteException {
         return this.quizIDValue;
     }
-    
+
     @Override
     public void setQuizIDValue(int id) throws RemoteException {
-         this.quizIDValue = id;
+        this.quizIDValue = id;
     }
 
     @Override
@@ -201,13 +200,16 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public int getHighestScoreForQuiz(int QuizID) throws RemoteException {
+    public int getHighestScoreForQuiz(int quizID) throws RemoteException, NullPointerException {
         int highestScoreForQuiz = 0;
+        if (!quizzes.contains(quizID)) {
+            throw new NullPointerException("NO SUCH QUIZ ID. ");
+        }
         if (quizzes.isEmpty()) {
             throw new NullPointerException("NO QUIZZES. ");
         } else {
             for (Quiz a : quizzes) {
-                if (a.getQuizID() == QuizID) {
+                if (a.getQuizID() == quizID) {
                     highestScoreForQuiz = a.getHighestScore();
                 }
             }
@@ -216,7 +218,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public void setHighestScoreForQuiz(int QuizID, int score) throws RemoteException {
+    public void setHighestScoreForQuiz(int QuizID, int score) throws RemoteException, NullPointerException {
         if (quizzes.isEmpty()) {
             throw new NullPointerException("NO QUIZZES. ");
         } else {
@@ -245,7 +247,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public Object[] getCurrentQuizList() throws RemoteException {
+    public Object[] getCurrentQuizList() throws RemoteException, NullPointerException {
 
         Object[] quizArray;
         if ((quizzes.isEmpty()) | (quizzes == null)) {
@@ -277,40 +279,42 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
 
     @Override
     public String checkIfQuizIDExists(int ID) throws RemoteException {
-        String result;
-        if (quizMap.containsKey(ID)) {
-            result = "ADDING TO QUIZ: " + ID;
-        } else {
-            result = "CREATING QUIZ: " + ID;
+        String result = null;
+        try {
+            if (quizMap.containsKey(ID)) {
+                result = "ADDING TO QUIZ: " + ID;
+            } else {
+                result = "CREATING QUIZ: " + ID;
+            }
+        } catch (NullPointerException e) {
+            e.getMessage();
         }
         return result;
     }
 
     @Override
-    public synchronized void serverAddsSetOfQuestions(int ID, ArrayList<String> newListOfQuestions) throws RemoteException {
-        if (quizMap.containsKey(ID)) {
-            quizMap.put(ID, newListOfQuestions);
-            System.out.println(quizMap.get(ID).toString());
+    public synchronized void serverAddsSetOfQuestions(int ID, ArrayList<String> newListOfQuestions) throws RemoteException, IllegalArgumentException {
+        try {
+            if (quizMap.containsKey(ID)) {
+                quizMap.put(ID, newListOfQuestions);
+                System.out.println(quizMap.get(ID).toString());
 
-            System.out.println("ADDED QUESTION TO QUIZ:" + ID);
-        } else {
-            throw new IllegalArgumentException("NO SUCH QUIZ ID. ");
+                System.out.println("ADDED QUESTION TO QUIZ:" + ID);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("NO SUCH QUIZ ID. ");
+            e.getMessage();
         }
     }
 
     @Override
-    public void serverAddsAnswers(String question, String[] answers) throws RemoteException {
-        checkObjectIsNotNull(answers);
-        checkObjectIsNotNull(question);
-        questionAnswers.put(question, answers);
-        System.out.println("QUIZ: " + question + " HAS BEEN ADDED/AMENDED IN THE QUESTION/ANSWERS MAP. ");
-        System.out.println("QA" + questionAnswers.toString());
-    }
-
-    @Override
-    public void checkObjectIsNotNull(Object obj) throws RemoteException {
-        if (obj == null) {
-            throw new NullPointerException("THE ARGUMENT WAS NULL. ");
+    public void serverAddsAnswers(String question, String[] answers) throws RemoteException, NullPointerException, IllegalArgumentException {
+        try {
+            questionAnswers.put(question, answers);
+            System.out.println("QUIZ: " + question + " HAS BEEN ADDED/AMENDED IN THE QUESTION/ANSWERS MAP. ");
+            System.out.println("QA" + questionAnswers.toString());
+        } catch (NullPointerException| IllegalArgumentException e) {
+            e.getMessage();
         }
     }
 }

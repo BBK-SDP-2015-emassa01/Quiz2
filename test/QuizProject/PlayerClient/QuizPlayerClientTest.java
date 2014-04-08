@@ -110,21 +110,21 @@ public class QuizPlayerClientTest {
     }
 
     /**
-     * Test of selectQuizToPlay method, of class QuizPlayerClient.
-     * @throws java.rmi.NotBoundException
-     * @throws java.net.MalformedURLException
-     * @throws java.rmi.RemoteException
-     */
-    @Test
-    public void testSelectQuizToPlay() throws NotBoundException, MalformedURLException, RemoteException{
-        System.out.println("selectQuizToPlay");
-        QuizPlayerClient instance = new QuizPlayerClient();
-        int expResult = 0;
-        int result = instance.selectQuizToPlay();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//     * Test of selectQuizToPlay method, of class QuizPlayerClient.
+//     * @throws java.rmi.NotBoundException
+//     * @throws java.net.MalformedURLException
+//     * @throws java.rmi.RemoteException
+//     */
+//    @Test
+//    public void testSelectQuizToPlay() throws NotBoundException, MalformedURLException, RemoteException{
+//        System.out.println("selectQuizToPlay");
+//        QuizPlayerClient instance = new QuizPlayerClient();
+//        int expResult = 0;
+//        int result = instance.selectQuizToPlay();
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of printOutQuizList method, of class QuizPlayerClient.

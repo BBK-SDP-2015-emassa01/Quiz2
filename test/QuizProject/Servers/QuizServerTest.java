@@ -291,18 +291,5 @@ public class QuizServerTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of checkObjectIsNotNull method, of class QuizServer.
-     */
-    @Test
-    public void testCheckObjectIsNotNull() throws Exception {
-        System.out.println("checkObjectIsNotNull");
-        Object obj = null;
-        QuizServer instance = new QuizServer();
-        instance.checkObjectIsNotNull(obj);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
     
 }

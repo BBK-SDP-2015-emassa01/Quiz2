@@ -58,12 +58,6 @@ public interface QuizPlayerClientInterf {
     void printOutQuizList() throws RemoteException;
 
     /**
-     * Allows the user to enter the id number of the quiz they want to play/access. 
-     * @return the user-inputted id of Quiz
-     */
-    int selectQuizToPlay();
-
-    /**
      * Sets the running boolean value to false.
      * The menu will no longer be presented and the system exits.
      */

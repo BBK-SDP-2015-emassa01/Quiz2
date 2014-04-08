@@ -65,34 +65,4 @@ public class GetInputTest {
         // TODO review the generated test code and remove the default call to fail.
         System.out.println("The test requires Scanner Class and KeyBoard input.");
     }
-
-    /**
-     * Test of checkForValidStringInput method, of class GetInput.
-     */
-    @Test
-    public void testCheckForValidStringInput() {
-        System.out.println("checkForValidStringInput");
-        String input = "";
-        GetInput instance = new GetInput();
-        boolean expResult = false;
-        boolean result = instance.checkForValidStringInput(input);
-        assertEquals(expResult, result);
-        //false because input is empty.
-        
-    }
-
-    /**
-     * Test of checkIntInputValid method, of class GetInput.
-     */
-    @Test
-    public void testCheckIntInputValid() {
-        System.out.println("checkIntInputValid");
-        int input = 0;
-        GetInput instance = new GetInput();
-        boolean expResult = true;
-        boolean result = instance.checkIntInputValid(input);
-        assertEquals(expResult, result);
-        System.out.println("The test requires Scanner Class and KeyBoard input.");
-    }
-    
 }

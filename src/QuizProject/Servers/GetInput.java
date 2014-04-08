@@ -6,6 +6,7 @@
 package QuizProject.Servers;
 
 import java.rmi.RemoteException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -16,58 +17,38 @@ public class GetInput implements GetInputInterf {
 
     @Override
     public int getIntInput() {
-        Scanner input = new Scanner(System.in);
-        String input1 = input.nextLine().trim();
-        
-        if (input1.equals("")){
-            throw new IllegalArgumentException("TRY AGAIN.");
-        }
-        
+        String input1 = null;
         int intInput = 0;
-        
-        try {
-            intInput = Integer.parseInt(input1);
-        } catch (java.util.InputMismatchException e) {
+        try{
+        Scanner input = new Scanner(System.in);
+        input1 = input.nextLine().trim();
+        intInput = Integer.parseInt(input1);
+       
+        } catch (NumberFormatException | NullPointerException e) {
+            System.out.println("TRY AGAIN.");
+            e.getMessage();
+        } catch (InputMismatchException e) {
             System.out.println("INVALID INPUT DETECTED.");
-            e.getCause();
-        }
+            e.getMessage();
+        } 
         return intInput;
     }
 
     @Override
-    public String getStringInput() throws IllegalArgumentException {
+    public String getStringInput() throws NullPointerException {
+        String input1 = null;
+        
+        try{
         Scanner input = new Scanner(System.in);
-        String input1 = input.nextLine().trim();
-
-        if (!checkForValidStringInput(input1)) {
-            throw new IllegalArgumentException("TRY AGAIN.");
+        input1 = input.nextLine().trim();
+        if (input1.equals("")){
+            System.out.println("YOU LEFT THAT BLANK! MOVING ON...");
+        }
+        } catch ( NullPointerException e){
+            System.out.println("TRY AGAIN.");
+            e.getMessage();
         }
 
         return input1;
     }
-
-    @Override
-    public boolean checkForValidStringInput(String input) {
-        if (input.equals("")) {
-            System.out.println("INVALID INPUT DETECTED.");
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Override
-    public boolean checkIntInputValid(int input) {
-        Scanner kb = new Scanner(System.in);
-        try {
-            input = kb.nextInt();
-        } catch (java.util.InputMismatchException e) {
-            System.out.println("INVALID INPUT DETECTED.");
-            e.getCause();
-            return false;
-        }
-        return false;
-    }
-      
-
 }

@@ -16,6 +16,7 @@ import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -60,12 +61,9 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
     @Override
     public void launch() throws RemoteException {
-
         try {
             serverQuiz = (QuizServerInterf) service;
-
             keepLooping();
-
         } catch (RemoteException e) {
             e.getMessage();
         }
@@ -74,36 +72,42 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     @Override
     public synchronized void keepLooping() throws RemoteException, IllegalArgumentException {
         if (running) {
-            int selectedQuizID = menu();
+            String tempResp = null;
+            int resp = 0;
+            int selectedQuizID = 0;
+            try {
+                selectedQuizID = menu();
+                System.out.println("PRESS 1 TO PLAY THIS QUIZ ");
+                System.out.println("PRESS 2 TO CLOSE THIS QUIZ AND REVEAL WINNER ");
 
-            System.out.println("PRESS 1 TO PLAY THIS QUIZ ");
-            System.out.println("PRESS 2 TO CLOSE THIS QUIZ AND REVEAL WINNER ");
-
-            Scanner input = new Scanner(System.in);
-            String tempResp = input.nextLine().trim();
-            int resp = Integer.parseInt(tempResp);
-
-            if (resp == 1) {
-                playSelectedQuiz(selectedQuizID);
-            } else if (resp == 2) {
-                System.out.println(selectedQuizID);
-                System.out.println(serverQuiz.getWinnerForQuiz(selectedQuizID));
-                serverQuiz.serialize(
-                        serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(),
-                        serverQuiz.getQuestionsAndAnswers(),
-                        serverQuiz.getHighestScorePlayerIDMap(),
-                        serverQuiz.getFileName(),
-                        serverQuiz.getQuizIDValue()
-                );
-                System.out.println("FINISHED SERIALIZATION.");
-                keepLooping();
-            } else if (input.equals("")) {
-                System.out.println("INVALID INPUT. TRY AGAIN.");
-                keepLooping();
-            } else {
-                System.out.println("INVALID RESPONSE. TRY AGAIN.");
-                keepLooping();
+                Scanner input = new Scanner(System.in);
+                tempResp = input.nextLine().trim();
+                resp = Integer.parseInt(tempResp);
+            } catch (IllegalArgumentException | NullPointerException | InputMismatchException e) {
+                e.getMessage();
+            }
+            try {
+                if (resp == 1) {
+                    playSelectedQuiz(selectedQuizID);
+                } else if (resp == 2) {
+                    System.out.println(serverQuiz.getWinnerForQuiz(selectedQuizID));
+                    serverQuiz.serialize(
+                            serverQuiz.getQuizzes(),
+                            serverQuiz.getQuizMap(),
+                            serverQuiz.getQuestionsAndAnswers(),
+                            serverQuiz.getHighestScorePlayerIDMap(),
+                            serverQuiz.getFileName(),
+                            serverQuiz.getQuizIDValue()
+                    );
+                    System.out.println("FINISHED SERIALIZATION.");
+                    keepLooping();
+                } else {
+                    System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
+                    keepLooping();
+                }
+            } catch (IllegalArgumentException | NullPointerException | InputMismatchException e) {
+                System.out.println("TRY AGAIN.");
+                e.getMessage();
             }
         }
         if (!running) {
@@ -136,7 +140,6 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             ex.getMessage();
         }
         System.exit(0);
-
     }
 
     public static void main(String args[]) {
@@ -157,6 +160,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         Scanner tempInput = new Scanner(System.in);
         String input = tempInput.nextLine().trim();
 
+        int quizID = 0;
+
         if (input.equalsIgnoreCase("end")) {
             running = false;
             terminateQuiz();
@@ -168,20 +173,16 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             keepLooping();
         } else if (serverQuiz.getQuizMap().containsKey(Integer.parseInt(input))) {
             System.out.println("QUIZ FOUND.");
-            int quizID = Integer.parseInt(input);
+            quizID = Integer.parseInt(input);
             return quizID;
         }
 
-        int quizID = Integer.parseInt(input);
+        try {
+            quizID = Integer.parseInt(input);
+        } catch (NumberFormatException | NullPointerException | InputMismatchException e) {
+            e.getMessage();
+        }
         return quizID;
-    }
-
-    @Override
-    public int selectQuizToPlay() {
-
-        System.out.println("ENTER ID OF QUIZ TO ACCESS.");
-        int result = getInput.getIntInput();
-        return result;
     }
 
     @Override
@@ -212,18 +213,13 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
         Map<Integer, ArrayList<String>> quizMap = serverQuiz.getQuizMap();
         ArrayList<String> questions = quizMap.get(selectedQuizID);
-        
+
         int tempScore = 0;
 
         for (int i = 0; i < questions.size(); i++) {
             Map<String, String[]> thisSet = serverQuiz.getQuestionsAndAnswers();
-//            String[] temp = thisSet.get(questions.get(i));
-//            if (temp[2] == null) {
-//                System.out.println("NO QUESTIONS SET FOR THIS QUIZ YET.");
-//            }
-            
             String[] QAs = thisSet.get(questions.get(i));
-           
+
             System.out.println("Question: " + QAs[0] + "\n");
             System.out.println("Option 1: " + QAs[1]);
             System.out.println("Option 2: " + QAs[2]);

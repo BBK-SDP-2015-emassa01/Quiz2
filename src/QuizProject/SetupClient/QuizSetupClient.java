@@ -61,6 +61,9 @@ public class QuizSetupClient implements QuizSetupClientInterf {
 
     @Override
     public int menu() {
+        int switchValue = 0;
+    
+        try{
         System.out.println("-> PRESS 1 TO ADD QUIZ.");
         System.out.println("-> PRESS 2 FOR QUIZ LIST.");
         System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
@@ -69,7 +72,10 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         System.out.println("-> PRESS 6 TO CLOSE DOWN THE QUIZ.");
 
         GetInput input = new GetInput();
-        int switchValue = input.getIntInput();
+        switchValue = input.getIntInput();
+        } catch (NullPointerException|IllegalArgumentException e){
+            e.getMessage();
+        }
         return switchValue;
     }
 
@@ -79,6 +85,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
             dealWithSwitchRequest(menu());
             keepLooping();
         } else {
+        
             serverQuiz.serialize(
                     serverQuiz.getQuizzes(),
                     serverQuiz.getQuizMap(),
@@ -87,16 +94,16 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     serverQuiz.getFileName(),
                     serverQuiz.getQuizIDValue()
             );
+            
             System.exit(0);
         }
     }
 
     @Override
-    public ArrayList<String> clientAddsSetOfQuestions(int id) throws RemoteException {
+    public ArrayList<String> clientAddsSetOfQuestions(int id) throws RemoteException, NullPointerException, IllegalArgumentException {
         ArrayList<String> newListOfQuestions = new ArrayList<>();
         String question;
         String[] answers;
-        //int quizID;
 
         boolean collectingQ = true;
         while (collectingQ) {
@@ -118,17 +125,25 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                         serverQuiz.getQuizIDValue()
                 );
             } else {
+                try{
                 newListOfQuestions.add(question);
                 answers = clientAddsAnswers(question);
                 serverQuiz.serverAddsAnswers(question, answers);
                 serverQuiz.getQuestionsAndAnswers().put(question, answers);
+                } catch (NullPointerException | IllegalArgumentException e){
+                    e.getMessage();
+                }
 
             }
         }
 
         Object[] list = newListOfQuestions.toArray();
+        try{
         for (Object a : list) {
             System.out.println("ADDED: " + a.toString());
+        }
+        } catch (NullPointerException e){
+            e.getMessage();
         }
         return newListOfQuestions;
     }

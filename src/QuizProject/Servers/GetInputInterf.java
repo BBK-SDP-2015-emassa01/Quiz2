@@ -23,20 +23,5 @@ public interface GetInputInterf {
      * @returns String representation of keyboard input.
      */
     String getStringInput();
-    
-    /**
-     * Checks that the input it an int.
-     * @param input
-     * @return
-     */
-    boolean checkIntInputValid(int input);
-    
-    /**
-     * Checks that the input is not blank
-     * @param input
-     * @return
-     */
-    boolean checkForValidStringInput(String input);
-
-    
+      
 }
