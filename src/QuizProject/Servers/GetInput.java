@@ -38,17 +38,29 @@ public class GetInput implements GetInputInterf {
     public String getStringInput() throws NullPointerException {
         String input1 = null;
         
-        try{
+
         Scanner input = new Scanner(System.in);
         input1 = input.nextLine().trim();
         if (input1.equals("")){
-            System.out.println("YOU LEFT THAT BLANK! MOVING ON...");
+            throw new NullPointerException("YOU LEFT THAT BLANK! ");
         }
-        } catch ( NullPointerException e){
-            System.out.println("TRY AGAIN.");
-            e.getCause();
-        }
+        
 
         return input1;
     }
+    
+    
+//    try{
+//        Scanner input = new Scanner(System.in);
+//        input1 = input.nextLine().trim();
+//        if (input1.equals("")){
+//            throw new NullPointerException("YOU LEFT THAT BLANK! ");
+//        }
+//        } catch ( NullPointerException e){
+//            System.out.println("TRY AGAIN.");
+//            e.getCause();
+//        }
+//
+//        return input1;
+//    }
 }

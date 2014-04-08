@@ -77,11 +77,6 @@ public class QuizSetupClient implements QuizSetupClientInterf {
             GetInput input = new GetInput();
             switchValue = input.getIntInput();
 
-//            if ((switchValue != 1) | (switchValue != 2) | (switchValue != 3) | (switchValue != 4) | (switchValue != 5) | (switchValue != 6)) {
-//                System.out.println("SOMTHING WENT WRONG. DID YOU ENTER YOUR CHOICE CORRECTLY? LET'S TRY AGAIN");
-//                dealWithSwitchRequest(menu());
-//                keepLooping();
-//            }
         } catch (NullPointerException | IllegalArgumentException e) {
             e.getMessage();
         }
@@ -150,6 +145,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     serverQuiz.serverAddsAnswers(question, answers);
                     serverQuiz.getQuestionsAndAnswers().put(question, answers);
                 } catch (NullPointerException | IllegalArgumentException e) {
+                    System.out.println("INVALID INPUT. LET'S START THIS ONE AGAIN.");
                     e.getCause();
                 }
 
@@ -193,8 +189,14 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         answers[4] = ans4;
 
         System.out.println("ENTER NUMBER OF CORRECT ANSWER (1,2,3 OR 4):");
+
         String ans5 = input.getStringInput();
-        answers[5] = ans5;
+        if ((ans5.equals("1")) | (ans5.equals("2")) | (ans5.equals("3")) | (ans5.equals("4"))) {
+            answers[5] = ans5;
+            System.out.println("QUESTION ADDED!");
+        } else {
+            throw new IllegalArgumentException("INVALID INPUT.");
+        }
         return answers;
 
     }
@@ -203,30 +205,43 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     public void dealWithSwitchRequest(int choice) throws RemoteException {
         switch (choice) {
             case 1: //deal with add a new Quiz
-                System.out.println("ENTER NEW QUIZ'S NAME:");
-                GetInput input = new GetInput();
-                String name = input.getStringInput();
-                int id = serverQuiz.addQuiz(name);
-                System.out.println("QUIZ ID: \"" + id + "\"");
-                System.out.println("ENTER THE QUESTIONS. TYPE 'END' TO FINISH. ");
-                ArrayList<String> questionSet = clientAddsSetOfQuestions(id);
-                serverQuiz.serverAddsSetOfQuestions(id, questionSet);
+                try {
+                    System.out.println("ENTER NEW QUIZ'S NAME:");
+                    GetInput input = new GetInput();
+                    String name = input.getStringInput();
+                    int id = serverQuiz.addQuiz(name);
+                    System.out.println("QUIZ ID: \"" + id + "\"");
+                    System.out.println("ENTER THE QUESTIONS. TYPE 'END' TO FINISH. ");
+                    ArrayList<String> questionSet = clientAddsSetOfQuestions(id);
+                    serverQuiz.serverAddsSetOfQuestions(id, questionSet);
+                } catch (NullPointerException e) {
+                    System.out.println("YOU DIDNT ENTER AN INPUT. LET'S DO THIS ONE AGAIN.");
+                    e.getCause();
+                }
                 break;
             case 2:
                 //get current quiz list
-                Object[] quizList = serverQuiz.getCurrentQuizList();
-                System.out.println("CURRENT QUIZ LIST: ");
-                for (Object a : quizList) {
-                    Quiz b = (Quiz) a;
-                    System.out.println("QUIZ: " + b.getQuizName() + " ID: " + b.getQuizID());
+                try {
+                    Object[] quizList = serverQuiz.getCurrentQuizList();
+                    System.out.println("CURRENT QUIZ LIST: ");
+                    for (Object a : quizList) {
+                        Quiz b = (Quiz) a;
+                        System.out.println("QUIZ: " + b.getQuizName() + " ID: " + b.getQuizID());
+                    }
+                } catch (NullPointerException e) {
+                    e.getCause();
                 }
                 break;
             case 3:
-                System.out.println("ENTER QUIZ ID:");
-                GetInput input2 = new GetInput();
-                Object[] questions2 = serverQuiz.getListOfQuestionsInQuiz(input2.getIntInput());
-                for (Object a : questions2) {
-                    System.out.println("Question: " + a.toString());
+                try {
+                    System.out.println("ENTER QUIZ ID:");
+                    GetInput input2 = new GetInput();
+                    Object[] questions2 = serverQuiz.getListOfQuestionsInQuiz(input2.getIntInput());
+                    for (Object a : questions2) {
+                        System.out.println("QUESTION: " + a.toString());
+                    }
+                } catch (NullPointerException e) {
+                    e.getCause();
                 }
                 break;
             case 4: //exit given the Quiz ID
@@ -247,10 +262,14 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                 }
                 break;
             case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
-                System.out.println("ENTER QUIZ ID TO REVEAL WINNER:");
-                GetInput in = new GetInput();
-                int quizID = in.getIntInput();
-                System.out.println(serverQuiz.getWinnerForQuiz(quizID));
+                try {
+                    System.out.println("ENTER QUIZ ID TO REVEAL WINNER:");
+                    GetInput in = new GetInput();
+                    int quizID = in.getIntInput();
+                    System.out.println(serverQuiz.getWinnerForQuiz(quizID));
+                } catch (NullPointerException e) {
+                    e.getCause();
+                }
                 break;
             case 6: //CLOSE DOWN
                 System.out.println("CLOSING DOWN NOW....");
