@@ -101,7 +101,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
                             serverQuiz.getQuestionsAndAnswers(),
                             serverQuiz.getHighestScorePlayerIDMap(),
                             serverQuiz.getFileName(),
-                            serverQuiz.getQuizIDValue()
+                            serverQuiz.getQuizIDValue(),
+                            serverQuiz.getClosedQuizList()
                     );
                     System.out.println("SAVED.");
                     keepLooping();
@@ -125,7 +126,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
                         serverQuiz.getQuestionsAndAnswers(),
                         serverQuiz.getHighestScorePlayerIDMap(),
                         serverQuiz.getFileName(),
-                        serverQuiz.getQuizIDValue()
+                        serverQuiz.getQuizIDValue(),
+                        serverQuiz.getClosedQuizList()
                 );
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
@@ -146,7 +148,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
                     serverQuiz.getQuestionsAndAnswers(),
                     serverQuiz.getHighestScorePlayerIDMap(),
                     serverQuiz.getFileName(),
-                    serverQuiz.getQuizIDValue()
+                    serverQuiz.getQuizIDValue(),
+                    serverQuiz.getClosedQuizList()
             );
         } catch (RemoteException ex) {
             System.out.println("COULD NOT SERIALIZE BEFORE CLOSING.");

@@ -79,7 +79,8 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
                     serverQuiz.getQuestionsAndAnswers(),
                     serverQuiz.getHighestScorePlayerIDMap(),
                     serverQuiz.getFileName(),
-                    serverQuiz.getQuizIDValue()
+                    serverQuiz.getQuizIDValue(),
+                    serverQuiz.getClosedQuizList()
             );
         } catch (IOException | NullPointerException ex) {
             System.out.println("COULD NOT LOCATE FILE.");

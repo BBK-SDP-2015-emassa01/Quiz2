@@ -7,7 +7,6 @@ package QuizProject.Servers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -28,6 +27,14 @@ public interface QuizServerInterf extends Remote {
      * @throws RemoteException
      */
     int addQuiz(String s) throws RemoteException;
+    
+    /**
+     * Removes all records of the quiz once the score has been revealed to the player. 
+     * An arrayList of 'closedQuizzes' persists on the server and can be printed out by the setup client.
+     * @param id of quiz to close/delete
+     * @throws RemoteException
+     */
+    void removeQuiz(int id) throws RemoteException ;
 
     /**
      * Checks that the quizMap holds this Quiz ID and throws a message to the Setup Client if that 
@@ -126,6 +133,7 @@ public interface QuizServerInterf extends Remote {
      * @param highestScorePlayerIDMap for QuizServer
      * @param fileName for QuizServer
      * @param quizIDValue
+     * @param newClosedQuizList closed quizzes
      * @throws RemoteException
      * @throws java.io.FileNotFoundException
      */
@@ -133,7 +141,7 @@ public interface QuizServerInterf extends Remote {
             Map<Integer, ArrayList<String>> quizMap,
             Map<String, String[]> questionAnswers,
             Map<Integer, Player> highestScorePlayerIDMap,
-            String fileName, int quizIDValue) throws RemoteException, FileNotFoundException, IOException;
+            String fileName, int quizIDValue, ArrayList<ClosedQuiz> newClosedQuizList) throws RemoteException, FileNotFoundException, IOException;
 
     /**
      * Puts questions and answers into the questionAnswers Map.
@@ -142,6 +150,20 @@ public interface QuizServerInterf extends Remote {
      * @throws RemoteException
      */
     void serverAddsAnswers(String question, String[] answers) throws RemoteException;
+    
+    /**
+     *
+     * @return closed Quiz list
+     * @throws RemoteException
+     */
+    ArrayList<ClosedQuiz> getClosedQuizList() throws RemoteException;
+    
+    /**
+     *set Closed Quizzes
+     * @param list of closed quizzes
+     * @throws RemoteException
+     */
+    void setClosedQuizList(ArrayList<ClosedQuiz> list) throws RemoteException;
 
     /**
      * Adds questions to an arrayList, with a quiz ID and stores in a quizMap on the server

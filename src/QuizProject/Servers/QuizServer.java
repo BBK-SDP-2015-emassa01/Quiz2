@@ -40,6 +40,8 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
     private String fileName = "quizData.txt";
 
     private int quizIDValue;
+    
+    private ArrayList<ClosedQuiz> closedQuizList = new ArrayList<>();
 
     public QuizServer() throws RemoteException {
 
@@ -49,6 +51,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
         Map<Integer, Player> newHighestScorePlayerIDMap = null;
         String newFileName = "quizData.txt";
         int newQuizIDValue;
+        ArrayList<ClosedQuiz> newClosedQuizList = null;
 
         ObjectInputStream ois = null;
 
@@ -67,6 +70,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                     newHighestScorePlayerIDMap = (Map<Integer, Player>) ois.readObject();
                     newFileName = (String) ois.readObject();
                     newQuizIDValue = (int) ois.readObject();
+                    newClosedQuizList = (ArrayList<ClosedQuiz>) ois.readObject();
 
                     System.out.println("ATTEMPTING TO RE-CREATE THE LAST STATE OF THE QUIZ SERVER.");
                     try {
@@ -90,6 +94,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                     this.highestScorePlayerIDMap = newHighestScorePlayerIDMap;
                     this.fileName = newFileName;
                     this.quizIDValue = newQuizIDValue;
+                    this.closedQuizList = newClosedQuizList;
 
                     QuizID setIncrementingValue = new QuizID();
                     setIncrementingValue.setQuizIDNumber(newQuizIDValue);
@@ -136,7 +141,8 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             Map<String, String[]> questionAnswers,
             Map<Integer, Player> highestScorePlayerIDMap,
             String fileName,
-            int quizIDValue
+            int quizIDValue, 
+            ArrayList<ClosedQuiz> newClosedQuizList
     ) throws RemoteException, FileNotFoundException, IOException {
 
         try {
@@ -150,6 +156,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             oos.writeObject(highestScorePlayerIDMap);
             oos.writeObject(fileName);
             oos.writeObject(quizIDValue);
+            oos.writeObject(newClosedQuizList);
 
             oos.close();
 
@@ -167,7 +174,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
         try {
             if (highestScorePlayerIDMap.containsKey(quizID)) {
                 Player winner = highestScorePlayerIDMap.get(quizID);
-                result = "THE WINNER FOR QUIZ " + quizID + " IS "+winner.getPlayerName().toUpperCase() + "!!!" + "\nHIGHEST SCORE: " + winner.getPlayerScore();
+                result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName().toUpperCase() + "!!!" + "\nHIGHEST SCORE: " + winner.getPlayerScore();
 
             } else {
                 result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
@@ -217,7 +224,17 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
 
     @Override
     public void setQuizIDValue(int id) throws RemoteException {
-        this.quizIDValue = id;
+        this.quizIDValue =  id;
+    }
+    
+    @Override
+    public ArrayList<ClosedQuiz> getClosedQuizList() throws RemoteException {
+        return this.closedQuizList;
+    }
+
+    @Override
+    public void setClosedQuizList(ArrayList<ClosedQuiz> list) throws RemoteException {
+        this.closedQuizList = list;
     }
 
     @Override
@@ -284,6 +301,38 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             e.getCause();
         }
         return id;
+    }
+
+    @Override
+    public synchronized void removeQuiz(int id) throws RemoteException {
+        Quiz quizToRemove = null;
+        ArrayList<String> questionsToRemove = null;
+        Player highestPlayerToRemove = highestScorePlayerIDMap.get(id);
+
+        ClosedQuiz quizToClose = new ClosedQuiz();
+        quizToClose.setClosedQuizId(id);
+        quizToClose.setHighestScore(highestPlayerToRemove.getPlayerScore());
+        quizToClose.setPlayerName(highestPlayerToRemove.getPlayerName());
+        
+        closedQuizList.add(quizToClose);
+        
+        try {
+            for (Quiz a : quizzes) {
+                if (a.getQuizID() == id) {
+                    quizToRemove = a;
+                }
+            }
+            questionsToRemove = quizMap.get(id);
+            highestPlayerToRemove = highestScorePlayerIDMap.get(id);
+
+            quizzes.remove(quizToRemove);
+            quizMap.remove(id);
+            highestScorePlayerIDMap.remove(id);
+            System.out.println("REMOVED QUIZ: " + id);
+        } catch (NullPointerException e) {
+            System.out.println("COULD NOT REMOVE QUIZ: " + id);
+            e.getCause();
+        }
     }
 
     @Override

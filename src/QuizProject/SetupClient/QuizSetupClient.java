@@ -5,6 +5,7 @@
  */
 package QuizProject.SetupClient;
 
+import QuizProject.Servers.ClosedQuiz;
 import QuizProject.Servers.GetInput;
 import QuizProject.Servers.GetInputInterf;
 import QuizProject.Servers.Quiz;
@@ -25,7 +26,7 @@ import java.util.Map;
  *
  * @author Esha
  */
-public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
+public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
 
     private QuizServerInterf serverQuiz;
     boolean running = true;
@@ -68,13 +69,22 @@ public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
         int switchValue = 0;
 
         try {
-            System.out.println("\n-> PRESS 1 TO ADD QUIZ.");
-            System.out.println("-> PRESS 2 FOR QUIZ LIST.");
-            System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
-            System.out.println("-> PRESS 4 TO SAVE.");
-            System.out.println("-> PRESS 5 TO REVEAL WINNER.");
-            System.out.println("-> PRESS 6 TO REVEAL THE CORRECT MULTIPLE CHOICE ANSWERS FOR A QUIZ.");
-            System.out.println("-> PRESS 7 TO CLOSE DOWN.");
+            System.out.println("\nACTIVE AND NEW QUIZ SERVICES: ");
+            System.out.println("-> PRESS 1 TO ADD A NEW QUIZ.");
+            System.out.println("-> PRESS 2 FOR THE 'ACTIVE QUIZZES' LIST.");
+            System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ ID");
+            System.out.println("-> PRESS 4 FOR A LIST OF 'ACTIVE QUIZ' QUESTIONS, INCLUDING THEIR CORRECT MULTIPLE CHOICE ANSWERS.");
+
+            System.out.println("\nEXISTING QUIZZES: ");
+            System.out.println("-> PRESS 5 TO REVEAL WINNER!!!");
+            System.out.println("-> PRESS 6 TO CLOSE A QUIZ DOWN AND REMOVE IT.");
+            
+            System.out.println("\nEXISTING QUIZZES: ");
+            System.out.println("-> PRESS 7 FOR THE 'CLOSED QUIZZES' LIST.");
+            
+            System.out.println("\nSAVE AND CLOSE: ");
+            System.out.println("-> PRESS 8 TO SAVE.");
+            System.out.println("-> PRESS 9 TO CLOSE DOWN THE SYSTEM.");
 
             GetInput input = new GetInput();
             switchValue = input.getIntInput();
@@ -99,7 +109,8 @@ public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
                         serverQuiz.getQuestionsAndAnswers(),
                         serverQuiz.getHighestScorePlayerIDMap(),
                         serverQuiz.getFileName(),
-                        serverQuiz.getQuizIDValue()
+                        serverQuiz.getQuizIDValue(),
+                        serverQuiz.getClosedQuizList()
                 );
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
@@ -134,7 +145,8 @@ public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
                             serverQuiz.getQuestionsAndAnswers(),
                             serverQuiz.getHighestScorePlayerIDMap(),
                             serverQuiz.getFileName(),
-                            serverQuiz.getQuizIDValue()
+                            serverQuiz.getQuizIDValue(),
+                            serverQuiz.getClosedQuizList()
                     );
                 } catch (IOException ex) {
                     System.out.println("COULD NOT LOCATE FILE.");
@@ -214,10 +226,10 @@ public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
             for (String a : questions) {
                 String[] temp = serverQuiz.getQuestionsAndAnswers().get(a);
                 System.out.println("\nQUESTION: " + a + "\nTHE MULTIPLE CHOICE OPTIONS ARE: ");
-                System.out.println("OPTION 1: "+temp[1]);
-                System.out.println("OPTION 2: "+temp[2]);
-                System.out.println("OPTION 3: "+temp[3]);
-                System.out.println("OPTION 4: "+temp[4]);
+                System.out.println("OPTION 1: " + temp[1]);
+                System.out.println("OPTION 2: " + temp[2]);
+                System.out.println("OPTION 3: " + temp[3]);
+                System.out.println("OPTION 4: " + temp[4]);
                 System.out.println("THE CORRECT MULTIPLE CHOICE OPTION TO SELECT IS: " + temp[5]);
             }
         } catch (NullPointerException e) {
@@ -269,7 +281,54 @@ public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
                     e.getCause();
                 }
                 break;
-            case 4: //exit given the Quiz ID
+            case 4://QUOTE QUIZ ID AND REVEAL THE CURRENT SAVED ANSWERS FOR THE SETUP CLIENT.
+                try {
+                    System.out.println("ENTER QUIZ ID TO REVEAL CURRENT ANSWERS:");
+                    GetInputInterf in = new GetInput();
+                    int quizID = in.getIntInput();
+                    getAnswers(quizID);
+                } catch (NullPointerException | RemoteException e) {
+                    e.getCause();
+                }
+                break;
+           
+            case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
+                try {
+                    System.out.println("ENTER QUIZ ID TO REVEAL WINNER:");
+                    GetInputInterf in = new GetInput();
+                    int quizID = in.getIntInput();
+                    System.out.println(serverQuiz.getWinnerForQuiz(quizID));
+                } catch (NullPointerException | RemoteException e) {
+                    e.getCause();
+                }
+                break;
+            
+            case 6:
+                try {
+                    System.out.println("ENTER QUIZ ID TO CLOSE AND REMOVE FROM CURRENT QUIZ LIST: ");
+                    GetInputInterf in = new GetInput();
+                    int quizID = in.getIntInput();
+                    serverQuiz.removeQuiz(quizID);
+                    System.out.println("YOU CLOSED AND REMOVED QUIZ "+ quizID);
+                    } catch (NullPointerException | RemoteException e) {
+                        System.out.println("COULD NOT REMOVE THAT QUIZ.");
+                    e.getCause();
+                }
+                    break;
+            case 7:
+                //get current quiz list
+                try {
+                    ArrayList<ClosedQuiz> listOfClosedQuizzes = serverQuiz.getClosedQuizList();
+                    System.out.println("CLOSED QUIZ LIST: ");
+                    for (ClosedQuiz a:listOfClosedQuizzes){
+                        ClosedQuiz b = (ClosedQuiz) a;
+                        System.out.println("QUIZ ID: " + b.getClosedQuizId()+ "\t|| HIGHEST PLAYER NAME: " + b.getPlayerName()+ "\t|| HIGHEST PLAYER SCORE: "+ b.getHighestScore());
+                    }  
+                } catch (NullPointerException | RemoteException e) {
+                    e.getCause();
+                }
+                break;
+             case 8: //exit given the Quiz ID
                 System.out.print(".");
                 try {
                     Thread.sleep(500);
@@ -292,34 +351,16 @@ public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
                             serverQuiz.getQuestionsAndAnswers(),
                             serverQuiz.getHighestScorePlayerIDMap(),
                             serverQuiz.getFileName(),
-                            serverQuiz.getQuizIDValue()
+                            serverQuiz.getQuizIDValue(),
+                            serverQuiz.getClosedQuizList()
                     );
                 } catch (IOException ex) {
                     System.out.println("COULD NOT LOCATE FILE.");
                     ex.getCause();
                 }
                 break;
-            case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
-                try {
-                    System.out.println("ENTER QUIZ ID TO REVEAL WINNER:");
-                    GetInputInterf in = new GetInput();
-                    int quizID = in.getIntInput();
-                    System.out.println(serverQuiz.getWinnerForQuiz(quizID));
-                } catch (NullPointerException | RemoteException e) {
-                    e.getCause();
-                }
-                break;
-            case 6://QUOTE QUIZ ID AND REVEAL THE CURRENT SAVED ANSWERS FOR THE SETUP CLIENT.
-                try {
-                    System.out.println("ENTER QUIZ ID TO REVEAL CURRENT ANSWERS:");
-                    GetInputInterf in = new GetInput();
-                    int quizID = in.getIntInput();
-                    getAnswers(quizID);
-                } catch (NullPointerException | RemoteException e) {
-                    e.getCause();
-                }
-                break;
-            case 7: //CLOSE DOWN
+        
+            case 9: //CLOSE DOWN
                 System.out.println("CLOSING DOWN NOW....");
                 System.out.println("(-: HAVE A GREAT DAY :-)");
                 closeDown();
@@ -331,21 +372,22 @@ public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
     }
 
     @Override
-    public synchronized void closeDown() throws RemoteException {
-        try {
-            serverQuiz.serialize(
-                    serverQuiz.getQuizzes(),
-                    serverQuiz.getQuizMap(),
-                    serverQuiz.getQuestionsAndAnswers(),
-                    serverQuiz.getHighestScorePlayerIDMap(),
-                    serverQuiz.getFileName(),
-                    serverQuiz.getQuizIDValue()
-            );
-        } catch (IOException ex) {
-            System.out.println("COULD NOT LOCATE FILE.");
-            ex.getCause();
+        public synchronized void closeDown() throws RemoteException {
+            try {
+                serverQuiz.serialize(
+                        serverQuiz.getQuizzes(),
+                        serverQuiz.getQuizMap(),
+                        serverQuiz.getQuestionsAndAnswers(),
+                        serverQuiz.getHighestScorePlayerIDMap(),
+                        serverQuiz.getFileName(),
+                        serverQuiz.getQuizIDValue(),
+                        serverQuiz.getClosedQuizList()
+                );
+            } catch (IOException ex) {
+                System.out.println("COULD NOT LOCATE FILE.");
+                ex.getCause();
+            }
+            System.exit(0);
         }
-        System.exit(0);
-    }
 
-}
+    }
