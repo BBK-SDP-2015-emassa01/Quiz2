@@ -6,6 +6,7 @@
 package QuizProject.SetupClient;
 
 import QuizProject.Servers.GetInput;
+import QuizProject.Servers.GetInputInterf;
 import QuizProject.Servers.Quiz;
 import QuizProject.Servers.QuizServer;
 import QuizProject.Servers.QuizServerInterf;
@@ -16,8 +17,6 @@ import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,11 +24,10 @@ import java.util.logging.Logger;
  */
 public class QuizSetupClient implements QuizSetupClientInterf {
 
-    QuizServerInterf serverQuiz;
+    private QuizServerInterf serverQuiz;
     boolean running = true;
 
     public Remote service;
-    //private int quizID;
 
     public QuizSetupClient() throws NotBoundException, MalformedURLException, RemoteException {
         serverQuiz = new QuizServer();
@@ -109,7 +107,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     }
 
     @Override
-    public ArrayList<String> clientAddsSetOfQuestions(int id) throws RemoteException, NullPointerException, IllegalArgumentException {
+    public synchronized ArrayList<String> clientAddsSetOfQuestions(int id) throws RemoteException, NullPointerException, IllegalArgumentException {
         ArrayList<String> newListOfQuestions = new ArrayList<>();
         String question;
         String[] answers;
@@ -117,7 +115,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         boolean collectingQ = true;
         while (collectingQ) {
             System.out.println("ENTER A QUESTION: (END TO QUIT)");
-            GetInput input = new GetInput();
+            GetInputInterf input = new GetInput();
             question = input.getStringInput();
 
             if (question.equalsIgnoreCase("end")) {
@@ -164,11 +162,11 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     }
 
     @Override
-    public String[] clientAddsAnswers(String question) {
+    public synchronized String[] clientAddsAnswers(String question) {
         String[] answers = new String[6];
         System.out.println("ENTER YOUR MULTIPLE ANSWER CHOICES");
 
-        GetInput input = new GetInput();
+        GetInputInterf input = new GetInput();
 
         answers[0] = question;
         System.out.println("CHOICE 1:");
@@ -202,12 +200,12 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     }
 
     @Override
-    public void dealWithSwitchRequest(int choice) throws RemoteException {
+    public synchronized void dealWithSwitchRequest(int choice) throws RemoteException {
         switch (choice) {
             case 1: //deal with add a new Quiz
                 try {
                     System.out.println("ENTER NEW QUIZ'S NAME:");
-                    GetInput input = new GetInput();
+                    GetInputInterf input = new GetInput();
                     String name = input.getStringInput();
                     int id = serverQuiz.addQuiz(name);
                     System.out.println("QUIZ ID: \"" + id + "\"");
@@ -226,7 +224,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     System.out.println("CURRENT QUIZ LIST: ");
                     for (Object a : quizList) {
                         Quiz b = (Quiz) a;
-                        System.out.println("QUIZ: " + b.getQuizName() + " ID: " + b.getQuizID());
+                        System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
                     }
                 } catch (NullPointerException e) {
                     e.getCause();
@@ -235,7 +233,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
             case 3:
                 try {
                     System.out.println("ENTER QUIZ ID:");
-                    GetInput input2 = new GetInput();
+                    GetInputInterf input2 = new GetInput();
                     Object[] questions2 = serverQuiz.getListOfQuestionsInQuiz(input2.getIntInput());
                     for (Object a : questions2) {
                         System.out.println("QUESTION: " + a.toString());
@@ -245,7 +243,20 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                 }
                 break;
             case 4: //exit given the Quiz ID
-                System.out.println("...");
+                System.out.print(".");
+                try {
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    ex.getCause();
+                }
                 System.out.println("SAVED!");
                 try {
                     serverQuiz.serialize(
@@ -264,7 +275,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
             case 5://QUOTE QUIZ ID AND CLOSE. FULL PLAYER DETAILS SAVED ON SERVER.
                 try {
                     System.out.println("ENTER QUIZ ID TO REVEAL WINNER:");
-                    GetInput in = new GetInput();
+                    GetInputInterf in = new GetInput();
                     int quizID = in.getIntInput();
                     System.out.println(serverQuiz.getWinnerForQuiz(quizID));
                 } catch (NullPointerException e) {
@@ -283,7 +294,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     }
 
     @Override
-    public void closeDown() throws RemoteException {
+    public synchronized void closeDown() throws RemoteException {
         try {
             serverQuiz.serialize(
                     serverQuiz.getQuizzes(),
@@ -299,4 +310,5 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         }
         System.exit(0);
     }
+    
 }

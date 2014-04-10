@@ -6,6 +6,7 @@
 package QuizProject.PlayerClient;
 
 import QuizProject.Servers.GetInput;
+import QuizProject.Servers.GetInputInterf;
 import QuizProject.Servers.Player;
 import QuizProject.Servers.Quiz;
 import QuizProject.Servers.QuizServer;
@@ -32,7 +33,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     public Remote service;
     boolean running = true;
 
-    private final GetInput getInput = new GetInput();
+    private final GetInputInterf getInput = new GetInput();
     private String playerString;
 
     private final Player player = new Player();
@@ -72,7 +73,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     }
 
     @Override
-    public synchronized void keepLooping() throws RemoteException, IllegalArgumentException {
+    public void keepLooping() throws RemoteException, IllegalArgumentException {
         if (running) {
             String tempResp = null;
             int resp = 0;
@@ -80,7 +81,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             try {
                 selectedQuizID = menu();
                 System.out.println("PRESS 1 TO PLAY THIS QUIZ ");
-                System.out.println("PRESS 2 TO CLOSE THIS QUIZ AND REVEAL WINNER ");
+                System.out.println("PRESS 2 TO REVEAL WINNER ");
 
                 Scanner input = new Scanner(System.in);
                 tempResp = input.nextLine().trim();
@@ -134,7 +135,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     }
 
     @Override
-    public void terminateQuiz() {
+    public synchronized void terminateQuiz() {
         running = false;
         System.out.println("THANKS FOR PLAYING! HOPE YOU HAD A GREAT TIME :-)");
         try {
@@ -200,7 +201,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
     }
 
     @Override
-    public void printOutQuizList() throws RemoteException {
+    public synchronized void printOutQuizList() throws RemoteException {
         Object[] quizArray;
         try {
             quizArray = serverQuiz.getCurrentQuizList();
@@ -208,22 +209,22 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             System.out.println("\n\nQUIZZES:");
             for (Object a : quizArray) {
                 Quiz b = (Quiz) a;
-                System.out.println("ID: " + b.getQuizID() + "\t|| NAME: " + b.getQuizName());
+                System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
             }
 
         } catch (NullPointerException e) {
             e.getCause();
-            System.out.println("NO SAVED QUIZZES");
+            System.out.println("\n\nNO SAVED QUIZZES YET!");
         }
     }
 
     @Override
-    public int getHighestScoreForPlayer(int quizID) throws RemoteException {
+    public synchronized int getHighestScoreForPlayer(int quizID) throws RemoteException {
         return serverQuiz.getHighestScoreForQuiz(quizID);
     }
 
     @Override
-    public void playSelectedQuiz(int selectedQuizID) throws RemoteException {
+    public synchronized void playSelectedQuiz(int selectedQuizID) throws RemoteException {
         Map<Integer, ArrayList<String>> quizMap = null;
         ArrayList<String> questions = null;
         int tempScore = 0;

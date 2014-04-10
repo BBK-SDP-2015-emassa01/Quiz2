@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+
 /**
  *
  * @author Esha
@@ -67,7 +68,21 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                     newFileName = (String) ois.readObject();
                     newQuizIDValue = (int) ois.readObject();
 
-                    System.out.println("CREATING THE QUIZ SERVER....");
+                    System.out.println("ATTEMPTING TO RE-CREATE THE LAST STATE OF THE QUIZ SERVER.");
+                    try {
+                        Thread.sleep(500);
+                        System.out.print(".");
+                        Thread.sleep(500);
+                        System.out.print(".");
+                        Thread.sleep(500);
+                        System.out.print(".");
+                        Thread.sleep(500);
+                        System.out.print(".");
+                        Thread.sleep(500);
+                        System.out.print(".");
+                    } catch (InterruptedException ex) {
+                        ex.getCause();
+                    }
 
                     this.quizzes = newQuizzes;
                     this.quizMap = newQuizMap;
@@ -79,7 +94,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                     QuizID setIncrementingValue = new QuizID();
                     setIncrementingValue.setQuizIDNumber(newQuizIDValue);
 
-                    System.out.println("DESERIALIZED THE QUIZSERVER.");
+                    System.out.println("SUCCESSFULLY COMPLETED DESERIALIZING THE QUIZSERVER.");
 
                 }
 
@@ -95,12 +110,28 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
             }
 
         } else {
+            System.out.print("LOOKING FOR PREVIOUS QUIZ DATA INFORMATION. \n"
+                    + "PLEASE WAIT.");
+            try {
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+            } catch (InterruptedException ex) {
+                ex.getCause();
+            }
             System.out.println("FILE NOT FOUND. CREATING QUIZDATA.TXT FILE");
         }
     }
 
     @Override
-    public void serialize(Set<Quiz> quizzes,
+    public synchronized void serialize(Set<Quiz> quizzes,
             Map<Integer, ArrayList<String>> quizMap,
             Map<String, String[]> questionAnswers,
             Map<Integer, Player> highestScorePlayerIDMap,
@@ -130,18 +161,35 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public String getWinnerForQuiz(int quizID) throws RemoteException {
+    public synchronized String getWinnerForQuiz(int quizID) throws RemoteException {
         String result = null;
 
-        try{
-        if (highestScorePlayerIDMap.containsKey(quizID)) {
-            Player winner = highestScorePlayerIDMap.get(quizID);
-            result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName().toUpperCase() + "\nHIGHEST SCORE: " + winner.getPlayerScore();
-            
-        } else {
-            result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
-        }
-        } catch (NullPointerException ex){
+        try {
+            if (highestScorePlayerIDMap.containsKey(quizID)) {
+                Player winner = highestScorePlayerIDMap.get(quizID);
+                result = "THE WINNER FOR QUIZ " + quizID + " IS ";
+
+                try {
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+                Thread.sleep(500);
+                System.out.print(".");
+            } catch (InterruptedException ex) {
+                ex.getCause();
+            }
+                System.out.println(winner.getPlayerName().toUpperCase() + "!!!" + "\n nHIGHEST SCORE: " + winner.getPlayerScore());
+                
+                
+            } else {
+                result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
+            }
+        } catch (NullPointerException ex) {
             result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
             System.out.println("NO SAVED HIGH SCORERS YET FOR THAT ID.");
             ex.getCause();
@@ -198,10 +246,10 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public int getHighestScoreForQuiz(int quizID) throws RemoteException, NullPointerException {
+    public synchronized int getHighestScoreForQuiz(int quizID) throws RemoteException, NullPointerException {
         int highestScoreForQuiz = 0;
         if (quizzes.isEmpty()) {
-            throw new NullPointerException("NO QUIZZES. ");
+            throw new NullPointerException("NO QUIZZES EXIST. ");
         } else {
             for (Quiz a : quizzes) {
                 if (a.getQuizID() == quizID) {
@@ -213,9 +261,9 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public void setHighestScoreForQuiz(int QuizID, int score) throws RemoteException, NullPointerException {
+    public synchronized void setHighestScoreForQuiz(int QuizID, int score) throws RemoteException, NullPointerException {
         if (quizzes.isEmpty()) {
-            throw new NullPointerException("NO QUIZZES. ");
+            throw new NullPointerException("ATTEMPTED TO SET HIGHEST SCORE FOR A QUIZ THAT DOES NOT EXIST. ");
         } else {
             for (Quiz a : quizzes) {
                 if (a.getQuizID() == QuizID) {
@@ -229,7 +277,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public int addQuiz(String s) throws RemoteException {
+    public synchronized int addQuiz(String s) throws RemoteException {
         int id = getID();
         Quiz newQuiz = new Quiz();
         newQuiz.setQuizID(id);
@@ -237,37 +285,38 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         quizzes.add(newQuiz);
         quizMap.put(id, null);
         highestScorePlayerIDMap.put(id, null);
-        System.out.println("ADDED QUIZ: " + s);
+        System.out.println("CLIENT ADDED QUIZ: " + s);
         return id;
     }
 
     @Override
-    public Object[] getCurrentQuizList() throws RemoteException, NullPointerException {
+    public synchronized Object[] getCurrentQuizList() throws RemoteException, NullPointerException {
 
+        System.out.println("CLIENT REQUESTED PRINTOUT OF QUIZZES:");
         Object[] quizArray;
         if ((quizzes.isEmpty()) | (quizzes == null)) {
-            throw new NullPointerException("NO SAVED QUIZZES. ");
+            throw new NullPointerException("BUT THERE ARE NO SAVED QUIZZES. ");
         } else {
             quizArray = quizzes.toArray();
 
             for (Object a : quizArray) {
                 Quiz b = (Quiz) a;
-                System.out.println("QUIZ: " + b.getQuizName() + "  ID: " + b.getQuizID());
+                
+                System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
             }
         }
         return quizArray;
     }
 
     @Override
-    public Object[] getListOfQuestionsInQuiz(int id) throws RemoteException {
+    public synchronized Object[] getListOfQuestionsInQuiz(int id) throws RemoteException {
         if (quizMap.containsKey(id)) {
             ArrayList<String> thisListOfQuestions = quizMap.get(id);
-            System.out.println(thisListOfQuestions.toString());
             Object[] thisArrayOfQuestions = thisListOfQuestions.toArray();
             return thisArrayOfQuestions;
         } else {
             Object[] message = new String[1];
-            message[0] = "ID DOES NOT EXIST";
+            message[0] = "CLIENT TRIED TO ACCESS ID THAT DOES NOT EXIST";
             return message;
         }
     }
@@ -294,21 +343,20 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                 quizMap.put(ID, newListOfQuestions);
                 System.out.println(quizMap.get(ID).toString());
 
-                System.out.println("ADDED QUESTION TO QUIZ:" + ID);
+                System.out.println("CLIENT ADDED QUESTION TO QUIZ:" + ID);
             }
         } catch (IllegalArgumentException e) {
-            System.out.println("NO SUCH QUIZ ID. ");
+            System.out.println("CLIENT TRIED TO ACCESS QUIZ. THERE IS NO SUCH QUIZ WITH THAT ID. ");
             e.getCause();
         }
     }
 
     @Override
-    public void serverAddsAnswers(String question, String[] answers) throws RemoteException, NullPointerException, IllegalArgumentException {
+    public synchronized void serverAddsAnswers(String question, String[] answers) throws RemoteException, NullPointerException, IllegalArgumentException {
         try {
             questionAnswers.put(question, answers);
-            System.out.println("QUIZ: " + question + " HAS BEEN ADDED/AMENDED IN THE QUESTION/ANSWERS MAP. ");
-            System.out.println("QA" + questionAnswers.toString());
-        } catch (NullPointerException| IllegalArgumentException e) {
+            System.out.println("QUIZ: " + question + " HAS BEEN ADDED TO THE CLIENT'S QUESTION/ANSWERS MAP. ");
+        } catch (NullPointerException | IllegalArgumentException e) {
             e.getCause();
         }
     }
