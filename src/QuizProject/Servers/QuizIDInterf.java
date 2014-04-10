@@ -6,12 +6,14 @@
 
 package QuizProject.Servers;
 
+import java.io.Serializable;
+
 
 /**
  *
  * @author Esha
  */
-public interface QuizIDInterf {
+public interface QuizIDInterf{
 
     /**
      *

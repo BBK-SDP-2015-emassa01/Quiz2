@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Player Object holds players name, score.
  * @author Esha
  */
-public interface PlayerInterf extends Serializable {
+public interface PlayerInterf {
 
     /**
      * getter 

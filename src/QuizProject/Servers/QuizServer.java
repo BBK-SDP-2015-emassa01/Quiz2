@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.Set;
  *
  * @author Esha
  */
-public class QuizServer extends UnicastRemoteObject implements QuizServerInterf {
+public class QuizServer extends UnicastRemoteObject implements QuizServerInterf, Serializable {
 
     private Set<Quiz> quizzes = new HashSet<>(); //set of all current quizzes
 
@@ -166,23 +167,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
         try {
             if (highestScorePlayerIDMap.containsKey(quizID)) {
                 Player winner = highestScorePlayerIDMap.get(quizID);
-                result = "THE WINNER FOR QUIZ " + quizID + " IS ";
-
-                try {
-                    Thread.sleep(500);
-                    System.out.print(".");
-                    Thread.sleep(500);
-                    System.out.print(".");
-                    Thread.sleep(500);
-                    System.out.print(".");
-                    Thread.sleep(500);
-                    System.out.print(".");
-                    Thread.sleep(500);
-                    System.out.print(".");
-                } catch (InterruptedException ex) {
-                    ex.getCause();
-                }
-                System.out.println(winner.getPlayerName().toUpperCase() + "!!!" + "\n nHIGHEST SCORE: " + winner.getPlayerScore());
+                result = "THE WINNER FOR QUIZ " + quizID + " IS "+winner.getPlayerName().toUpperCase() + "!!!" + "\nHIGHEST SCORE: " + winner.getPlayerScore();
 
             } else {
                 result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";

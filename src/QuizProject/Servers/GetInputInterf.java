@@ -6,11 +6,13 @@
 
 package QuizProject.Servers;
 
+import java.io.Serializable;
+
 /**
  * StreamLines the process of Scanner in (and parsing to integer for int inputs).
  * @author Esha
  */
-public interface GetInputInterf {
+public interface GetInputInterf  {
 
     /**
      * Parses a String from keyboard to an int input.

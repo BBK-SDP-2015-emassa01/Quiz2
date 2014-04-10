@@ -5,6 +5,7 @@
  */
 package QuizProject.Servers;
 
+import java.io.Serializable;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -12,7 +13,7 @@ import java.util.Scanner;
  *
  * @author Esha
  */
-public class GetInput implements GetInputInterf {
+public class GetInput implements GetInputInterf, Serializable{
 
     @Override
     public int getIntInput() {

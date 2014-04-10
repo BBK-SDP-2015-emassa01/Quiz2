@@ -7,6 +7,7 @@
 package QuizProject.PlayerClient;
 
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 
 /**
