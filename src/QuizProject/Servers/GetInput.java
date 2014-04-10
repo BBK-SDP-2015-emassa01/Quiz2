@@ -5,7 +5,6 @@
  */
 package QuizProject.Servers;
 
-import java.rmi.RemoteException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

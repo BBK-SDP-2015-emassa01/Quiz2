@@ -43,30 +43,6 @@ public class QuizPlayerClientTest {
     }
 
     /**
-     * Test of launch method, of class QuizPlayerClient.
-     */
-//    @Test
-//    public void testLaunch() throws Exception {
-//        System.out.println("launch");
-//        QuizPlayerClient instance = new QuizPlayerClient();
-//        instance.launch();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of keepLooping method, of class QuizPlayerClient.
-//     */
-//    @Test
-//    public void testKeepLooping() throws Exception {
-//        System.out.println("keepLooping");
-//        QuizPlayerClient instance = new QuizPlayerClient();
-//        instance.keepLooping();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-    /**
      * Test of terminateQuiz method, of class QuizPlayerClient.
      *  @throws java.rmi.NotBoundException
      * @throws java.net.MalformedURLException
@@ -78,19 +54,8 @@ public class QuizPlayerClientTest {
         QuizPlayerClient instance = new QuizPlayerClient();
         System.out.println("Requires Scanner Object...");
         instance.terminateQuiz();
+        assertFalse(instance.running);
         
-    }
-
-    /**
-     * Test of main method, of class QuizPlayerClient.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        QuizPlayerClient.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
