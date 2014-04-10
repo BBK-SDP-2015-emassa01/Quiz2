@@ -12,6 +12,7 @@ import QuizProject.Servers.Quiz;
 import QuizProject.Servers.QuizServer;
 import QuizProject.Servers.QuizServerInterf;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -27,7 +28,7 @@ import java.util.Scanner;
  *
  * @author Esha
  */
-public class QuizPlayerClient implements QuizPlayerClientInterf {
+public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
 
     private QuizServerInterf serverQuiz;
     public Remote service;
@@ -43,9 +44,9 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
         service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
         boolean validInput = true;
 
-//        if (System.getSecurityManager() == null) {
-//        System.setSecurityManager(new RMISecurityManager());
-//        }
+        if (System.getSecurityManager() == null) {
+        System.setSecurityManager(new RMISecurityManager());
+        }
         System.out.println("\t\t\t\tWELCOME! PLAY A QUIZ HERE!");
         System.out.println("ENTER YOUR PLAYER NAME: ");
         Scanner input = new Scanner(System.in);
@@ -102,7 +103,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                             serverQuiz.getFileName(),
                             serverQuiz.getQuizIDValue()
                     );
-                    System.out.println("FINISHED SERIALIZATION.");
+                    System.out.println("SAVED.");
                     keepLooping();
                 } else {
                     System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");

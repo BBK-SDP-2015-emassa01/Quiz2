@@ -11,6 +11,7 @@ import QuizProject.Servers.Quiz;
 import QuizProject.Servers.QuizServer;
 import QuizProject.Servers.QuizServerInterf;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -24,7 +25,7 @@ import java.util.Map;
  *
  * @author Esha
  */
-public class QuizSetupClient implements QuizSetupClientInterf {
+public class QuizSetupClient implements QuizSetupClientInterf,  Serializable {
 
     private QuizServerInterf serverQuiz;
     boolean running = true;
@@ -34,9 +35,9 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     public QuizSetupClient() throws NotBoundException, MalformedURLException, RemoteException {
         serverQuiz = new QuizServer();
         Remote service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
-//        if (System.getSecurityManager() == null) {
-//        System.setSecurityManager(new RMISecurityManager());
-//        }
+        if (System.getSecurityManager() == null) {
+        System.setSecurityManager(new RMISecurityManager());
+        }
         System.out.println("\t\t\t\tWELCOME TO THE QUIZ SETUP TOOL!");
     }
 

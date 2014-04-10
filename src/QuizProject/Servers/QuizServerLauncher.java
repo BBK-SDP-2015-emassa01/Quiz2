@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.UnmarshalException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
 /**
  *
@@ -23,25 +23,32 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class QuizServerLauncher implements QuizServerLauncherInterf {
 
-    QuizServerInterf serverQuiz;
-    QuizSetupClient client;
-    QuizPlayerClient player;
+    private QuizServerInterf serverQuiz;
+    private QuizSetupClient client;
+    private QuizPlayerClient player;
 
-    String serviceName = "quiz";
+    private String serviceName = "quiz";
+
+    private boolean running = true;
 
     public QuizServerLauncher() throws RemoteException {
         // do nothing
     }
 
     public static void main(String[] args) throws RemoteException {
-        QuizServerLauncher test = new QuizServerLauncher();
-        test.launch();
+        try {
+            QuizServerLauncher test = new QuizServerLauncher();
+            test.launch();
+        } catch (InterruptedException e) {
+            e.getCause();
+        }
     }
 
-    private void launch() {
-//        if (System.getSecurityManager() == null) {
-//            System.setSecurityManager(new RMISecurityManager());
-//        }
+    private void launch() throws InterruptedException {
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
+
         try {
             LocateRegistry.createRegistry(1099);
             QuizServerInterf serverQuiz = new QuizServer();
@@ -53,36 +60,43 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
 
             ex.printStackTrace();
         }
-
     }
 
     @Override
     public void close() throws RemoteException {
-        if (serverQuiz == null) {
-            throw new NullPointerException("THERE IS NO QUIZ SERVER");
-        } else {
-            try {
-                serverQuiz.serialize(
-                        serverQuiz.getQuizzes(),
-                        serverQuiz.getQuizMap(),
-                        serverQuiz.getQuestionsAndAnswers(),
-                        serverQuiz.getHighestScorePlayerIDMap(),
-                        serverQuiz.getFileName(),
-                        serverQuiz.getQuizIDValue()
-                );
-            } catch (IOException ex) {
-                System.out.println("COULD NOT LOCATE FILE.");
-                ex.getCause();
+        try {
+            if (serverQuiz == null) {
+                throw new NullPointerException("THERE IS NO QUIZ SERVER");
             }
+        } catch (NullPointerException e) {
+            e.getCause();
+        }
+
+        try {
+            serverQuiz.serialize(
+                    serverQuiz.getQuizzes(),
+                    serverQuiz.getQuizMap(),
+                    serverQuiz.getQuestionsAndAnswers(),
+                    serverQuiz.getHighestScorePlayerIDMap(),
+                    serverQuiz.getFileName(),
+                    serverQuiz.getQuizIDValue()
+            );
+        } catch (IOException | NullPointerException ex) {
+            System.out.println("COULD NOT LOCATE FILE.");
+            ex.getCause();
         }
 
         Registry registry = LocateRegistry.getRegistry(1099);
         try {
-            registry.unbind(serviceName);
-            UnicastRemoteObject.unexportObject(client.service, true);
-            UnicastRemoteObject.unexportObject(player.service, true);
+//            registry.unbind(serviceName);
+            String registryHost = "//localhost/";
+            Naming.unbind(registryHost + serviceName);
+//            UnicastRemoteObject.unexportObject(client.service, true);
+//            UnicastRemoteObject.unexportObject(player.service, true);
         } catch (NotBoundException ex) {
             throw new RemoteException("DID NOT UNBIND");
+        } catch (MalformedURLException ex) {
+            ex.getCause();
         }
     }
 
