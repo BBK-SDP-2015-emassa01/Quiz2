@@ -43,6 +43,14 @@ public interface QuizSetupClientInterf {
      */
     void dealWithSwitchRequest(int choice) throws RemoteException;
 
+      /**
+     * Returns the correct answers for the Player.
+     * @param selectedQuizID to play
+     * @throws RemoteException
+     */
+    void getAnswers(int selectedQuizID) throws RemoteException;
+    
+    
     /**
      * Until user terminates, presents the menu() after action is complete.
      * @throws RemoteException

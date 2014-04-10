@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *
@@ -65,12 +67,13 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         int switchValue = 0;
 
         try {
-            System.out.println("-> PRESS 1 TO ADD QUIZ.");
+            System.out.println("\n-> PRESS 1 TO ADD QUIZ.");
             System.out.println("-> PRESS 2 FOR QUIZ LIST.");
             System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ");
             System.out.println("-> PRESS 4 TO SAVE.");
             System.out.println("-> PRESS 5 TO REVEAL WINNER.");
-            System.out.println("-> PRESS 6 TO CLOSE DOWN.");
+            System.out.println("-> PRESS 6 TO REVEAL THE CORRECT MULTIPLE CHOICE ANSWERS FOR A QUIZ.");
+            System.out.println("-> PRESS 7 TO CLOSE DOWN.");
 
             GetInput input = new GetInput();
             switchValue = input.getIntInput();
@@ -142,7 +145,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     answers = clientAddsAnswers(question);
                     serverQuiz.serverAddsAnswers(question, answers);
                     serverQuiz.getQuestionsAndAnswers().put(question, answers);
-                } catch (NullPointerException | IllegalArgumentException e) {
+                } catch (NullPointerException | IllegalArgumentException | RemoteException e) {
                     System.out.println("INVALID INPUT. LET'S START THIS ONE AGAIN.");
                     e.getCause();
                 }
@@ -200,6 +203,29 @@ public class QuizSetupClient implements QuizSetupClientInterf {
     }
 
     @Override
+    public synchronized void getAnswers(int selectedQuizID) throws RemoteException {
+        Map<Integer, ArrayList<String>> quizMap = null;
+        ArrayList<String> questions = null;
+
+        try {
+            quizMap = serverQuiz.getQuizMap();
+            questions = quizMap.get(selectedQuizID);
+            for (String a : questions) {
+                String[] temp = serverQuiz.getQuestionsAndAnswers().get(a);
+                System.out.println("\nQUESTION: " + a + "\nTHE MULTIPLE CHOICE OPTIONS ARE: ");
+                System.out.println("OPTION 1: "+temp[1]);
+                System.out.println("OPTION 2: "+temp[2]);
+                System.out.println("OPTION 3: "+temp[3]);
+                System.out.println("OPTION 4: "+temp[4]);
+                System.out.println("THE CORRECT MULTIPLE CHOICE OPTION TO SELECT IS: " + temp[5]);
+            }
+        } catch (NullPointerException e) {
+            System.out.println("NO ANSWERS STORED YET! YOU COULD ADD SOME NOW!");
+            e.getCause();
+        }
+    }
+
+    @Override
     public synchronized void dealWithSwitchRequest(int choice) throws RemoteException {
         switch (choice) {
             case 1: //deal with add a new Quiz
@@ -212,7 +238,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     System.out.println("ENTER THE QUESTIONS. TYPE 'END' TO FINISH. ");
                     ArrayList<String> questionSet = clientAddsSetOfQuestions(id);
                     serverQuiz.serverAddsSetOfQuestions(id, questionSet);
-                } catch (NullPointerException e) {
+                } catch (NullPointerException | RemoteException e) {
                     System.out.println("YOU DIDNT ENTER AN INPUT. LET'S DO THIS ONE AGAIN.");
                     e.getCause();
                 }
@@ -226,7 +252,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                         Quiz b = (Quiz) a;
                         System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
                     }
-                } catch (NullPointerException e) {
+                } catch (NullPointerException | RemoteException e) {
                     e.getCause();
                 }
                 break;
@@ -238,7 +264,7 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     for (Object a : questions2) {
                         System.out.println("QUESTION: " + a.toString());
                     }
-                } catch (NullPointerException e) {
+                } catch (NullPointerException | RemoteException e) {
                     e.getCause();
                 }
                 break;
@@ -278,11 +304,21 @@ public class QuizSetupClient implements QuizSetupClientInterf {
                     GetInputInterf in = new GetInput();
                     int quizID = in.getIntInput();
                     System.out.println(serverQuiz.getWinnerForQuiz(quizID));
-                } catch (NullPointerException e) {
+                } catch (NullPointerException | RemoteException e) {
                     e.getCause();
                 }
                 break;
-            case 6: //CLOSE DOWN
+            case 6://QUOTE QUIZ ID AND REVEAL THE CURRENT SAVED ANSWERS FOR THE SETUP CLIENT.
+                try {
+                    System.out.println("ENTER QUIZ ID TO REVEAL CURRENT ANSWERS:");
+                    GetInputInterf in = new GetInput();
+                    int quizID = in.getIntInput();
+                    getAnswers(quizID);
+                } catch (NullPointerException | RemoteException e) {
+                    e.getCause();
+                }
+                break;
+            case 7: //CLOSE DOWN
                 System.out.println("CLOSING DOWN NOW....");
                 System.out.println("(-: HAVE A GREAT DAY :-)");
                 closeDown();
@@ -310,5 +346,5 @@ public class QuizSetupClient implements QuizSetupClientInterf {
         }
         System.exit(0);
     }
-    
+
 }

@@ -15,13 +15,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.RMISecurityManager;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
-
 
 /**
  *
@@ -113,8 +113,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                 e.getCause();
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
-                    ex.getCause();
-                }
+                ex.getCause();
+            }
         }
         if (!running) {
             try {
@@ -128,8 +128,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
                 );
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
-                    ex.getCause();
-                }
+                ex.getCause();
+            }
             System.exit(0);
         }
     }
@@ -152,8 +152,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
             ex.getCause();
         } catch (IOException ex) {
             System.out.println("COULD NOT LOCATE FILE.");
-                    ex.getCause();
-                }
+            ex.getCause();
+        }
         System.exit(0);
     }
 
@@ -263,7 +263,6 @@ public class QuizPlayerClient implements QuizPlayerClientInterf {
 
         System.out.println("CURRENT HIGHEST SCORE FOR THIS QUIZ = " + serverQuiz.getHighestScoreForQuiz(selectedQuizID));
 
-        
         if (tempScore >= serverQuiz.getHighestScoreForQuiz(selectedQuizID)) {
             System.out.println("\n\nYOU HAVE THE HIGHEST SCORE SO FAR!");
             serverQuiz.setHighestScoreForQuiz(selectedQuizID, tempScore);

@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
  *
  * @author Esha
@@ -170,22 +169,21 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
                 result = "THE WINNER FOR QUIZ " + quizID + " IS ";
 
                 try {
-                Thread.sleep(500);
-                System.out.print(".");
-                Thread.sleep(500);
-                System.out.print(".");
-                Thread.sleep(500);
-                System.out.print(".");
-                Thread.sleep(500);
-                System.out.print(".");
-                Thread.sleep(500);
-                System.out.print(".");
-            } catch (InterruptedException ex) {
-                ex.getCause();
-            }
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                    System.out.print(".");
+                    Thread.sleep(500);
+                    System.out.print(".");
+                } catch (InterruptedException ex) {
+                    ex.getCause();
+                }
                 System.out.println(winner.getPlayerName().toUpperCase() + "!!!" + "\n nHIGHEST SCORE: " + winner.getPlayerScore());
-                
-                
+
             } else {
                 result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
             }
@@ -246,79 +244,102 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public synchronized int getHighestScoreForQuiz(int quizID) throws RemoteException, NullPointerException {
+    public synchronized int getHighestScoreForQuiz(int quizID) throws RemoteException {
+
         int highestScoreForQuiz = 0;
-        if (quizzes.isEmpty()) {
-            throw new NullPointerException("NO QUIZZES EXIST. ");
-        } else {
-            for (Quiz a : quizzes) {
-                if (a.getQuizID() == quizID) {
-                    highestScoreForQuiz = a.getHighestScore();
+        try {
+            if (quizzes.isEmpty()) {
+                throw new NullPointerException("NO QUIZZES EXIST. ");
+            } else {
+                for (Quiz a : quizzes) {
+                    if (a.getQuizID() == quizID) {
+                        highestScoreForQuiz = a.getHighestScore();
+                    }
                 }
             }
+        } catch (NullPointerException e) {
+            e.getCause();
         }
         return highestScoreForQuiz;
     }
 
     @Override
-    public synchronized void setHighestScoreForQuiz(int QuizID, int score) throws RemoteException, NullPointerException {
-        if (quizzes.isEmpty()) {
-            throw new NullPointerException("ATTEMPTED TO SET HIGHEST SCORE FOR A QUIZ THAT DOES NOT EXIST. ");
-        } else {
-            for (Quiz a : quizzes) {
-                if (a.getQuizID() == QuizID) {
-                    if (a.getHighestScore() < score) {
-                        a.setHighestScore(score);
+    public synchronized void setHighestScoreForQuiz(int QuizID, int score) throws RemoteException {
+        try {
+            if (quizzes.isEmpty()) {
+                throw new NullPointerException("ATTEMPTED TO SET HIGHEST SCORE FOR A QUIZ THAT DOES NOT EXIST. ");
+            } else {
+                for (Quiz a : quizzes) {
+                    if (a.getQuizID() == QuizID) {
+                        if (a.getHighestScore() < score) {
+                            a.setHighestScore(score);
 
+                        }
                     }
                 }
             }
+        } catch (NullPointerException e) {
+            e.getCause();
         }
     }
 
     @Override
     public synchronized int addQuiz(String s) throws RemoteException {
+
         int id = getID();
-        Quiz newQuiz = new Quiz();
-        newQuiz.setQuizID(id);
-        newQuiz.setQuizName(s);
-        quizzes.add(newQuiz);
-        quizMap.put(id, null);
-        highestScorePlayerIDMap.put(id, null);
-        System.out.println("CLIENT ADDED QUIZ: " + s);
+        try {
+            Quiz newQuiz = new Quiz();
+            newQuiz.setQuizID(id);
+            newQuiz.setQuizName(s);
+            quizzes.add(newQuiz);
+            quizMap.put(id, null);
+            highestScorePlayerIDMap.put(id, null);
+            System.out.println("CLIENT ADDED QUIZ: " + s);
+        } catch (NullPointerException e) {
+            e.getCause();
+        }
         return id;
     }
 
     @Override
-    public synchronized Object[] getCurrentQuizList() throws RemoteException, NullPointerException {
+    public synchronized Object[] getCurrentQuizList() throws RemoteException {
 
         System.out.println("CLIENT REQUESTED PRINTOUT OF QUIZZES:");
-        Object[] quizArray;
-        if ((quizzes.isEmpty()) | (quizzes == null)) {
-            throw new NullPointerException("BUT THERE ARE NO SAVED QUIZZES. ");
-        } else {
-            quizArray = quizzes.toArray();
+        Object[] quizArray = null;
+        try {
+            if ((quizzes.isEmpty()) | (quizzes == null)) {
+                throw new NullPointerException("BUT THERE ARE NO SAVED QUIZZES. ");
+            } else {
+                quizArray = quizzes.toArray();
 
-            for (Object a : quizArray) {
-                Quiz b = (Quiz) a;
-                
-                System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
+                for (Object a : quizArray) {
+                    Quiz b = (Quiz) a;
+
+                    System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
+                }
             }
+        } catch (NullPointerException e) {
+            e.getCause();
         }
         return quizArray;
     }
 
     @Override
     public synchronized Object[] getListOfQuestionsInQuiz(int id) throws RemoteException {
-        if (quizMap.containsKey(id)) {
-            ArrayList<String> thisListOfQuestions = quizMap.get(id);
-            Object[] thisArrayOfQuestions = thisListOfQuestions.toArray();
-            return thisArrayOfQuestions;
-        } else {
-            Object[] message = new String[1];
-            message[0] = "CLIENT TRIED TO ACCESS ID THAT DOES NOT EXIST";
-            return message;
+        Object[] thisArrayOfQuestions = null;
+        try {
+            if (quizMap.containsKey(id)) {
+                ArrayList<String> thisListOfQuestions = quizMap.get(id);
+                thisArrayOfQuestions = thisListOfQuestions.toArray();
+                return thisArrayOfQuestions;
+            } else {
+                thisArrayOfQuestions = new String[1];
+                thisArrayOfQuestions[0] = "CLIENT TRIED TO ACCESS ID THAT DOES NOT EXIST";
+            }
+        } catch (NullPointerException e) {
+            e.getCause();
         }
+        return thisArrayOfQuestions;
     }
 
     @Override
@@ -337,11 +358,10 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public synchronized void serverAddsSetOfQuestions(int ID, ArrayList<String> newListOfQuestions) throws RemoteException, IllegalArgumentException {
+    public synchronized void serverAddsSetOfQuestions(int ID, ArrayList<String> newListOfQuestions) throws RemoteException {
         try {
             if (quizMap.containsKey(ID)) {
                 quizMap.put(ID, newListOfQuestions);
-                System.out.println(quizMap.get(ID).toString());
 
                 System.out.println("CLIENT ADDED QUESTION TO QUIZ:" + ID);
             }
@@ -352,7 +372,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf 
     }
 
     @Override
-    public synchronized void serverAddsAnswers(String question, String[] answers) throws RemoteException, NullPointerException, IllegalArgumentException {
+    public synchronized void serverAddsAnswers(String question, String[] answers) throws RemoteException {
         try {
             questionAnswers.put(question, answers);
             System.out.println("QUIZ: " + question + " HAS BEEN ADDED TO THE CLIENT'S QUESTION/ANSWERS MAP. ");

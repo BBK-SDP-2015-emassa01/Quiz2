@@ -50,7 +50,7 @@ public interface QuizPlayerClientInterf {
      * @throws RemoteException
      */
     void playSelectedQuiz(int selectedQuizID) throws RemoteException;
-
+    
     /**
      * Prints to screen the current set of Quizzes Names and IDs in the set. 
      * @throws RemoteException
