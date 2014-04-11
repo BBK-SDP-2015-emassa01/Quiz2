@@ -6,9 +6,6 @@
 
 package QuizProject.Servers;
 
-import java.io.Serializable;
-
-
 /**
  *
  * @author Esha
@@ -17,7 +14,7 @@ public interface QuizIDInterf{
 
     /**
      *
-     * @returns an incrementing ID number for Quiz ID. The incrementing number means that QuizID is unique.
+     * @return an incrementing ID number for Quiz ID. The incrementing number means that QuizID is unique.
      */
     int getQuizIDNumber();
     

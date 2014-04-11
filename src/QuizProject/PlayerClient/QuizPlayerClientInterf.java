@@ -6,8 +6,6 @@
 
 package QuizProject.PlayerClient;
 
-
-import java.io.Serializable;
 import java.rmi.RemoteException;
 
 /**
@@ -38,7 +36,7 @@ public interface QuizPlayerClientInterf {
 
     /**
      * Presents options for what the player can do.
-     * @returns the choice that the player selects
+     * @return the choice that the player selects
      * @throws RemoteException
      */
     int menu() throws RemoteException;

@@ -45,6 +45,7 @@ public class QuizServerTest {
 
     /**
      * Test of serialize method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testSerialize() throws Exception {
@@ -53,15 +54,17 @@ public class QuizServerTest {
         Map<Integer, ArrayList<String>> quizMap = new HashMap<>();
         Map<String, String[]> questionAnswers = new HashMap<>();
         Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();
+        ArrayList<ClosedQuiz> closedQuizList = new ArrayList<>();
         String fileName = "testQuizData.txt";
         int quizIDValue = 2;
         QuizServer instance = new QuizServer();
-        instance.serialize(quizzes, quizMap, questionAnswers, highestScorePlayerIDMap, fileName, quizIDValue);
+        instance.serialize(quizzes, quizMap, questionAnswers, highestScorePlayerIDMap, fileName, quizIDValue, closedQuizList);
         //serializes fine.
     }
 
     /**
      * Test of getWinnerForQuiz method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetWinnerForQuiz() throws Exception {
@@ -94,6 +97,7 @@ public class QuizServerTest {
 
     /**
      * Test of setHighestScorePlayerIDMap method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testSetHighestScorePlayerIDMap() throws Exception {
@@ -108,6 +112,7 @@ public class QuizServerTest {
 
     /**
      * Test of getQuizzes method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetQuizzes() throws Exception {
@@ -136,6 +141,7 @@ public class QuizServerTest {
 
     /**
      * Test of getQuestionsAndAnswers method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetQuestionsAndAnswers() throws Exception {
@@ -150,6 +156,7 @@ public class QuizServerTest {
 
     /**
      * Test of getFileName method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetFileName() throws Exception {
@@ -164,6 +171,7 @@ public class QuizServerTest {
 
     /**
      * Test of getID method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetID() throws Exception {
@@ -178,6 +186,7 @@ public class QuizServerTest {
 
     /**
      * Test of getHighestScoreForQuiz method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetHighestScoreForQuiz() throws Exception {
@@ -193,6 +202,7 @@ public class QuizServerTest {
 
     /**
      * Test of setHighestScoreForQuiz method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testSetHighestScoreForQuiz() throws Exception {
@@ -207,6 +217,7 @@ public class QuizServerTest {
 
     /**
      * Test of addQuiz method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddQuiz() throws Exception {
@@ -222,6 +233,7 @@ public class QuizServerTest {
 
     /**
      * Test of getCurrentQuizList method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetCurrentQuizList() throws Exception {
@@ -236,6 +248,7 @@ public class QuizServerTest {
 
     /**
      * Test of getListOfQuestionsInQuiz method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testGetListOfQuestionsInQuiz() throws Exception {
@@ -251,6 +264,7 @@ public class QuizServerTest {
 
     /**
      * Test of checkIfQuizIDExists method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testCheckIfQuizIDExists() throws Exception {
@@ -266,6 +280,7 @@ public class QuizServerTest {
 
     /**
      * Test of serverAddsSetOfQuestions method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testServerAddsSetOfQuestions() throws Exception {
@@ -280,6 +295,7 @@ public class QuizServerTest {
 
     /**
      * Test of serverAddsAnswers method, of class QuizServer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testServerAddsAnswers() throws Exception {

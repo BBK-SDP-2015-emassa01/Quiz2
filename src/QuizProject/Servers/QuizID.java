@@ -22,12 +22,12 @@ public class QuizID implements QuizIDInterf, Serializable {
     
     @Override
     public int getQuizIDNumber(){
-        return this.QuizIDNumber;
+        return QuizID.QuizIDNumber;
     }
     
     //for testing only.
     public void setQuizIDNumber(int number){
-         this.QuizIDNumber = number;
+         QuizID.QuizIDNumber = number;
     }
     
     

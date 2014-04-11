@@ -6,8 +6,6 @@
 
 package QuizProject.Servers;
 
-import java.io.Serializable;
-
 /**
  * StreamLines the process of Scanner in (and parsing to integer for int inputs).
  * @author Esha
@@ -22,7 +20,7 @@ public interface GetInputInterf  {
 
     /**
      *
-     * @returns String representation of keyboard input.
+     * @return String representation of keyboard input.
      */
     String getStringInput();
       

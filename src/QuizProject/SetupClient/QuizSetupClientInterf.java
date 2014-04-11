@@ -25,7 +25,7 @@ public interface QuizSetupClientInterf {
     /**
      * Allows the client to add a series of Questions to a Quiz ID
      * @param id of Quiz
-     * @returns the questions that have been added in ArrayList
+     * @return the questions that have been added in ArrayList
      * @throws RemoteException
      */
     ArrayList<String> clientAddsSetOfQuestions(int id) throws RemoteException;

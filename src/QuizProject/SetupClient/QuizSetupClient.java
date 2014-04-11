@@ -51,7 +51,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
             keepLooping();
 
         } catch (ClassCastException e) {
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -60,7 +60,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
             QuizSetupClientInterf quizClient = new QuizSetupClient();
             quizClient.launch();
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
-            ex.getMessage();
+            ex.printStackTrace();
         }
     }
 
@@ -79,7 +79,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
             System.out.println("-> PRESS 5 TO REVEAL WINNER!!!");
             System.out.println("-> PRESS 6 TO CLOSE A QUIZ DOWN AND REMOVE IT.");
             
-            System.out.println("CLOSED QUIZZES: ");
+            System.out.println("\nCLOSED QUIZZES: ");
             System.out.println("-> PRESS 7 FOR THE 'CLOSED QUIZZES' LIST.");
             
             System.out.println("\nSAVE AND CLOSE: ");
@@ -90,7 +90,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
             switchValue = input.getIntInput();
 
         } catch (NullPointerException | IllegalArgumentException e) {
-            e.getMessage();
+            e.printStackTrace();
         }
         return switchValue;
     }
@@ -114,7 +114,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                 );
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
-                ex.getCause();
+                ex.printStackTrace();
             }
 
             System.exit(0);
@@ -150,7 +150,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                     );
                 } catch (IOException ex) {
                     System.out.println("COULD NOT LOCATE FILE.");
-                    ex.getCause();
+                    ex.printStackTrace();
                 }
             } else {
                 try {
@@ -160,7 +160,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                     serverQuiz.getQuestionsAndAnswers().put(question, answers);
                 } catch (NullPointerException | IllegalArgumentException | RemoteException e) {
                     System.out.println("INVALID INPUT. LET'S START THIS ONE AGAIN.");
-                    e.getCause();
+                    e.printStackTrace();
                 }
 
             }
@@ -172,7 +172,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                 System.out.println("ADDED: " + a.toString());
             }
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
         return newListOfQuestions;
     }
@@ -234,7 +234,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
             }
         } catch (NullPointerException e) {
             System.out.println("NO ANSWERS STORED YET! YOU COULD ADD SOME NOW!");
-            e.getCause();
+            e.printStackTrace();
         }
     }
 
@@ -266,7 +266,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                         System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
                     }
                 } catch (NullPointerException | RemoteException e) {
-                    e.getCause();
+                    e.printStackTrace();
                 }
                 break;
             case 3:
@@ -278,7 +278,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                         System.out.println("QUESTION: " + a.toString());
                     }
                 } catch (NullPointerException | RemoteException e) {
-                    e.getCause();
+                    e.printStackTrace();
                 }
                 break;
             case 4://QUOTE QUIZ ID AND REVEAL THE CURRENT SAVED ANSWERS FOR THE SETUP CLIENT.
@@ -288,7 +288,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                     int quizID = in.getIntInput();
                     getAnswers(quizID);
                 } catch (NullPointerException | RemoteException e) {
-                    e.getCause();
+                    e.printStackTrace();
                 }
                 break;
            
@@ -299,7 +299,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                     int quizID = in.getIntInput();
                     System.out.println(serverQuiz.getWinnerForQuiz(quizID));
                 } catch (NullPointerException | RemoteException e) {
-                    e.getCause();
+                    e.printStackTrace();
                 }
                 break;
             
@@ -311,8 +311,8 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                     serverQuiz.removeQuiz(quizID);
                     System.out.println("YOU CLOSED AND REMOVED QUIZ "+ quizID);
                     } catch (NullPointerException | RemoteException e) {
-                        System.out.println("COULD NOT REMOVE THAT QUIZ.");
-                    e.getCause();
+                        System.out.println("COULD NOT REMOVE THAT QUIZ. EITHER IT DIDN'T EXIST, OR IT HAD NO QUESTIONS STORED.");
+                    e.printStackTrace();
                 }
                     break;
             case 7:
@@ -325,7 +325,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                         System.out.println("QUIZ ID: " + b.getClosedQuizId()+ "\t|| HIGHEST PLAYER NAME: " + b.getPlayerName()+ "\t|| HIGHEST PLAYER SCORE: "+ b.getHighestScore());
                     }  
                 } catch (NullPointerException | RemoteException e) {
-                    e.getCause();
+                    e.printStackTrace();
                 }
                 break;
              case 8: //exit given the Quiz ID
@@ -356,7 +356,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                     );
                 } catch (IOException ex) {
                     System.out.println("COULD NOT LOCATE FILE.");
-                    ex.getCause();
+                    ex.printStackTrace();
                 }
                 break;
         
@@ -385,7 +385,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
                 );
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
-                ex.getCause();
+                ex.printStackTrace();
             }
             System.exit(0);
         }

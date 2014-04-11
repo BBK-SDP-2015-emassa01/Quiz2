@@ -27,9 +27,9 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
     private QuizSetupClient client;
     private QuizPlayerClient player;
 
-    private String serviceName = "quiz";
+    private final String serviceName = "quiz";
 
-    private boolean running = true;
+    private final boolean running = true;
 
     public QuizServerLauncher() throws RemoteException {
         // do nothing
@@ -40,7 +40,7 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
             QuizServerLauncher test = new QuizServerLauncher();
             test.launch();
         } catch (InterruptedException e) {
-            e.getCause();
+            e.printStackTrace();
         }
     }
 
@@ -69,7 +69,7 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
                 throw new NullPointerException("THERE IS NO QUIZ SERVER");
             }
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
 
         try {
@@ -84,7 +84,7 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
             );
         } catch (IOException | NullPointerException ex) {
             System.out.println("COULD NOT LOCATE FILE.");
-            ex.getCause();
+            ex.printStackTrace();
         }
 
         Registry registry = LocateRegistry.getRegistry(1099);
@@ -97,7 +97,7 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
         } catch (NotBoundException ex) {
             throw new RemoteException("DID NOT UNBIND");
         } catch (MalformedURLException ex) {
-            ex.getCause();
+            ex.printStackTrace();
         }
     }
 

@@ -45,13 +45,13 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
 
     public QuizServer() throws RemoteException {
 
-        Set<Quiz> newQuizzes = null;
-        Map<Integer, ArrayList<String>> newQuizMap = null;
-        Map<String, String[]> newQuestionAnswers = null;
-        Map<Integer, Player> newHighestScorePlayerIDMap = null;
+        Set<Quiz> newQuizzes;
+        Map<Integer, ArrayList<String>> newQuizMap;
+        Map<String, String[]> newQuestionAnswers;
+        Map<Integer, Player> newHighestScorePlayerIDMap;
         String newFileName = "quizData.txt";
         int newQuizIDValue;
-        ArrayList<ClosedQuiz> newClosedQuizList = null;
+        ArrayList<ClosedQuiz> newClosedQuizList ;
 
         ObjectInputStream ois = null;
 
@@ -85,7 +85,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                         Thread.sleep(500);
                         System.out.print(".");
                     } catch (InterruptedException ex) {
-                        ex.getCause();
+                        ex.printStackTrace();
                     }
 
                     this.quizzes = newQuizzes;
@@ -109,7 +109,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 try {
                     ois.close();
                 } catch (IOException ex) {
-                    ex.getCause();
+                    ex.printStackTrace();
                     System.out.println("I/O EXCEPTION.");
                 }
             }
@@ -129,7 +129,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 Thread.sleep(500);
                 System.out.print(".");
             } catch (InterruptedException ex) {
-                ex.getCause();
+                ex.printStackTrace();
             }
             System.out.println("FILE NOT FOUND. CREATING QUIZDATA.TXT FILE");
         }
@@ -161,15 +161,15 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             oos.close();
 
         } catch (FileNotFoundException ex) {
-            ex.getCause();
+            ex.printStackTrace();
         } catch (IOException ex) {
-            ex.getCause();
+            ex.printStackTrace();
         }
     }
 
     @Override
     public synchronized String getWinnerForQuiz(int quizID) throws RemoteException {
-        String result = null;
+        String result;
 
         try {
             if (highestScorePlayerIDMap.containsKey(quizID)) {
@@ -182,7 +182,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
         } catch (NullPointerException ex) {
             result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
             System.out.println("NO SAVED HIGH SCORERS YET FOR THAT ID.");
-            ex.getCause();
+            ex.printStackTrace();
         }
         return result;
     }
@@ -260,7 +260,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 }
             }
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
         return highestScoreForQuiz;
     }
@@ -281,7 +281,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 }
             }
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
     }
 
@@ -298,7 +298,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             highestScorePlayerIDMap.put(id, null);
             System.out.println("CLIENT ADDED QUIZ: " + s);
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
         return id;
     }
@@ -322,8 +322,6 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                     quizToRemove = a;
                 }
             }
-            questionsToRemove = quizMap.get(id);
-            highestPlayerToRemove = highestScorePlayerIDMap.get(id);
 
             quizzes.remove(quizToRemove);
             quizMap.remove(id);
@@ -331,7 +329,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             System.out.println("REMOVED QUIZ: " + id);
         } catch (NullPointerException e) {
             System.out.println("COULD NOT REMOVE QUIZ: " + id);
-            e.getCause();
+            e.printStackTrace();
         }
     }
 
@@ -353,7 +351,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 }
             }
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
         return quizArray;
     }
@@ -371,7 +369,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 thisArrayOfQuestions[0] = "CLIENT TRIED TO ACCESS ID THAT DOES NOT EXIST";
             }
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
         return thisArrayOfQuestions;
     }
@@ -386,7 +384,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 result = "CREATING QUIZ: " + ID;
             }
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
         }
         return result;
     }
@@ -401,7 +399,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             }
         } catch (IllegalArgumentException e) {
             System.out.println("CLIENT TRIED TO ACCESS QUIZ. THERE IS NO SUCH QUIZ WITH THAT ID. ");
-            e.getCause();
+            e.printStackTrace();
         }
     }
 
@@ -411,7 +409,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
             questionAnswers.put(question, answers);
             System.out.println("QUIZ: " + question + " HAS BEEN ADDED TO THE CLIENT'S QUESTION/ANSWERS MAP. ");
         } catch (NullPointerException | IllegalArgumentException e) {
-            e.getCause();
+            e.printStackTrace();
         }
     }
 }

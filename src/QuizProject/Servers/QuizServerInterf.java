@@ -40,7 +40,7 @@ public interface QuizServerInterf extends Remote {
      * Checks that the quizMap holds this Quiz ID and throws a message to the Setup Client if that 
      * id does not exist.
      * @param ID of Quiz
-     * @returns String message to screen
+     * @return String message to screen
      * @throws RemoteException
      */
     String checkIfQuizIDExists(int ID) throws RemoteException;
@@ -69,7 +69,7 @@ public interface QuizServerInterf extends Remote {
 
     /**
      * Getter
-     * @returns highestScorePlayerIDMap 
+     * @return highestScorePlayerIDMap 
      * @throws RemoteException
      */
     Map<Integer, Player> getHighestScorePlayerIDMap() throws RemoteException;
@@ -91,7 +91,7 @@ public interface QuizServerInterf extends Remote {
 
     /**
      * getter for Questions and Answers
-     * @returns Hash Map with QuestionsAndAnswers in String array
+     * @return Hash Map with QuestionsAndAnswers in String array
      * @throws RemoteException
      */
     Map<String, String[]> getQuestionsAndAnswers() throws RemoteException;

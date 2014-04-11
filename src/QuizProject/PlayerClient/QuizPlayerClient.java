@@ -69,7 +69,8 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
             serverQuiz = (QuizServerInterf) service;
             keepLooping();
         } catch (RemoteException e) {
-            e.getCause();
+            System.out.println("REMOTE EXCEPTION...");
+            e.printStackTrace();
         }
     }
 
@@ -88,7 +89,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
                 tempResp = input.nextLine().trim();
                 resp = Integer.parseInt(tempResp);
             } catch (IllegalArgumentException | NullPointerException | InputMismatchException e) {
-                e.getCause();
+                e.printStackTrace();
             }
             try {
                 if (resp == 1) {
@@ -112,10 +113,10 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
                 }
             } catch (IllegalArgumentException | NullPointerException | InputMismatchException e) {
                 System.out.println("TRY AGAIN.");
-                e.getCause();
+                e.printStackTrace();
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
-                ex.getCause();
+                ex.printStackTrace();
             }
         }
         if (!running) {
@@ -131,7 +132,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
                 );
             } catch (IOException ex) {
                 System.out.println("COULD NOT LOCATE FILE.");
-                ex.getCause();
+                ex.printStackTrace();
             }
             System.exit(0);
         }
@@ -153,10 +154,10 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
             );
         } catch (RemoteException ex) {
             System.out.println("COULD NOT SERIALIZE BEFORE CLOSING.");
-            ex.getCause();
+            ex.printStackTrace();
         } catch (IOException ex) {
             System.out.println("COULD NOT LOCATE FILE.");
-            ex.getCause();
+            ex.printStackTrace();
         }
         System.exit(0);
     }
@@ -166,7 +167,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
             QuizPlayerClient playerClient = new QuizPlayerClient();
             playerClient.launch();
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {
-            ex.getCause();
+            ex.printStackTrace();
         }
     }
 
@@ -199,7 +200,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
         try {
             quizID = Integer.parseInt(input);
         } catch (NumberFormatException | NullPointerException | InputMismatchException e) {
-            e.getCause();
+            e.printStackTrace();
         }
         return quizID;
     }
@@ -217,7 +218,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
             }
 
         } catch (NullPointerException e) {
-            e.getCause();
+            e.printStackTrace();
             System.out.println("\n\nNO SAVED QUIZZES YET!");
         }
     }
@@ -260,7 +261,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
                 }
             }
         } catch (NumberFormatException | NullPointerException | InputMismatchException e) {
-            e.getCause();
+            e.printStackTrace();
         }
 
         System.out.println("QUIZ COMPLETE. YOUR SCORE: " + tempScore);

@@ -44,6 +44,7 @@ public class QuizSetupClientTest {
 
     /**
      * Test of launch method, of class QuizSetupClient.
+     * @throws java.lang.Exception
      */
     @Test
     public void testLaunch() throws Exception {
@@ -68,6 +69,9 @@ public class QuizSetupClientTest {
 
     /**
      * Test of menu method, of class QuizSetupClient.
+     * @throws java.rmi.NotBoundException
+     * @throws java.net.MalformedURLException
+     * @throws java.rmi.RemoteException
      */
     @Test
     public void testMenu() throws NotBoundException, MalformedURLException, RemoteException {
@@ -82,6 +86,7 @@ public class QuizSetupClientTest {
 
     /**
      * Test of keepLooping method, of class QuizSetupClient.
+     * @throws java.lang.Exception
      */
     @Test
     public void testKeepLooping() throws Exception {
@@ -94,6 +99,7 @@ public class QuizSetupClientTest {
 
     /**
      * Test of clientAddsSetOfQuestions method, of class QuizSetupClient.
+     * @throws java.lang.Exception
      */
     @Test
     public void testClientAddsSetOfQuestions() throws Exception {
@@ -109,6 +115,9 @@ public class QuizSetupClientTest {
 
     /**
      * Test of clientAddsAnswers method, of class QuizSetupClient.
+     * @throws java.rmi.NotBoundException
+     * @throws java.net.MalformedURLException
+     * @throws java.rmi.RemoteException
      */
     @Test
     public void testClientAddsAnswers() throws NotBoundException, MalformedURLException, RemoteException {
@@ -124,6 +133,7 @@ public class QuizSetupClientTest {
 
     /**
      * Test of dealWithSwitchRequest method, of class QuizSetupClient.
+     * @throws java.lang.Exception
      */
     @Test
     public void testDealWithSwitchRequest() throws Exception {
@@ -137,6 +147,7 @@ public class QuizSetupClientTest {
 
     /**
      * Test of closeDown method, of class QuizSetupClient.
+     * @throws java.lang.Exception
      */
     @Test
     public void testCloseDown() throws Exception {
