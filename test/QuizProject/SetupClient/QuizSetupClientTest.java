@@ -51,8 +51,6 @@ public class QuizSetupClientTest {
         System.out.println("launch");
         QuizSetupClient instance = new QuizSetupClient();
         instance.launch();
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
     }
 
     /**
@@ -79,8 +77,7 @@ public class QuizSetupClientTest {
         int expResult = 0;
         int result = instance.menu();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -107,8 +104,7 @@ public class QuizSetupClientTest {
         ArrayList<String> expResult = null;
         ArrayList<String> result = instance.clientAddsSetOfQuestions(id);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -125,8 +121,7 @@ public class QuizSetupClientTest {
         String[] expResult = null;
         String[] result = instance.clientAddsAnswers(question);
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -139,8 +134,7 @@ public class QuizSetupClientTest {
         int choice = 5;
         QuizSetupClient instance = new QuizSetupClient();
         instance.dealWithSwitchRequest(choice);
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -152,8 +146,7 @@ public class QuizSetupClientTest {
         System.out.println("closeDown");
         QuizSetupClient instance = new QuizSetupClient();
         instance.closeDown();
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+
     }
     
 }

@@ -56,8 +56,8 @@ public class QuizServerLauncherTest {
         System.out.println("close");
         QuizServerLauncher instance = new QuizServerLauncher();
         instance.close();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean test = instance.getRunningVariable();
+        assertFalse(test);
     }
     
 }

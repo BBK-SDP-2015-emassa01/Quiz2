@@ -70,26 +70,8 @@ public class QuizPlayerClientTest {
         int result = instance.menu();
         System.out.println("Tesing '1' ");
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
         
     }
-
-    /**
-//     * Test of selectQuizToPlay method, of class QuizPlayerClient.
-//     * @throws java.rmi.NotBoundException
-//     * @throws java.net.MalformedURLException
-//     * @throws java.rmi.RemoteException
-//     */
-//    @Test
-//    public void testSelectQuizToPlay() throws NotBoundException, MalformedURLException, RemoteException{
-//        System.out.println("selectQuizToPlay");
-//        QuizPlayerClient instance = new QuizPlayerClient();
-//        int expResult = 0;
-//        int result = instance.selectQuizToPlay();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
 
     /**
      * Test of printOutQuizList method, of class QuizPlayerClient.
@@ -100,8 +82,7 @@ public class QuizPlayerClientTest {
         System.out.println("printOutQuizList");
         QuizPlayerClient instance = new QuizPlayerClient();
         instance.printOutQuizList();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -117,8 +98,7 @@ public class QuizPlayerClientTest {
         int expResult = 5;
         int result = instance.getHighestScoreForPlayer(quizID);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -131,8 +111,7 @@ public class QuizPlayerClientTest {
         int selectedQuizID = 0;
         QuizPlayerClient instance = new QuizPlayerClient();
         instance.playSelectedQuiz(selectedQuizID);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
     
 }

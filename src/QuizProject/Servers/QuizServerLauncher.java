@@ -100,5 +100,9 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
             ex.printStackTrace();
         }
     }
+    
+    public boolean getRunningVariable(){
+        return this.running;
+    }
 
 }
