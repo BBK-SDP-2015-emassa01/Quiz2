@@ -13,37 +13,37 @@ package QuizProject.Servers;
 public interface ClosedQuizInterf {
 
     /**
-     * For closed quiz
+     * Get Id for closed quiz
      * @return quiz ID
      */
     int getClosedQuizId();
 
     /**
-     *
+     * Get the highest score for closed quiz
      * @return highest score
      */
     int getHighestScore();
 
     /**
-     * For closed quiz
+     * Get player name for closed quiz
      * @return player name
      */
     String getPlayerName();
 
     /**
-     * set quiz id for closed quiz
+     * Set quiz id for closed quiz
      * @param id
      */
     void setClosedQuizId(int id);
 
     /**
-     * set highest score for closed quiz
+     * Set highest score for closed quiz
      * @param id
      */
     void setHighestScore(int id);
 
     /**
-     * set player name for closed quiz
+     * Set player name for closed quiz
      * @param name
      */
     void setPlayerName(String name);

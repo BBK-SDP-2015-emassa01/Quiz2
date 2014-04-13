@@ -16,13 +16,13 @@ import java.rmi.RemoteException;
 public interface QuizInterf extends Serializable {
 
     /**
-     * getter
+     * getter for highest score of a quiz
      * @return highest score for quiz so far.
      */
     int getHighestScore();
 
     /**
-     * getter
+     * getter for the Question and Answers array for a Quiz Question
      * @return String[] holding Question at position[0], multiple choice answers at position[1-4] and correct answer at position[5]. 
      */
     String[] getQuesAns();
@@ -35,26 +35,27 @@ public interface QuizInterf extends Serializable {
     void checkObjectIsNotNull(Object obj)throws RemoteException;
 
     /**
-     * getter
+     * getter for Quiz ID
      * @return QuizID
      */
     int getQuizID();
 
-    /** getter 
+    /** getter for Quiz name
      *
      * @return QuizName
      */
     String getQuizName();
 
     /**
-     * Sets the highest score for this Quiz
+     * Sets the highest score for the Quiz
      * @param score
      */
     void setHighestScore(int score);
 
     /**
      * Sets the Questions and Answers array for the Quiz
-     * @param QA
+     * @param QA is an array of length 6. The pos[0] is the Question, 
+     * pos 1-4 are the answers (multiple choice) and pos [5] is the correct answer. 
      */
     void setQuesAns(String[] QA);
 

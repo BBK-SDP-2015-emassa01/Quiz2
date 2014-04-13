@@ -13,7 +13,7 @@ package QuizProject.Servers;
 public interface QuizIDInterf{
 
     /**
-     *
+     * Gets a quiz id number that increments
      * @return an incrementing ID number for Quiz ID. The incrementing number means that QuizID is unique.
      */
     int getQuizIDNumber();

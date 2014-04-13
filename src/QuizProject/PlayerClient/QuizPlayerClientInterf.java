@@ -9,13 +9,13 @@ package QuizProject.PlayerClient;
 import java.rmi.RemoteException;
 
 /**
- * A class for the player Client
+ * A class to launch the player Client
  * @author Esha
  */
 public interface QuizPlayerClientInterf {
 
     /**
-     * Gets the highestScore int for a Quiz using the QuizID.
+     * Gets the highestScore for a Quiz using the QuizID number.
      * @param quizID
      * @return highest score for that Quiz
      * @throws RemoteException
@@ -23,16 +23,10 @@ public interface QuizPlayerClientInterf {
     int getHighestScoreForPlayer(int quizID) throws RemoteException;
 
     /**
-     * Until the user terminates, the menu() will keep presenting after each action.
+     * Until the user terminates, the menu will keep presenting after each action completes.
      * @throws RemoteException
      */
     void keepLooping() throws RemoteException;
-
-    /**
-     * launches the main from outside of a static context.
-     * @throws RemoteException
-     */
-    void launch() throws RemoteException;
 
     /**
      * Presents options for what the player can do.
@@ -57,7 +51,7 @@ public interface QuizPlayerClientInterf {
     void printOutQuizList() throws RemoteException;
 
     /**
-     * Sets the running boolean value to false.
+     * Sets the 'running' boolean value to false to terminate the quiz.
      * The menu will no longer be presented and the system exits.
      */
     void terminateQuiz();
