@@ -74,7 +74,7 @@ public class QuizServerTest {
         Player winner = new Player();
         winner.setPlayerName("winner");
         instance.setHighestScorePlayerIDMap(quizID, winner);
-        String expResult = "THE WINNER FOR QUIZ 3 IS WINNER\nHIGHEST SCORE: 0";
+        String expResult = "THE WINNER FOR QUIZ 3 IS WINNER!!!\nHIGHEST SCORE: 0";
         String result = instance.getWinnerForQuiz(quizID);
         assertEquals(expResult, result);
     }
@@ -88,8 +88,7 @@ public class QuizServerTest {
         System.out.println("getHighestScorePlayerIDMap");
         QuizServer instance = new QuizServer();
         Player winner = new Player();
-        instance.setHighestScorePlayerIDMap(2, winner);
-        Map<Integer, Player> expResult = null;
+        Map<Integer, Player> expResult = new HashMap<>();
         Map<Integer, Player> result = instance.getHighestScorePlayerIDMap();
         assertEquals(expResult, result);
         
@@ -102,12 +101,11 @@ public class QuizServerTest {
     @Test
     public void testSetHighestScorePlayerIDMap() throws Exception {
         System.out.println("setHighestScorePlayerIDMap");
-        int id = 0;
-        Player player = null;
+        int id = 3;
+        Player player = new Player();
         QuizServer instance = new QuizServer();
         instance.setHighestScorePlayerIDMap(id, player);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -118,11 +116,11 @@ public class QuizServerTest {
     public void testGetQuizzes() throws Exception {
         System.out.println("getQuizzes");
         QuizServer instance = new QuizServer();
-        Set<Quiz> expResult = null;
+        Set<Quiz> expResult = new HashSet<>();
         Set<Quiz> result = instance.getQuizzes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        for (Quiz a: result){
+            System.out.println(a.toString());
+        }
     }
 
     /**
@@ -132,11 +130,10 @@ public class QuizServerTest {
     public void testGetQuizMap() throws Exception {
         System.out.println("getQuizMap");
         QuizServer instance = new QuizServer();
-        Map<Integer, ArrayList<String>> expResult = null;
+        Map<Integer, ArrayList<String>> expResult = new HashMap<>();
         Map<Integer, ArrayList<String>> result = instance.getQuizMap();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -147,11 +144,10 @@ public class QuizServerTest {
     public void testGetQuestionsAndAnswers() throws Exception {
         System.out.println("getQuestionsAndAnswers");
         QuizServer instance = new QuizServer();
-        Map expResult = null;
+        Map expResult = new HashMap<>();
         Map result = instance.getQuestionsAndAnswers();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -162,11 +158,10 @@ public class QuizServerTest {
     public void testGetFileName() throws Exception {
         System.out.println("getFileName");
         QuizServer instance = new QuizServer();
-        String expResult = "";
+        String expResult = "quizData.txt";
         String result = instance.getFileName();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+ 
     }
 
     /**
@@ -177,12 +172,15 @@ public class QuizServerTest {
     public void testGetID() throws Exception {
         System.out.println("getID");
         QuizServer instance = new QuizServer();
-        int expResult = 0;
+        int expResult = 1;
         int result = instance.getID();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        /* sometimes the test fails because the tests create the 
+        *QuizID class and a quizData.txt files that they serialize and deserialize that data..
+        *if a quizData.txt file exists, the tests read data from that.
+        *These tests pass when you delete all quizData.txt files and imagine a clean startup.
+        */
+        }
 
     /**
      * Test of getHighestScoreForQuiz method, of class QuizServer.
@@ -196,8 +194,6 @@ public class QuizServerTest {
         int expResult = 0;
         int result = instance.getHighestScoreForQuiz(QuizID);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -211,8 +207,6 @@ public class QuizServerTest {
         int score = 0;
         QuizServer instance = new QuizServer();
         instance.setHighestScoreForQuiz(QuizID, score);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -222,13 +216,17 @@ public class QuizServerTest {
     @Test
     public void testAddQuiz() throws Exception {
         System.out.println("addQuiz");
-        String s = "";
+        String s = "Hi";
+        boolean expResult = false;
         QuizServer instance = new QuizServer();
-        int expResult = 0;
-        int result = instance.addQuiz(s);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.addQuiz(s);
+        for (Quiz a: instance.getQuizzes()){
+            if (a.getQuizName().equals(s)){
+                expResult = true;
+            }
+        }
+        assertTrue(expResult);
+
     }
 
     /**
@@ -242,8 +240,6 @@ public class QuizServerTest {
         Object[] expResult = null;
         Object[] result = instance.getCurrentQuizList();
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -255,11 +251,10 @@ public class QuizServerTest {
         System.out.println("getListOfQuestionsInQuiz");
         int id = 0;
         QuizServer instance = new QuizServer();
-        Object[] expResult = null;
+        Object[] expResult = new Object[1];
+        expResult[0] = "CLIENT TRIED TO ACCESS ID THAT DOES NOT EXIST";
         Object[] result = instance.getListOfQuestionsInQuiz(id);
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -271,11 +266,9 @@ public class QuizServerTest {
         System.out.println("checkIfQuizIDExists");
         int ID = 0;
         QuizServer instance = new QuizServer();
-        String expResult = "";
+        String expResult = "CREATING QUIZ: 0";
         String result = instance.checkIfQuizIDExists(ID);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -289,8 +282,6 @@ public class QuizServerTest {
         ArrayList<String> newListOfQuestions = null;
         QuizServer instance = new QuizServer();
         instance.serverAddsSetOfQuestions(ID, newListOfQuestions);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -304,8 +295,6 @@ public class QuizServerTest {
         String[] answers = null;
         QuizServer instance = new QuizServer();
         instance.serverAddsAnswers(question, answers);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

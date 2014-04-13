@@ -57,13 +57,11 @@ public class QuizTest {
     public void testGetQuizName() {
         System.out.println("getQuizName");
         Quiz instance = new Quiz();
-        String expResult = "";
+        String expResult = "Esha's Quiz";
+        instance.setQuizName(expResult);
         String result = instance.getQuizName();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
-
     /**
      * Test of checkObjectIsNotNull method, of class Quiz.
      */
@@ -81,11 +79,10 @@ public class QuizTest {
     @Test
     public void testSetQuizID() {
         System.out.println("setQuizID");
-        int idOfQuiz = 0;
+        int idOfQuiz = 3;
         Quiz instance = new Quiz();
         instance.setQuizID(idOfQuiz);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(instance.getQuizID());
     }
 
     /**
@@ -95,11 +92,11 @@ public class QuizTest {
     public void testGetQuizID() {
         System.out.println("getQuizID");
         Quiz instance = new Quiz();
-        int expResult = 0;
+        int expResult = 3;
+        instance.setQuizID(expResult);
         int result = instance.getQuizID();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -108,11 +105,11 @@ public class QuizTest {
     @Test
     public void testSetHighestScore() {
         System.out.println("setHighestScore");
-        int score = 0;
+        int score = 5;
         Quiz instance = new Quiz();
         instance.setHighestScore(score);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(instance.getHighestScore());
+
     }
 
     /**
@@ -122,11 +119,11 @@ public class QuizTest {
     public void testGetHighestScore() {
         System.out.println("getHighestScore");
         Quiz instance = new Quiz();
-        int expResult = 0;
+        int expResult = 5;
+        instance.setHighestScore(expResult);
         int result = instance.getHighestScore();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -136,11 +133,11 @@ public class QuizTest {
     public void testGetQuesAns() {
         System.out.println("getQuesAns");
         Quiz instance = new Quiz();
-        String[] expResult = null;
+        String[] expResult = {"1", "2","3"};
+        instance.setQuesAns(expResult);
         String[] result = instance.getQuesAns();
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -149,11 +146,10 @@ public class QuizTest {
     @Test
     public void testSetQuesAns() {
         System.out.println("setQuesAns");
-        String[] QA = null;
+        String[] QA = {"1", "2","3"};
         Quiz instance = new Quiz();
         instance.setQuesAns(QA);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(instance.getQuesAns());
     }
     
 }

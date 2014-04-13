@@ -52,7 +52,7 @@ public class QuizSetupClientTest {
         QuizSetupClient instance = new QuizSetupClient();
         instance.launch();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 
     /**
@@ -63,8 +63,7 @@ public class QuizSetupClientTest {
         System.out.println("main");
         String[] args = null;
         QuizSetupClient.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -81,7 +80,7 @@ public class QuizSetupClientTest {
         int result = instance.menu();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 
     /**
@@ -93,8 +92,7 @@ public class QuizSetupClientTest {
         System.out.println("keepLooping");
         QuizSetupClient instance = new QuizSetupClient();
         instance.keepLooping();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -110,7 +108,7 @@ public class QuizSetupClientTest {
         ArrayList<String> result = instance.clientAddsSetOfQuestions(id);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 
     /**
@@ -128,7 +126,7 @@ public class QuizSetupClientTest {
         String[] result = instance.clientAddsAnswers(question);
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 
     /**
@@ -138,11 +136,11 @@ public class QuizSetupClientTest {
     @Test
     public void testDealWithSwitchRequest() throws Exception {
         System.out.println("dealWithSwitchRequest");
-        int choice = 0;
+        int choice = 5;
         QuizSetupClient instance = new QuizSetupClient();
         instance.dealWithSwitchRequest(choice);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 
     /**
@@ -155,7 +153,7 @@ public class QuizSetupClientTest {
         QuizSetupClient instance = new QuizSetupClient();
         instance.closeDown();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
     
 }

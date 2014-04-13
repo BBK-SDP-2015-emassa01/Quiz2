@@ -111,13 +111,14 @@ public class QuizPlayerClientTest {
     @Test
     public void testGetHighestScoreForPlayer() throws Exception {
         System.out.println("getHighestScoreForPlayer");
-        int quizID = 0;
+        int quizID = 1;
+        
         QuizPlayerClient instance = new QuizPlayerClient();
-        int expResult = 0;
+        int expResult = 5;
         int result = instance.getHighestScoreForPlayer(quizID);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+//        fail("The test case is a prototype.");
     }
 
     /**
