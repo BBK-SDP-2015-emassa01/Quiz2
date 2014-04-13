@@ -77,7 +77,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
 
             System.out.println("\nEXISTING QUIZZES: ");
             System.out.println("-> PRESS 5 TO REVEAL WINNER!!!");
-            System.out.println("-> PRESS 6 TO CLOSE A QUIZ DOWN AND REMOVE IT.");
+            System.out.println("-> PRESS 6 TO CLOSE A QUIZ DOWN AND REMOVE IT FROM THE ACTIVE QUIZ LIST.");
             
             System.out.println("\nCLOSED QUIZZES: ");
             System.out.println("-> PRESS 7 FOR THE 'CLOSED QUIZZES' LIST.");
