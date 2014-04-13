@@ -47,5 +47,5 @@ The Player client can do the following:
 
 To run the Player Client, run the following from the command line once the Server is launched.
 
-java -Djava.security.policy=server.policy QuizPlayerClient
+java -Djava.security.policy=server.policy QuizPlayerClient 
 
