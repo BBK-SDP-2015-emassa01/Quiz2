@@ -6,8 +6,8 @@ AssignmentIII PiJ see 'Quiz' for earlier version control
 Server README
 =============
 
-The Server is launched first and does not close down. The server remains running and listening for input.
-All data for the Quiz Server is held in a class called QuizServer and it is this class that is serlialized upon Client shutdown, to a file called ‘quizData.txt’. The QuizServer, when constructed deserializes the quizData.txt file and restores the variables to their state before shutdown.
+The Server is launched first and does not close down. The server remains running and listening for input. The clients however, do close down upon request.
+All data for the Quiz Server is held in a class called QuizServer and it is this class that is serlialized upon Client shutdown, to a file called ‘quizData.txt’. The QuizServer, when constructed, deserializes the quizData.txt file and restores the variables to their state before shutdown.
 
 To run the server:
 → Compile all classes: javac *.java
