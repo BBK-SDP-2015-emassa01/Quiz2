@@ -16,10 +16,10 @@ To run the server:
 java -Djava.security.policy=server.policy QuizServerLauncher
 
 
-SetUp CLIENT README
+Setup CLIENT README
 ===================
 
-The SetUp client should be launched second (at least the first time the system is used), as Quizzes will need to be ‘set-up’ and added to the quiz list before a player requests to play a quiz. Once a quiz has been set up, a player client can play this quiz. The Set-up Client can do the following:
+The Setup client should be launched second (at least the first time the system is used), as Quizzes will need to be ‘set-up’ and added to the quiz list before a player requests to play a quiz. Once a quiz has been set up, a player client can play this quiz. The Setup Client can do the following:
 
 → ADD A NEW QUIZ.
 → LIST THE 'ACTIVE QUIZZES' LIST.
@@ -33,7 +33,7 @@ The SetUp client should be launched second (at least the first time the system i
 
 To run the Set-Up Client, run the following from the command line once the Server is launched.
 
-java -Djava.security.policy=server.policy QuizSetUpClient
+java -Djava.security.policy=server.policy QuizSetupClient
 
 
 Player CLIENT README
