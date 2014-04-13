@@ -37,17 +37,7 @@ public class QuizServerLauncherTest {
     @After
     public void tearDown() {
     }
-
-    /**
-     * Test of main method, of class QuizServerLauncher.
-     */
-    @Test
-    public void testMain() throws Exception {
-        System.out.println("main");
-        String[] args = null;
-        QuizServerLauncher.main(args);
-    }
-
+    
     /**
      * Test of close method, of class QuizServerLauncher.
      */
