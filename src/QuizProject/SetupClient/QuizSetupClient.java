@@ -36,9 +36,9 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
     public QuizSetupClient() throws NotBoundException, MalformedURLException, RemoteException {
         serverQuiz = new QuizServer();
         Remote service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
-        if (System.getSecurityManager() == null) {
-        System.setSecurityManager(new RMISecurityManager());
-        }
+//        if (System.getSecurityManager() == null) {
+//        System.setSecurityManager(new RMISecurityManager());
+//        }
         System.out.println("\t\t\t\tWELCOME TO THE QUIZ SETUP TOOL!");
     }
 
@@ -123,7 +123,7 @@ public class QuizSetupClient implements QuizSetupClientInterf, Serializable {
 
     @Override
     public synchronized ArrayList<String> clientAddsSetOfQuestions(int id) throws RemoteException, NullPointerException, IllegalArgumentException {
-        ArrayList<String> newListOfQuestions = new ArrayList<>();
+        ArrayList<String> newListOfQuestions = new ArrayList<String>();
         String question;
         String[] answers;
 

@@ -29,19 +29,19 @@ import java.util.Set;
  */
 public class QuizServer extends UnicastRemoteObject implements QuizServerInterf, Serializable {
 
-    private Set<Quiz> quizzes = new HashSet<>(); //set of all current quizzes
+    private Set<Quiz> quizzes = new HashSet<Quiz>(); //set of all current quizzes
 
-    private Map<Integer, ArrayList<String>> quizMap = new HashMap<>();//map Quiz ID to List of Questions
+    private Map<Integer, ArrayList<String>> quizMap = new HashMap<Integer, ArrayList<String>>();//map Quiz ID to List of Questions
 
-    private Map<String, String[]> questionAnswers = new HashMap<>(); //holds an array, where pos[0] is the Question and pos[1-4] are the answers, pos[5] is the correct answer.
+    private Map<String, String[]> questionAnswers = new HashMap<String, String[]>(); //holds an array, where pos[0] is the Question and pos[1-4] are the answers, pos[5] is the correct answer.
 
-    private Map<Integer, Player> highestScorePlayerIDMap = new HashMap<>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
+    private Map<Integer, Player> highestScorePlayerIDMap = new HashMap<Integer, Player>();// maps Quiz ID the highest scoring Player (holds player name, quiz ID and score for Quizzes)
 
     private String fileName = "quizData.txt";
 
     private int quizIDValue;
     
-    private ArrayList<ClosedQuiz> closedQuizList = new ArrayList<>();
+    private ArrayList<ClosedQuiz> closedQuizList = new ArrayList<ClosedQuiz>();
 
     public QuizServer() throws RemoteException {
 
