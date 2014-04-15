@@ -11,7 +11,7 @@ All data for the Quiz Server is held in a class called QuizServer and it is this
 
 To run the server:
 → Compile all classes: javac *.java
-→ Create the stub: rmic QuizServer
+→ Create the stub: rmic QuizServerData
 → Run the security policy: 
 java -Djava.security.policy=server.policy QuizServerLauncher
 
