@@ -9,7 +9,7 @@ import QuizProject.Servers.ClosedQuiz;
 import QuizProject.Servers.GetInput;
 import QuizProject.Servers.GetInputInterf;
 import QuizProject.Servers.Quiz;
-import QuizProject.Servers.QuizServer;
+import QuizProject.Servers.QuizServerData;
 import QuizProject.Servers.QuizServerInterf;
 import java.io.IOException;
 import java.io.Serializable;
@@ -34,7 +34,7 @@ public class QuizSetupClients implements QuizSetupClientsInterface, Serializable
     public Remote service;
 
     public QuizSetupClients() throws NotBoundException, MalformedURLException, RemoteException {
-        serverQuiz = new QuizServer();
+        serverQuiz = new QuizServerData();
         Remote service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
 //        if (System.getSecurityManager() == null) {
 //        System.setSecurityManager(new RMISecurityManager());

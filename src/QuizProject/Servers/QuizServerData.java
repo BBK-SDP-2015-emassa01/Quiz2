@@ -27,7 +27,7 @@ import java.util.Set;
  *
  * @author Esha
  */
-public class QuizServer extends UnicastRemoteObject implements QuizServerInterf, Serializable {
+public class QuizServerData extends UnicastRemoteObject implements QuizServerInterf, Serializable {
 
     private Set<Quiz> quizzes = new HashSet<Quiz>(); //set of all current quizzes
 
@@ -43,7 +43,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
     
     private ArrayList<ClosedQuiz> closedQuizList = new ArrayList<ClosedQuiz>();
 
-    public QuizServer() throws RemoteException {
+    public QuizServerData() throws RemoteException {
 
         Set<Quiz> newQuizzes;
         Map<Integer, ArrayList<String>> newQuizMap;

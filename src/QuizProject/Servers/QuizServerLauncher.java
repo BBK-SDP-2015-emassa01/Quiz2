@@ -52,7 +52,7 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
 
         try {
             LocateRegistry.createRegistry(1099);
-            QuizServerInterf serverQuiz = new QuizServer();
+            QuizServerInterf serverQuiz = new QuizServerData();
             String registryHost = "//localhost/";
             Naming.rebind(registryHost + serviceName, serverQuiz);
         } catch (UnmarshalException ex) {

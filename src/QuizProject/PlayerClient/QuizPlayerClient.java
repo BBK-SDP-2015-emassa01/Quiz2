@@ -9,7 +9,7 @@ import QuizProject.Servers.GetInput;
 import QuizProject.Servers.GetInputInterf;
 import QuizProject.Servers.Player;
 import QuizProject.Servers.Quiz;
-import QuizProject.Servers.QuizServer;
+import QuizProject.Servers.QuizServerData;
 import QuizProject.Servers.QuizServerInterf;
 import java.io.IOException;
 import java.io.Serializable;
@@ -40,7 +40,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterface, Serializable
     private final Player player = new Player();
 
     public QuizPlayerClient() throws NotBoundException, MalformedURLException, RemoteException, IllegalArgumentException {
-        serverQuiz = new QuizServer();
+        serverQuiz = new QuizServerData();
         service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
         boolean validInput = true;
 

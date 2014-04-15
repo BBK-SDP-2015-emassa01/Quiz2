@@ -44,7 +44,7 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of serialize method, of class QuizServer.
+     * Test of serialize method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
@@ -57,20 +57,20 @@ public class QuizServerTest {
         ArrayList<ClosedQuiz> closedQuizList = new ArrayList<>();
         String fileName = "testQuizData.txt";
         int quizIDValue = 2;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         instance.serialize(quizzes, quizMap, questionAnswers, highestScorePlayerIDMap, fileName, quizIDValue, closedQuizList);
         //serializes fine.
     }
 
     /**
-     * Test of getWinnerForQuiz method, of class QuizServer.
+     * Test of getWinnerForQuiz method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetWinnerForQuiz() throws Exception {
         System.out.println("getWinnerForQuiz");
         int quizID = 3;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         Player winner = new Player();
         winner.setPlayerName("winner");
         instance.setHighestScorePlayerIDMap(quizID, winner);
@@ -80,13 +80,13 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of getHighestScorePlayerIDMap method, of class QuizServer.
+     * Test of getHighestScorePlayerIDMap method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetHighestScorePlayerIDMap() throws Exception {
         System.out.println("getHighestScorePlayerIDMap");
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         Player winner = new Player();
         Map<Integer, Player> expResult = new HashMap<>();
         Map<Integer, Player> result = instance.getHighestScorePlayerIDMap();
@@ -95,7 +95,7 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of setHighestScorePlayerIDMap method, of class QuizServer.
+     * Test of setHighestScorePlayerIDMap method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
@@ -103,19 +103,19 @@ public class QuizServerTest {
         System.out.println("setHighestScorePlayerIDMap");
         int id = 3;
         Player player = new Player();
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         instance.setHighestScorePlayerIDMap(id, player);
 
     }
 
     /**
-     * Test of getQuizzes method, of class QuizServer.
+     * Test of getQuizzes method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetQuizzes() throws Exception {
         System.out.println("getQuizzes");
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         Set<Quiz> expResult = new HashSet<>();
         Set<Quiz> result = instance.getQuizzes();
         for (Quiz a: result){
@@ -124,12 +124,12 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of getQuizMap method, of class QuizServer.
+     * Test of getQuizMap method, of class QuizServerData.
      */
     @Test
     public void testGetQuizMap() throws Exception {
         System.out.println("getQuizMap");
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         Map<Integer, ArrayList<String>> expResult = new HashMap<>();
         Map<Integer, ArrayList<String>> result = instance.getQuizMap();
         assertEquals(expResult, result);
@@ -137,13 +137,13 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of getQuestionsAndAnswers method, of class QuizServer.
+     * Test of getQuestionsAndAnswers method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetQuestionsAndAnswers() throws Exception {
         System.out.println("getQuestionsAndAnswers");
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         Map expResult = new HashMap<>();
         Map result = instance.getQuestionsAndAnswers();
         assertEquals(expResult, result);
@@ -151,13 +151,13 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of getFileName method, of class QuizServer.
+     * Test of getFileName method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetFileName() throws Exception {
         System.out.println("getFileName");
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         String expResult = "quizData.txt";
         String result = instance.getFileName();
         assertEquals(expResult, result);
@@ -165,13 +165,13 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of getID method, of class QuizServer.
+     * Test of getID method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetID() throws Exception {
         System.out.println("getID");
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         int expResult = 1;
         int result = instance.getID();
         assertEquals(expResult, result);
@@ -183,21 +183,21 @@ public class QuizServerTest {
         }
 
     /**
-     * Test of getHighestScoreForQuiz method, of class QuizServer.
+     * Test of getHighestScoreForQuiz method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetHighestScoreForQuiz() throws Exception {
         System.out.println("getHighestScoreForQuiz");
         int QuizID = 0;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         int expResult = 0;
         int result = instance.getHighestScoreForQuiz(QuizID);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of setHighestScoreForQuiz method, of class QuizServer.
+     * Test of setHighestScoreForQuiz method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
@@ -205,12 +205,12 @@ public class QuizServerTest {
         System.out.println("setHighestScoreForQuiz");
         int QuizID = 0;
         int score = 0;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         instance.setHighestScoreForQuiz(QuizID, score);
     }
 
     /**
-     * Test of addQuiz method, of class QuizServer.
+     * Test of addQuiz method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
@@ -218,7 +218,7 @@ public class QuizServerTest {
         System.out.println("addQuiz");
         String s = "Hi";
         boolean expResult = false;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         instance.addQuiz(s);
         for (Quiz a: instance.getQuizzes()){
             if (a.getQuizName().equals(s)){
@@ -230,27 +230,27 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of getCurrentQuizList method, of class QuizServer.
+     * Test of getCurrentQuizList method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetCurrentQuizList() throws Exception {
         System.out.println("getCurrentQuizList");
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         Object[] expResult = null;
         Object[] result = instance.getCurrentQuizList();
         assertArrayEquals(expResult, result);
     }
 
     /**
-     * Test of getListOfQuestionsInQuiz method, of class QuizServer.
+     * Test of getListOfQuestionsInQuiz method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testGetListOfQuestionsInQuiz() throws Exception {
         System.out.println("getListOfQuestionsInQuiz");
         int id = 0;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         Object[] expResult = new Object[1];
         expResult[0] = "CLIENT TRIED TO ACCESS ID THAT DOES NOT EXIST";
         Object[] result = instance.getListOfQuestionsInQuiz(id);
@@ -258,21 +258,21 @@ public class QuizServerTest {
     }
 
     /**
-     * Test of checkIfQuizIDExists method, of class QuizServer.
+     * Test of checkIfQuizIDExists method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
     public void testCheckIfQuizIDExists() throws Exception {
         System.out.println("checkIfQuizIDExists");
         int ID = 0;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         String expResult = "CREATING QUIZ: 0";
         String result = instance.checkIfQuizIDExists(ID);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of serverAddsSetOfQuestions method, of class QuizServer.
+     * Test of serverAddsSetOfQuestions method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
@@ -280,12 +280,12 @@ public class QuizServerTest {
         System.out.println("serverAddsSetOfQuestions");
         int ID = 0;
         ArrayList<String> newListOfQuestions = null;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         instance.serverAddsSetOfQuestions(ID, newListOfQuestions);
     }
 
     /**
-     * Test of serverAddsAnswers method, of class QuizServer.
+     * Test of serverAddsAnswers method, of class QuizServerData.
      * @throws java.lang.Exception
      */
     @Test
@@ -293,7 +293,7 @@ public class QuizServerTest {
         System.out.println("serverAddsAnswers");
         String question = "";
         String[] answers = null;
-        QuizServer instance = new QuizServer();
+        QuizServerData instance = new QuizServerData();
         instance.serverAddsAnswers(question, answers);
     }
     
