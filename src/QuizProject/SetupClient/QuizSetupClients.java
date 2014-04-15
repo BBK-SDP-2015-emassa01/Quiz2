@@ -36,9 +36,9 @@ public class QuizSetupClients implements QuizSetupClientsInterface, Serializable
     public QuizSetupClients() throws NotBoundException, MalformedURLException, RemoteException {
         serverQuiz = new QuizServerData();
         Remote service = this.service = Naming.lookup("//127.0.0.1:1099/quiz");
-//        if (System.getSecurityManager() == null) {
-//        System.setSecurityManager(new RMISecurityManager());
-//        }
+        if (System.getSecurityManager() == null) {
+        System.setSecurityManager(new RMISecurityManager());
+        }
         System.out.println("\t\t\t\tWELCOME TO THE QUIZ SETUP TOOL!");
     }
 
