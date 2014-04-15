@@ -96,7 +96,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                     this.quizIDValue = newQuizIDValue;
                     this.closedQuizList = newClosedQuizList;
 
-                    QuizID setIncrementingValue = new QuizID();
+                    QuizIDInterf setIncrementingValue = new QuizID();
                     setIncrementingValue.setQuizIDNumber(newQuizIDValue);
 
                     System.out.println("SUCCESSFULLY COMPLETED DESERIALIZING THE QUIZSERVER.");
@@ -173,7 +173,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
 
         try {
             if (highestScorePlayerIDMap.containsKey(quizID)) {
-                Player winner = highestScorePlayerIDMap.get(quizID);
+                PlayerInterf winner = highestScorePlayerIDMap.get(quizID);
                 result = "THE WINNER FOR QUIZ " + quizID + " IS " + winner.getPlayerName().toUpperCase() + "!!!" + "\nHIGHEST SCORE: " + winner.getPlayerScore();
 
             } else {
@@ -239,7 +239,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
 
     @Override
     public int getID() throws RemoteException {
-        QuizID num = new QuizID();
+        QuizIDInterf num = new QuizID();
         int generatedID = num.getQuizIDNumber();
         quizIDValue = generatedID;
         return generatedID;
@@ -290,10 +290,10 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
 
         int id = getID();
         try {
-            Quiz newQuiz = new Quiz();
+            QuizInterf newQuiz = new Quiz();
             newQuiz.setQuizID(id);
             newQuiz.setQuizName(s);
-            quizzes.add(newQuiz);
+            quizzes.add((Quiz) newQuiz);
             quizMap.put(id, null);
             highestScorePlayerIDMap.put(id, null);
             System.out.println("CLIENT ADDED QUIZ: " + s);
@@ -305,16 +305,16 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
 
     @Override
     public synchronized void removeQuiz(int id) throws RemoteException {
-        Quiz quizToRemove = null;
+        QuizInterf quizToRemove = null;
         ArrayList<String> questionsToRemove = null;
-        Player highestPlayerToRemove = highestScorePlayerIDMap.get(id);
+        PlayerInterf highestPlayerToRemove = highestScorePlayerIDMap.get(id);
 
-        ClosedQuiz quizToClose = new ClosedQuiz();
+        ClosedQuizInterf quizToClose = new ClosedQuiz();
         quizToClose.setClosedQuizId(id);
         quizToClose.setHighestScore(highestPlayerToRemove.getPlayerScore());
         quizToClose.setPlayerName(highestPlayerToRemove.getPlayerName());
         
-        closedQuizList.add(quizToClose);
+        closedQuizList.add((ClosedQuiz) quizToClose);
         
         try {
             for (Quiz a : quizzes) {
@@ -345,7 +345,7 @@ public class QuizServer extends UnicastRemoteObject implements QuizServerInterf,
                 quizArray = quizzes.toArray();
 
                 for (Object a : quizArray) {
-                    Quiz b = (Quiz) a;
+                    QuizInterf b = (Quiz) a;
 
                     System.out.println("ID: " + b.getQuizID() + "\t|| QUIZ NAME: " + b.getQuizName());
                 }

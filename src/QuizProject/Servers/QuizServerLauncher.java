@@ -5,8 +5,8 @@
  */
 package QuizProject.Servers;
 
-import QuizProject.PlayerClient.QuizPlayerClient;
-import QuizProject.SetupClient.QuizSetupClient;
+import QuizProject.PlayerClient.QuizPlayerClientInterface;
+import QuizProject.SetupClient.QuizSetupClientsInterface;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -24,8 +24,8 @@ import java.rmi.registry.Registry;
 public class QuizServerLauncher implements QuizServerLauncherInterf {
 
     private QuizServerInterf serverQuiz;
-    private QuizSetupClient client;
-    private QuizPlayerClient player;
+    private QuizSetupClientsInterface client;
+    private QuizPlayerClientInterface player;
 
     private final String serviceName = "quiz";
 
@@ -35,16 +35,17 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
         // do nothing
     }
 
-    public static void main(String[] args) throws RemoteException {
+    public static void main(String[] args) throws RemoteException, InterruptedException {
         try {
-            QuizServerLauncher test = new QuizServerLauncher();
+            QuizServerLauncherInterf test = new QuizServerLauncher();
             test.launch();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void launch() throws InterruptedException {
+    @Override
+    public void launch() throws InterruptedException {
 //        if (System.getSecurityManager() == null) {
 //            System.setSecurityManager(new RMISecurityManager());
 //        }

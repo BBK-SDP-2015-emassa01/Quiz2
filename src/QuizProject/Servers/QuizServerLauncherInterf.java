@@ -20,4 +20,11 @@ public interface QuizServerLauncherInterf {
      */
     void close() throws RemoteException;
     
+    /**
+     * Launches the QuizServer
+     * @throws RemoteException
+     * @throws java.lang.InterruptedException
+     */
+    void launch() throws RemoteException, InterruptedException;
+    
 }

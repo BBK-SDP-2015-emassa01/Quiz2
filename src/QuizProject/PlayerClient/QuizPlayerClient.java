@@ -28,7 +28,7 @@ import java.util.Scanner;
  *
  * @author Esha
  */
-public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
+public class QuizPlayerClient implements QuizPlayerClientInterface {
 
     private QuizServerInterf serverQuiz;
     public Remote service;
@@ -64,6 +64,7 @@ public class QuizPlayerClient implements QuizPlayerClientInterf, Serializable {
     }
 
 
+    @Override
     public void launch() throws RemoteException {
         try {
             serverQuiz = (QuizServerInterf) service;

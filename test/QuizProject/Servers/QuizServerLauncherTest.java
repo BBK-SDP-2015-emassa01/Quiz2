@@ -6,6 +6,7 @@
 
 package QuizProject.Servers;
 
+import java.rmi.RemoteException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -48,6 +49,44 @@ public class QuizServerLauncherTest {
         instance.close();
         boolean test = instance.getRunningVariable();
         assertFalse(test);
+    }
+
+    /**
+     * Test of main method, of class QuizServerLauncher.
+     */
+    @Test
+    public void testMain() throws Exception {
+        System.out.println("main");
+        String[] args = null;
+        QuizServerLauncher.main(args);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of launch method, of class QuizServerLauncher.
+     */
+    @Test
+    public void testLaunch() throws Exception {
+        System.out.println("launch");
+        QuizServerLauncher instance = new QuizServerLauncher();
+        instance.launch();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getRunningVariable method, of class QuizServerLauncher.
+     */
+    @Test
+    public void testGetRunningVariable() throws RemoteException {
+        System.out.println("getRunningVariable");
+        QuizServerLauncher instance = new QuizServerLauncher();
+        boolean expResult = false;
+        boolean result = instance.getRunningVariable();
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
 }

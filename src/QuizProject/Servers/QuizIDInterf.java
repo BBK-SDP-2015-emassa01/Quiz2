@@ -17,5 +17,11 @@ public interface QuizIDInterf{
      * @return an incrementing ID number for Quiz ID. The incrementing number means that QuizID is unique.
      */
     int getQuizIDNumber();
+
+    /**
+     * Sets incrementing id number for quiz
+     * @param newQuizIDValue
+     */
+    public void setQuizIDNumber(int newQuizIDValue);
     
 }
