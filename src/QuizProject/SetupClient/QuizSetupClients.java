@@ -69,7 +69,8 @@ public class QuizSetupClients implements QuizSetupClientsInterface, Serializable
         int switchValue = 0;
 
         try {
-            System.out.println("\nACTIVE AND NEW QUIZ SERVICES: ");
+            System.out.println("\n===================================================================================================");
+            System.out.println("ACTIVE AND NEW QUIZ SERVICES: ");
             System.out.println("-> PRESS 1 TO ADD A NEW QUIZ.");
             System.out.println("-> PRESS 2 FOR THE 'ACTIVE QUIZZES' LIST.");
             System.out.println("-> PRESS 3 TO LIST QUESTIONS OF A SPECIFIED QUIZ ID");
@@ -85,6 +86,7 @@ public class QuizSetupClients implements QuizSetupClientsInterface, Serializable
             System.out.println("\nSAVE AND CLOSE: ");
             System.out.println("-> PRESS 8 TO SAVE.");
             System.out.println("-> PRESS 9 TO CLOSE DOWN THE SYSTEM.");
+            System.out.println("===================================================================================================");
 
             GetInput input = new GetInput();
             switchValue = input.getIntInput();

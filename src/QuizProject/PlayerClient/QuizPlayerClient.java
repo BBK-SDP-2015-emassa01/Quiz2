@@ -28,7 +28,7 @@ import java.util.Scanner;
  *
  * @author Esha
  */
-public class QuizPlayerClient implements QuizPlayerClientInterface {
+public class QuizPlayerClient implements QuizPlayerClientInterface, Serializable {
 
     private QuizServerInterf serverQuiz;
     public Remote service;
