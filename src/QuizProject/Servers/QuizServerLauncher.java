@@ -46,9 +46,9 @@ public class QuizServerLauncher implements QuizServerLauncherInterf {
 
     @Override
     public void launch() throws InterruptedException {
-//        if (System.getSecurityManager() == null) {
-//            System.setSecurityManager(new RMISecurityManager());
-//        }
+        if (System.getSecurityManager() == null) {
+            System.setSecurityManager(new RMISecurityManager());
+        }
 
         try {
             LocateRegistry.createRegistry(1099);
