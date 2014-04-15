@@ -33,7 +33,7 @@ The Setup client should be launched second (at least the first time the system i
 
 To run the Set-Up Client, run the following from the command line once the Server is launched.
 
-java -Djava.security.policy=server.policy QuizSetupClient
+java -Djava.security.policy=server.policy QuizSetupClients
 
 
 Player CLIENT README
