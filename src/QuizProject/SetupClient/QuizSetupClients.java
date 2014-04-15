@@ -326,6 +326,7 @@ public class QuizSetupClients implements QuizSetupClientsInterface, Serializable
                         ClosedQuiz b = (ClosedQuiz) a;
                         System.out.println("QUIZ ID: " + b.getClosedQuizId()+ "\t|| HIGHEST PLAYER NAME: " + b.getPlayerName()+ "\t|| HIGHEST PLAYER SCORE: "+ b.getHighestScore());
                     }  
+                    System.out.println("END OF LIST.");
                 } catch (NullPointerException | RemoteException e) {
                     e.printStackTrace();
                 }
