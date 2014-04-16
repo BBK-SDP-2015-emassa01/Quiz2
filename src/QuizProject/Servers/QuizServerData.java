@@ -109,7 +109,7 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
                 try {
                     ois.close();
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    //ex.printStackTrace();
                     System.out.println("I/O EXCEPTION.");
                 }
             }
@@ -129,7 +129,7 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
                 Thread.sleep(500);
                 System.out.print(".");
             } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
             }
             System.out.println("FILE NOT FOUND. CREATING QUIZDATA.TXT FILE");
         }
@@ -161,9 +161,11 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
             oos.close();
 
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
     }
 
@@ -182,7 +184,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
         } catch (NullPointerException ex) {
             result = "NO SAVED HIGH SCORERS YET FOR THAT ID.";
             System.out.println("NO SAVED HIGH SCORERS YET FOR THAT ID.");
-            ex.printStackTrace();
+//            ex.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
         return result;
     }
@@ -260,7 +263,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
                 }
             }
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+              System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
         return highestScoreForQuiz;
     }
@@ -281,7 +285,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
                 }
             }
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
     }
 
@@ -298,7 +303,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
             highestScorePlayerIDMap.put(id, null);
             System.out.println("CLIENT ADDED QUIZ: " + s);
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
         return id;
     }
@@ -329,7 +335,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
             System.out.println("REMOVED QUIZ: " + id);
         } catch (NullPointerException e) {
             System.out.println("COULD NOT REMOVE QUIZ: " + id);
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
     }
 
@@ -351,7 +358,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
                 }
             }
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
         return quizArray;
     }
@@ -369,7 +377,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
                 thisArrayOfQuestions[0] = "CLIENT TRIED TO ACCESS ID THAT DOES NOT EXIST";
             }
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
         return thisArrayOfQuestions;
     }
@@ -384,7 +393,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
                 result = "CREATING QUIZ: " + ID;
             }
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
         return result;
     }
@@ -399,7 +409,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
             }
         } catch (IllegalArgumentException e) {
             System.out.println("CLIENT TRIED TO ACCESS QUIZ. THERE IS NO SUCH QUIZ WITH THAT ID. ");
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
     }
 
@@ -409,7 +420,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
             questionAnswers.put(question, answers);
             System.out.println("QUIZ: " + question + " HAS BEEN ADDED TO THE CLIENT'S QUESTION/ANSWERS MAP. ");
         } catch (NullPointerException | IllegalArgumentException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
         }
     }
 }

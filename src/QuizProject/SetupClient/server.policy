@@ -4,4 +4,6 @@ permission java.io.FilePermission "quizData.txt", "write";
 permission java.io.FilePermission "quizData.txt", "read";
 permission java.net.SocketPermission  "193.61.28.57:*", "accept,connect";
 permission java.net.SocketPermission "192.168.0.1:*", "connect";
+permission java.security.AllPermission; 
 };
+
