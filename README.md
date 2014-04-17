@@ -13,8 +13,11 @@ The details below assume the user is at the QuizProject directory level, and usi
 
 To run the server:
 → Compile all classes: 
+
 javac QuizProject/Servers/*.java
+
 javac QuizProject/PlayerClient/*.java
+
 javac QuizProject/SetupClient/*.java
 
 → Create the stub: rmic QuizProject.Servers.QuizServerData
