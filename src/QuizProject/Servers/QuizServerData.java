@@ -131,7 +131,8 @@ public class QuizServerData extends UnicastRemoteObject implements QuizServerInt
             } catch (InterruptedException ex) {
                 System.out.println("SOMETHING WENT WRONG. LET'S TRY AGAIN.");
             }
-            System.out.println("FILE NOT FOUND. CREATING QUIZDATA.TXT FILE");
+            System.out.println("FILE NOT FOUND. CREATING QUIZDATA.TXT FILE"
+                    + "\nWAITING FOR THE CLIENTS.....");
         }
     }
 
