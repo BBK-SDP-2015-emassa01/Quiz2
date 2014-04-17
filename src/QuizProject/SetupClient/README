@@ -17,7 +17,11 @@ javac QuizProject/Servers/*.java
 javac QuizProject/PlayerClient/*.java
 javac QuizProject/SetupClient/*.java
 
+<<<<<<< HEAD
 → Create the stub: rmic QuizProject.Servers.QuizServerData
+=======
+→ Create the stub: rmic QuizProject/Servers/QuizServerData
+>>>>>>> FETCH_HEAD
 
 → Run the security policy: 
 java -Djava.security.policy=server.policy QuizProject.Servers.QuizServerLauncher
