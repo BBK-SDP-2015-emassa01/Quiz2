@@ -17,7 +17,7 @@ javac QuizProject/Servers/*.java
 javac QuizProject/PlayerClient/*.java
 javac QuizProject/SetupClient/*.java
 
-→ Create the stub: rmic QuizProject/Servers/QuizServerData
+→ Create the stub: rmic QuizProject.Servers.QuizServerData
 
 → Run the security policy: 
 java -Djava.security.policy=server.policy QuizProject.Servers.QuizServerLauncher
@@ -46,7 +46,7 @@ The Setup client should be launched second (at least the first time the system i
 
 → CLOSE DOWN THE SYSTEM.
 
-To run the Set-Up Client, run the following from the command line once the Server is launched.
+To run the Set-Up Client, navigate to the level of the QuizProject Directory and run the following from the command line once the Server is launched.
 
 java -Djava.security.policy=server.policy QuizProject.SetupClient.QuizSetupClients
 
@@ -62,7 +62,7 @@ The Player client can do the following:
 
 → EXIT THE PLAYER CLIENT SETUP BY TYPING ‘END’ WHEN THE MENU APPEARS (AUTOMATIC SAVE).
 
-To run the Player Client, run the following from the command line once the Server is launched.
+To run the Player Client, navigate to the level of the QuizProject Directory and run the following from the command line once the Server is launched.
 
 java -Djava.security.policy=server.policy QuizProject.PlayerClient.QuizPlayerClient 
 
