@@ -12,7 +12,10 @@ All data for the Quiz Server is held in a class called QuizServer and it is this
 The details below assume the user is at the QuizProject directory level, and using the quiz from the command line.
 
 To run the server:
-→ Compile all classes: javac QuizProject/Servers/*.java
+→ Compile all classes: 
+javac QuizProject/Servers/*.java
+javac QuizProject/PlayerClient/*.java
+javac QuizProject/SetupClient/*.java
 
 → Create the stub: rmic QuizProject/Servers/QuizServerData
 
