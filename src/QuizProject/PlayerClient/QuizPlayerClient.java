@@ -264,10 +264,12 @@ public class QuizPlayerClient implements QuizPlayerClientInterface, Serializable
             e.printStackTrace();
         }
 
-        System.out.println("QUIZ COMPLETE. YOUR SCORE: " + tempScore);
+        System.out.println("QUIZ COMPLETE.");
 
-        System.out.println("CURRENT HIGHEST SCORE FOR THIS QUIZ = " + serverQuiz.getHighestScoreForQuiz(selectedQuizID));
+        System.out.println("THE HIGHEST SCORE FOR THIS QUIZ WAS: " + serverQuiz.getHighestScoreForQuiz(selectedQuizID));
 
+        System.out.println("YOUR SCORE: " + tempScore);
+        
         if (tempScore >= serverQuiz.getHighestScoreForQuiz(selectedQuizID)) {
             System.out.println("\n\nYOU HAVE THE HIGHEST SCORE SO FAR!");
             serverQuiz.setHighestScoreForQuiz(selectedQuizID, tempScore);
